@@ -4,5 +4,11 @@
   "port": 5440,
   "username": "postgres",
   "password": "dockerGoStackPostgres",
-  "database": "gostack_postgress"
+  "database": "gostack_postgress",
+  "migrations": [
+    "./src/database/migrations/*.ts"
+  ],
+  "cli": {
+    "migrationsDir": "./src/database/migrations"
+  }
 }
