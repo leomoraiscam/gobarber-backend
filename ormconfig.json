@@ -5,6 +5,9 @@
   "username": "postgres",
   "password": "dockerGoStackPostgres",
   "database": "gostack_postgress",
+  "entities":[
+    "./src/models/*.ts"
+  ],
   "migrations": [
     "./src/database/migrations/*.ts"
   ],
