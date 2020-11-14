@@ -9,7 +9,10 @@ sessionRouter.post('/', async (request, response) => {
 
     const authenticatedUser = new AuthenticatedUserService();
 
-    const { user } = await authenticatedUser.execute({ email, password });
+    const { user, token } = await authenticatedUser.execute({
+      email,
+      password,
+    });
 
     const serializedUser = {
       id: user.id,
@@ -19,7 +22,7 @@ sessionRouter.post('/', async (request, response) => {
       updated_at: user.updated_at,
     };
 
-    return response.json({ user: serializedUser });
+    return response.json({ user: serializedUser, token });
   } catch (err) {
     return response.status(400).json({ error: err.message });
   }
