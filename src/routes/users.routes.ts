@@ -11,7 +11,15 @@ usersRouter.post('/', async (request, response) => {
 
     const user = await createUser.execute({ name, email, password });
 
-    return response.json(user);
+    const serializedUser = {
+      id: user.id,
+      name: user.name,
+      email: user.name,
+      created_at: user.created_at,
+      updated_at: user.updated_at,
+    };
+
+    return response.json(serializedUser);
   } catch (err) {
     return response.status(400).json({ error: err.message });
   }
