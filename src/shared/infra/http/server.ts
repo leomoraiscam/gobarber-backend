@@ -9,7 +9,7 @@ import '@shared/container';
 
 const app = express();
 app.use(express.json());
-app.use('/files', express.static(uploadConfig.directory));
+app.use('/files', express.static(uploadConfig.tmpFolder));
 app.use(routes);
 
 // _ é igual á next
