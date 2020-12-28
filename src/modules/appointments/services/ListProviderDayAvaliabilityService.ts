@@ -11,7 +11,7 @@ interface IRequest {
 
 type IResponse = Array<{
   hour: number;
-  availiable: boolean;
+  available: boolean;
 }>;
 
 @injectable()
@@ -56,7 +56,7 @@ class ListProvidersDayAvaliabilityService {
 
       return {
         hour,
-        availiable: !hasAppointmentInHour && isAfter(compareDate, currentDate),
+        available: !hasAppointmentInHour && isAfter(compareDate, currentDate),
       };
     });
 

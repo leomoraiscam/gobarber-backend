@@ -10,7 +10,7 @@ interface IRequest {
 
 type IResponse = Array<{
   day: number;
-  availiable: boolean;
+  available: boolean;
 }>;
 
 @injectable()
@@ -45,7 +45,7 @@ class ListProvidersMothAvaliabilityService {
 
       return {
         day,
-        availiable: appointmentsInDay.length < 10,
+        available: appointmentsInDay.length < 10,
       };
     });
 
