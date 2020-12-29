@@ -2,6 +2,7 @@ import { Request, Response } from 'express';
 import { container } from 'tsyringe';
 import UpdateProfileService from '@modules/users/services/UpdateProfileService';
 import ShowProfileService from '@modules/users/services/ShowProfileServices';
+import { classToClass } from 'class-transformer';
 
 export default new (class ProfileController {
   public async show(request: Request, response: Response): Promise<Response> {
@@ -11,16 +12,7 @@ export default new (class ProfileController {
 
     const user = await showProfile.execute({ user_id });
 
-    const serializedUser = {
-      id: user.id,
-      name: user.name,
-      email: user.name,
-      avatar: user.avatar,
-      created_at: user.created_at,
-      updated_at: user.updated_at,
-    };
-
-    return response.json(serializedUser);
+    return response.json(classToClass(user));
   }
 
   public async update(request: Request, response: Response): Promise<Response> {
@@ -37,14 +29,6 @@ export default new (class ProfileController {
       user_id: id,
     });
 
-    const serializedUser = {
-      id: user.id,
-      name: user.name,
-      email: user.email,
-      created_at: user.created_at,
-      updated_at: user.updated_at,
-    };
-
-    return response.json(serializedUser);
+    return response.json(classToClass(user));
   }
 })();

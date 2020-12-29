@@ -1,10 +1,10 @@
 import { Request, Response } from 'express';
 import { container } from 'tsyringe';
+import { classToClass } from 'class-transformer';
 import AuthenticatedUserService from '@modules/users/services/AuthenticateUserService';
 
-export default new class SessionController {
-  public async create(request:Request, response: Response): Promise<Response> {
-
+export default new (class SessionController {
+  public async create(request: Request, response: Response): Promise<Response> {
     const { email, password } = request.body;
 
     const authenticatedUser = container.resolve(AuthenticatedUserService);
@@ -14,14 +14,6 @@ export default new class SessionController {
       password,
     });
 
-    const serializedUser = {
-      id: user.id,
-      name: user.name,
-      email: user.name,
-      created_at: user.created_at,
-      updated_at: user.updated_at,
-    };
-
-    return response.json({ user: serializedUser, token });
+    return response.json({ user: classToClass(user), token });
   }
-}
+})();
