@@ -8,6 +8,7 @@ const appointmentsRouter = Router();
 
 appointmentsRouter.post(
   '/',
+  ensureAuthenticated,
   celebrate({
     [Segments.BODY]: {
       provider_id: Joi.string().uuid().required(),
