@@ -1,10 +1,15 @@
 .vs_code/
 node_modules/
+
 build/
 dist/
+
+ormconfig.json
+.env
+
 temp/
 tmp/*
 !tmp/.gitkeep
+
 coverage/
-ormconfig.json
-.env
+
