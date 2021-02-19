@@ -58,7 +58,7 @@ jobs:
           key: ${{secrets.SSH_KEY}}
           script: | 
             cd ~/repositories/gobarber-backend
-            typeorm migration:run
+            yarn typeorm migration:run
       
       #Restart no servidor Node.js
       - name: Run migrations on AWS
