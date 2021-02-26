@@ -1,0 +1,63 @@
+name: CI
+
+on:
+  push:
+    branches: [ main ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    
+    steps:
+      - uses: actions/checkout@v2
+      
+      - name: Setup Node.js environment
+        uses: actions/setup-node@v2.1.4
+        with:
+          node-version: 12.x
+          
+      #Instalar as dependencias NPM/Yarn.
+      - name: Install dependencies
+        run: yarn
+        
+      #Executar a build.
+      - name: Run build
+        run: yarn build
+        
+      #Copiar o codidigo pra dentro da AWS
+      #Substituir o codigo existente na pasta dist pelo novo codigo
+      - name: Copy dist to AWS
+        uses: appleboy/scp-action@master
+        with:
+          host: ${{ secrets.SSH_HOST }}
+          username: ${{ secrets.SSH_USER }}
+          port: ${{ secrets.SSH_PORT }}
+          key: ${{secrets.SSH_KEY}}
+          source: ".,!node_modules"
+          target: "~/repositories/gobarber-backend"
+          
+      #Executar "yarn" na AWS
+      - name: Install dependences on AWS 
+        uses: appleboy/ssh-action@master
+        with:
+          host: ${{ secrets.SSH_HOST }}
+          username: ${{ secrets.SSH_USER }}
+          port: ${{ secrets.SSH_PORT }}
+          key: ${{secrets.SSH_KEY}}
+          script: | 
+            cd ~/repositories/gobarber-backend
+            yarn
+      
+      #Executar as migrations do TypeOrm and restart no servidor Node.js
+      - name: Run migrations on AWS and production script
+        uses: appleboy/ssh-action@master
+        with:
+          host: ${{ secrets.SSH_HOST }}
+          username: ${{ secrets.SSH_USER }}
+          port: ${{ secrets.SSH_PORT }}
+          key: ${{secrets.SSH_KEY}}
+          script: | 
+            cd ~/repositories/gobarber-backend
+            yarn
+            yarn typeorm migration:run
+            pm2 restart 0
