@@ -9,7 +9,9 @@ import routes from '@shared/infra/http/routes';
 import '@shared/infra/typeorm';
 import '@shared/container';
 import cors from 'cors';
+import swaggerUi from 'swagger-ui-express';
 import rateLimiter from './middlewares/rateLimiter';
+import swaggerDocument from './swagger.json';
 
 const app = express();
 
@@ -19,6 +21,7 @@ app.use(express.json());
 app.use('/files', express.static(uploadConfig.tmpFolder));
 app.use(routes);
 app.use(errors());
+app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 
 app.use((err: Error, request: Request, response: Response, _: NextFunction) => {
   if (err instanceof AppError) {
