@@ -5,8 +5,6 @@ import { classToClass } from 'class-transformer';
 
 export default new (class UserAvatarController {
   public async update(request: Request, response: Response): Promise<Response> {
-    console.log('file', request.file)
-
     const updateUserAvatar = container.resolve(UpdateUserAvatarService);
 
     const user = await updateUserAvatar.execute({

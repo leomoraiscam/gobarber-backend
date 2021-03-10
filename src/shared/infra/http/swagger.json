@@ -22,100 +22,159 @@
   ],
   "tags": [
     {
+      "name": "Auth"
+    },
+    {
       "name": "User"
+    },
+    {
+      "name": "Appointment"
     }
   ],
   "paths": {
-    "/users/": {
-      "summary": "Users CRUD",
-      "get": {
-        "description": "Returns a list of all users registered with pagination",
-        "summary": "Returns a list of all users registered with pagination",
-        "security": [{ "BearerToken": [] }],
-        "parameters": [
-          {
-            "in": "query",
-            "name": "page",
-            "schema": {
-              "type": "integer"
-            },
-            "description": "The page to be returned"
-          },
-          {
-            "in": "query",
-            "name": "perPage",
-            "schema": {
-              "type": "integer"
-            },
-            "description": "The number of documents to limit per page"
-          },
-          {
-            "in": "query",
-            "name": "sortBy",
-            "schema": {
-              "type": "string"
-            },
-            "description": "Sort order of the documents returned, ex: createdAt:desc. Format: attribute:value -> ['asc', 'desc']"
+    "/session": {
+      "post": {
+        "tags": ["Auth"],
+        "summary": "Authenticates the user",
+        "description": "Authenticates the user",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "email": {
+                    "type": "string"
+                  },
+                  "password": {
+                    "type": "string"
+                  }
+                }
+              },
+              "example": {
+                "email": "johndoe@example.com.br",
+                "password": "P@ssw0rd"
+              }
+            }
           }
-        ],
+        },
         "responses": {
           "200": {
-            "description": "List of users with metadata details",
+            "description": "Successfully authenticates the user",
             "content": {
               "application/json": {
                 "schema": {
                   "properties": {
-                    "metadata": {
-                      "type": "object",
-                      "properties": {
-                        "total": {
-                          "type": "integer"
-                        },
-                        "totalPages": {
-                          "type": "integer"
-                        }
+                    "user": {
+                      "id": {
+                        "type": "string"
+                      },
+                      "name": {
+                        "type": "string"
+                      },
+                      "email": {
+                        "type": "string"
+                      },
+                      "avatar": {
+                        "type": "string"
+                      },
+                      "created_at": {
+                        "type": "date"
+                      },
+                      "updated_at": {
+                        "type": "date"
+                      },
+                      "avatar_url": {
+                        "type": "string"
                       }
                     },
-                    "data": {
-                      "type": "array",
-                      "items": {
-                        "$ref": "#/components/schemas/User"
-                      }
+                    "token": {
+                      "type": "string"
                     }
                   }
                 },
                 "example": {
-                  "metadata": {
-                    "total": 1,
-                    "totalPages": 1
+                  "user": {
+                    "id": "b1ac6b36-b4dc-4ff7-87d7-1da45797f578",
+                      "name": "Jonh Doe",
+                      "email": "johndoe@example.com.br",
+                      "avatar": "e49601bfb50acb092f52-adonis.png",
+                      "created_at": "2021-03-09T16:51:23.057Z",
+                      "updated_at": "2021-03-09T16:51:33.718Z",
+                      "avatar_url": "http://localhost:3333/e49601bfb50acb092f52-adonis.png"
                   },
-                  "data": [
-                    {
-                      "id": 1,
-                      "passwordResetToken": null,
-                      "name": "John Doe",
-                      "email": "johndoe@ioasys.com.br",
-                      "createdAt": "2020-04-16T23:00:45.179Z",
-                      "updatedAt": "2020-04-16T23:41:38.451Z"
-                    }
-                  ]
+                  "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOnsiaWQiOiI1ZTk5M2E2ZjI0Yzc1ODZjNmFjYmIxNDYiLCJuYW1lIjoiSm9obm55IERvZSIsImVtYWlsIjoiam9obmRvZUBpb2FzeXMuY29tLmJyIn0sImlhdCI6MTU4NzMzODI1OX0.rvLyJvCj0vC3CyuZbrTTSR5NzKgV5-jOybMlZtcY0jM"
                 }
               }
             }
           },
-          "204": {
-            "description": "No users were found for the used criteria"
-          },
           "401": {
-            "description": "The authorization header is missing or the token is invalid",
+            "description": "The password used is invalid or user was found for the email used",
             "content": {
               "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/ErrorResponse"
                 },
                 "example": {
-                  "name": "ApplicationError",
-                  "message": "Invalid Token"
+                  "name": "error",
+                  "message": "Incorrect email/password combination"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal Server error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                },
+                "example": {
+                  "name": "error",
+                  "message": "Internal Server error"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/password/forgot": {
+      "post": {
+        "tags": ["Auth"],
+        "summary": "Sends an email to reset the users's password",
+        "description": "Sends an email to reset the users's password",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "email": {
+                    "type": "string"
+                  }
+                }
+              },
+              "example": {
+                "email": "johndoe@example.com.br"
+              }
+            }
+          }
+        },
+        "responses": {
+          "204": {
+            "description": "An email was sent for the email address provided"
+          },
+          "404": {
+            "description": "No user was found for the email used",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                },
+                "example": {
+                  "name": "error",
+                  "message": "User does not exist"
                 }
               }
             }
@@ -134,9 +193,90 @@
               }
             }
           }
+        }
+      }
+    },
+    "/password/reset": {
+      "post": {
+        "tags": ["Auth"],
+        "summary": "Resets the user's password with the new password provided",
+        "description": "Resets the user's password with the new password provided",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "password": {
+                    "type": "string"
+                  },
+                  "passwod_confirmation": {
+                    "type": "string"
+                  },
+                  "token": {
+                    "type": "string"
+                  }
+                }
+              },
+              "example": {
+                "password":"123123",
+                "passwod_confirmation":"123123",
+                "token":"d3d0d27e-7a84-44a9-bf2e-19fbd405aed0"
+              }
+            }
+          }
         },
-        "tags": ["User"]
-      },
+        "responses": {
+          "204": {
+            "description": "The password was updated and the user can try to authenticate again"
+          },
+          "404": {
+            "description": "The token provided has expired",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                },
+                "example": {
+                  "name": "ApplicationError",
+                  "message": "Token Expired"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "No user was found for the token provided",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                },
+                "example": {
+                  "name": "error",
+                  "message": "User token does not exist"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal Server error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                },
+                "example": {
+                  "name": "Error",
+                  "message": "Internal Server error"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/users/": {
+      "summary": "Users CRUD",
       "post": {
         "summary": "Creates an user",
         "description": "Creates an user in the application",
@@ -160,14 +300,14 @@
               },
               "example": {
                 "name": "John Doe",
-                "email": "johndoe@ioasys.com.br",
+                "email": "johndoe@example.com.br",
                 "password": "P@ssw0rd"
               }
             }
           }
         },
         "responses": {
-          "201": {
+          "200": {
             "description": "Succesfully creates a new user",
             "content": {
               "application/json": {
@@ -175,31 +315,16 @@
                   "$ref": "#/components/schemas/User"
                 },
                 "example": {
-                  "id": 1,
-                  "passwordResetToken": null,
                   "name": "John Doe",
-                  "email": "johndoe@ioasys.com.br",
-                  "createdAt": "2020-04-16T23:00:45.179Z",
-                  "updatedAt": "2020-04-16T23:41:38.451Z"
+                  "email": "johndoe@example.com.br",
+                  "created_at": "2020-04-16T23:00:45.179Z",
+                  "updated_at": "2020-04-16T23:41:38.451Z",
+                  "avatar_url": null
                 }
               }
             }
           },
-          "401": {
-            "description": "The authorization header is missing or the token is invalid",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ErrorResponse"
-                },
-                "example": {
-                  "name": "ApplicationError",
-                  "message": "Invalid Token"
-                }
-              }
-            }
-          },
-          "409": {
+          "400": {
             "description": "The email used is already registered",
             "content": {
               "application/json": {
@@ -207,8 +332,8 @@
                   "$ref": "#/components/schemas/ErrorResponse"
                 },
                 "example": {
-                  "name": "ApplicationError",
-                  "message": "Email already in use"
+                  "name": "error",
+                  "message": "Email address alredy used"
                 }
               }
             }
@@ -221,7 +346,189 @@
                   "$ref": "#/components/schemas/ErrorResponse"
                 },
                 "example": {
-                  "name": "Error",
+                  "name": "error",
+                  "message": "Internal server error"
+                }
+              }
+            }
+          }
+        },
+        "tags": ["User"]
+      }
+    },
+    "/profile/": {
+      "summary": "Users CRUD",
+      "get": {
+        "description": "Returns a specific user by id that is in the request header",
+        "summary": "Returns an user specifc by id",
+        "security": [{ "BearerToken": [] }],
+        "responses": {
+          "200": {
+            "description": "Returns the user's data",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "id": {
+                      "type": "string"
+                    },
+                    "name": {
+                      "type": "string"
+                    },
+                    "email": {
+                      "type": "string"
+                    },
+                    "avatar": {
+                      "type": "string"
+                    },
+                    "created_at": {
+                      "type": "date"
+                    },
+                    "updated_at": {
+                      "type": "date"
+                    },
+                    "avatar_url": {
+                      "type": "string"
+                    }
+                  }
+                },
+                "example": {
+                  "id": "b6e5ff3e-d597-4f63-874f-350382478653",
+                  "name": "John Doe",
+                  "email": "johndoe@example.com.br",
+                  "avatar": null,
+                  "created_at": "2021-03-09T11:17:33.496Z",
+                  "updated_at": "2021-03-09T11:17:33.496Z",
+                  "avatar_url": null
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "The authorization header is missing or the token is invalid",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                },
+                "example": {
+                  "name": "error",
+                  "message": "JWT token is missing"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal Server error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                },
+                "example": {
+                  "name": "error",
+                  "message": "Internal Server error"
+                }
+              }
+            }
+          }
+        },
+        "tags": ["User"]
+      },
+      "put": {
+        "description": "Updates a specific the user's information by id that is in the request header",
+        "summary": "Updates the user's information",
+        "security": [{ "BearerToken": [] }],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "name": {
+                    "type": "string"
+                  },
+                  "email": {
+                    "type": "string"
+                  },
+                  "old_password": {
+                    "type": "string"
+                  },
+                  "password": {
+                    "type": "string"
+                  },
+                  "password_confirmation": {
+                    "type": "string"
+                  }
+                }
+              },
+              "example": {
+                "name": "John Doe",
+                "email": "johndoe@example.com.br",
+                "old_password":"P@ssw0rd",
+                "password":"123123",
+                "password_confirmation":"123123"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Succesfully updated an user",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/User"
+                },
+                "example": {
+                  "id": "b6e5ff3e-d597-4f63-874f-350382478653",
+                  "name": "John Doe",
+                  "email": "johndoe@example.com.br",
+                  "avatar": null,
+                  "created_at": "2020-04-16T23:00:45.179Z",
+                  "updated_at": "2020-04-16T23:41:38.451Z",
+                  "avatar_url": null
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "The authorization header is missing or the token is invalid",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                },
+                "example": {
+                  "name": "error",
+                  "message": "JWT token is missing"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "E-mail alredy regitered",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                },
+                "example": {
+                  "name": "error",
+                  "message": "E-mail alredy in use"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal Server error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                },
+                "example": {
+                  "name": "error",
                   "message": "Internal Server error"
                 }
               }
@@ -231,37 +538,49 @@
         "tags": ["User"]
       }
     },
-    "/users/{id}": {
-      "parameters": [
-        {
-          "name": "id",
-          "in": "path",
-          "description": "User ID",
-          "required": true,
-          "schema": {
-            "type": "string"
-          }
-        }
-      ],
-      "get": {
-        "description": "Returns the user's data",
-        "summary": "Returns the user's data",
+    "users/avatar/": {
+      "patch": {
+        "description": "Updates a specific field the user's information by id that is in the request header",
+        "summary": "Updates specific fild in the user's information",
         "security": [{ "BearerToken": [] }],
+        "requestBody": {
+          "content": {
+            "multipart/form-data": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "avatar": {
+                    "type": "string",
+                    "format": "binary"
+                  }
+                }
+              },
+              "example": {
+                "name": "John Doe",
+                "email": "johndoe@example.com.br",
+                "old_password":"P@ssw0rd",
+                "password":"123123",
+                "password_confirmation":"123123"
+              }
+            }
+          }
+        },
         "responses": {
           "200": {
-            "description": "Return a user based on its id",
+            "description": "Succesfully updated an user",
             "content": {
               "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/User"
                 },
                 "example": {
-                  "id": 1,
-                  "passwordResetToken": null,
+                  "id": "b6e5ff3e-d597-4f63-874f-350382478653",
                   "name": "John Doe",
-                  "email": "johndoe@ioasys.com.br",
-                  "createdAt": "2020-04-16T23:00:45.179Z",
-                  "updatedAt": "2020-04-16T23:41:38.451Z"
+                  "email": "johndoe@example.com.br",
+                  "avatar": "444eed7ee22d4f2bd56a-adonis.png",
+                  "created_at": "2020-04-16T23:00:45.179Z",
+                  "updated_at": "2020-04-16T23:41:38.451Z",
+                  "avatar_url": "http://localhost:3333/444eed7ee22d4f2bd56a-adonis.png"
                 }
               }
             }
@@ -274,22 +593,22 @@
                   "$ref": "#/components/schemas/ErrorResponse"
                 },
                 "example": {
-                  "name": "ApplicationError",
-                  "message": "Invalid Token"
+                  "name": "error",
+                  "message": "JWT token is missing"
                 }
               }
             }
           },
-          "404": {
-            "description": "No user was found for the id",
+          "400": {
+            "description": "User not existent or user not logged in",
             "content": {
               "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/ErrorResponse"
                 },
                 "example": {
-                  "name": "ApplicationError",
-                  "message": "User Not Found"
+                  "name": "error",
+                  "message": "Only authenticated users can change avatar."
                 }
               }
             }
@@ -302,7 +621,7 @@
                   "$ref": "#/components/schemas/ErrorResponse"
                 },
                 "example": {
-                  "name": "Error",
+                  "name": "error",
                   "message": "Internal Server error"
                 }
               }
@@ -310,6 +629,348 @@
           }
         },
         "tags": ["User"]
+      }
+    },
+    "/appointments/": {
+      "summary": "Users CRUD",
+      "post": {
+        "summary": "Creates an appointment",
+        "description": "Creates an appointment in the application",
+        "security": [{ "BearerToken": [] }],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "provider_id": {
+                    "type": "string"
+                  },
+                  "date": {
+                    "type": "string"
+                  }
+                }
+              },
+              "example": {
+                "provider_id":"12d53e84-5fef-4585-b6e6-30eb25e03b42",
+                "date":"2021-02-22 14:00"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Succesfully creates a new appointment",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/User"
+                },
+                "example": {
+                  "provider_id": "12d53e84-5fef-4585-b6e6-30eb25e03b42",
+                  "user_id": "9a8bf55c-e8d1-49c5-85e3-65eeea5d7634",
+                  "date": "2021-02-22T17:00:00.000Z",
+                  "id": "d3cdaffd-3433-4a5c-98aa-599b908307ae",
+                  "created_at": "2021-02-21T23:11:25.436Z",
+                  "updated_at": "2021-02-21T23:11:25.436Z"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "The Appointment used is already registered",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                },
+                "example": {
+                  "name": "error",
+                  "message": "You can't create an appointment on a past date."
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal Server error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                },
+                "example": {
+                  "name": "error",
+                  "message": "Internal server error"
+                }
+              }
+            }
+          }
+        },
+        "tags": ["Appointment"]
+      }
+    },
+    "providers": {
+      "summary": "Users CRUD",
+      "get": {
+        "description": "Returns a list of user's",
+        "summary": "Returns a list of user's",
+        "security": [{ "BearerToken": [] }],
+        "responses": {
+          "200": {
+            "description": "List users",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "id": {
+                      "type": "string"
+                    },
+                    "name": {
+                      "type": "string"
+                    },
+                    "email": {
+                      "type": "string"
+                    },
+                    "avatar": {
+                      "type": "string"
+                    },
+                    "created_at": {
+                      "type": "date"
+                    },
+                    "updated_at": {
+                      "type": "date"
+                    },
+                    "avatar_url": {
+                      "type": "string"
+                    }
+                  }
+                },
+                "example": [{
+                  "id": "b6e5ff3e-d597-4f63-874f-350382478653",
+                  "name": "John Doe",
+                  "email": "johndoe@example.com.br",
+                  "avatar": null,
+                  "created_at": "2021-03-09T11:17:33.496Z",
+                  "updated_at": "2021-03-09T11:17:33.496Z",
+                  "avatar_url": null
+                }]
+              }
+            }
+          },
+          "401": {
+            "description": "The authorization header is missing or the token is invalid",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                },
+                "example": {
+                  "name": "error",
+                  "message": "JWT token is missing"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal Server error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                },
+                "example": {
+                  "name": "error",
+                  "message": "Internal Server error"
+                }
+              }
+            }
+          }
+        },
+        "tags": ["Appointment"]
+      }
+    },
+    "providers/${id}/month-availability": {
+      "parameters": [
+        {
+          "name": "id",
+          "in": "path",
+          "description": "User ID",
+          "required": true,
+          "schema": {
+            "type": "string"
+          }
+        },
+        {
+          "in": "query",
+          "name": "year",
+          "schema": {
+            "type": "integer"
+          },
+          "description": "The year to be returned"
+        },
+        {
+          "in": "query",
+          "name": "month",
+          "schema": {
+            "type": "integer"
+          },
+          "description": "The month to be returned"
+        }
+      ],
+      "get": {
+        "description": "Returns a available of user in specific month and year",
+        "summary": "Returns dates available of spefic provider",
+        "security": [{ "BearerToken": [] }],
+        "responses": {
+          "200": {
+            "description": "Return list available of users",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "day": {
+                      "type": "integer"
+                    },
+                    "available": {
+                      "type": "boolean"
+                    }
+                  }
+                },
+                "example": [
+                  {
+                    "day": 1,
+                    "available": false
+                  },
+                  {
+                    "day": 2,
+                    "available": false
+                  },
+                  {
+                    "day": 3,
+                    "available": false
+                  },
+                  {
+                    "day": 4,
+                    "available": false
+                  }
+                ]
+              }
+            }
+          },
+          "500": {
+            "description": "Internal Server error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                },
+                "example": {
+                  "name": "error",
+                  "message": "Internal Server error"
+                }
+              }
+            }
+          }
+        },
+        "tags": ["Appointment"]
+      }
+    },
+    "providers/${id}/day-availability": {
+      "parameters": [
+        {
+          "name": "id",
+          "in": "path",
+          "description": "User ID",
+          "required": true,
+          "schema": {
+            "type": "string"
+          }
+        },
+        {
+          "in": "query",
+          "name": "year",
+          "schema": {
+            "type": "integer"
+          },
+          "description": "The year to be returned"
+        },
+        {
+          "in": "query",
+          "name": "month",
+          "schema": {
+            "type": "integer"
+          },
+          "description": "The month to be returned"
+        },
+        {
+          "in": "query",
+          "name": "day",
+          "schema": {
+            "type": "integer"
+          },
+          "description": "The day to be returned"
+        }
+      ],
+      "get": {
+        "description": "Returns a available of user in specific year, month and day",
+        "summary": "Returns dates available of spefic provider",
+        "security": [{ "BearerToken": [] }],
+        "responses": {
+          "200": {
+            "description": "Return list available of users",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "hour": {
+                      "type": "integer"
+                    },
+                    "available": {
+                      "type": "boolean"
+                    }
+                  }
+                },
+                "example": [
+                  {
+                    "hour": 8,
+                    "available": false
+                  },
+                  {
+                    "hour": 9,
+                    "available": false
+                  },
+                  {
+                    "hour": 10,
+                    "available": false
+                  },
+                  {
+                    "hour": 11,
+                    "available": false
+                  },
+                  {
+                    "hour": 12,
+                    "available": false
+                  }
+                ]
+              }
+            }
+          },
+          "500": {
+            "description": "Internal Server error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                },
+                "example": {
+                  "name": "error",
+                  "message": "Internal Server error"
+                }
+              }
+            }
+          }
+        },
+        "tags": ["Appointment"]
       }
     }
   },
@@ -319,9 +980,6 @@
         "type": "object",
         "properties": {
           "id": {
-            "type": "integer"
-          },
-          "passwordResetToken": {
             "type": "string"
           },
           "name": {
@@ -330,10 +988,33 @@
           "email": {
             "type": "string"
           },
-          "createdAt": {
+          "created_at": {
             "type": "string"
           },
-          "updatedAt": {
+          "updated_at": {
+            "type": "string"
+          }
+        }
+      },
+      "Appointments": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "date": {
+            "type": "date"
+          },
+          "provider_id":{
+            "type": "string"
+          },
+          "user_id":{
+            "type": "string"
+          },
+          "created_at": {
+            "type": "string"
+          },
+          "updated_at": {
             "type": "string"
           }
         }
