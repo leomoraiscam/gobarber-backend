@@ -2,7 +2,7 @@ import { injectable, inject } from 'tsyringe';
 import User from '@modules/users/infra/typeorm/entities/User';
 import AppError from '@shared/errors/AppError';
 import IStorageProvider from '@shared/container/providers/StorageProvider/models/IStorageProvader';
-import IUsersRepository from '../repositories/IUsersRepository';
+import IUsersRepository from '../repositories/IUserRepository';
 
 interface IRequest {
   user_id: string;
