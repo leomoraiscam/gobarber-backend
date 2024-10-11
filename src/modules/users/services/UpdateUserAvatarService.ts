@@ -9,14 +9,14 @@ import IUpdateUserAvatarDTO from '../dtos/IUpdateUserAvatarDTO';
 class UpdateUserAvatarService {
   constructor(
     @inject('UserRepository')
-    private usersRepository: IUsersRepository,
+    private userRepository: IUsersRepository,
     @inject('StorageProvider')
     private storageProvider: IStorageProvider,
   ) {}
 
   async execute(data: IUpdateUserAvatarDTO): Promise<User> {
     const { userId, avatar } = data;
-    const user = await this.usersRepository.findById(userId);
+    const user = await this.userRepository.findById(userId);
 
     if (!user) {
       throw new AppError('Only authenticated users can change avatar.', 400);
@@ -30,7 +30,7 @@ class UpdateUserAvatarService {
 
     await Promise.all([
       this.storageProvider.saveFile(avatar),
-      this.usersRepository.save(user),
+      this.userRepository.save(user),
     ]);
 
     return user;
