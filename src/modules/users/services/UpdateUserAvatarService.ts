@@ -2,14 +2,14 @@ import { injectable, inject } from 'tsyringe';
 import User from '@modules/users/infra/typeorm/entities/User';
 import AppError from '@shared/errors/AppError';
 import IStorageProvider from '@shared/container/providers/StorageProvider/models/IStorageProvader';
-import IUsersRepository from '../repositories/IUserRepository';
+import IUserRepository from '../repositories/IUserRepository';
 import IUpdateUserAvatarDTO from '../dtos/IUpdateUserAvatarDTO';
 
 @injectable()
 class UpdateUserAvatarService {
   constructor(
     @inject('UserRepository')
-    private userRepository: IUsersRepository,
+    private userRepository: IUserRepository,
     @inject('StorageProvider')
     private storageProvider: IStorageProvider,
   ) {}

@@ -2,7 +2,7 @@ import { injectable, inject } from 'tsyringe';
 import User from '@modules/users/infra/typeorm/entities/User';
 import AppError from '@shared/errors/AppError';
 import ICacheProvider from '@shared/container/providers/CacheProvider/models/ICacheProvider';
-import IUsersRepository from '../repositories/IUserRepository';
+import IUserRepository from '../repositories/IUserRepository';
 import IHashProvider from '../providers/HashProvider/models/IHashProvider';
 import ICreateUserDTO from '../dtos/ICreateUserDTO';
 
@@ -10,7 +10,7 @@ import ICreateUserDTO from '../dtos/ICreateUserDTO';
 class CreateUserService {
   constructor(
     @inject('UserRepository')
-    private userRepository: IUsersRepository,
+    private userRepository: IUserRepository,
     @inject('HashProvider')
     private hashProvider: IHashProvider,
     @inject('CacheProvider')
