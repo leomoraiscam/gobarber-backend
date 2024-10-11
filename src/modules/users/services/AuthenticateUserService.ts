@@ -2,7 +2,7 @@ import { sign } from 'jsonwebtoken';
 import { injectable, inject } from 'tsyringe';
 import authConfig from '@config/auth';
 import AppError from '@shared/errors/AppError';
-import IUsersRepository from '@modules/users/repositories/IUserRepository';
+import IUserRepository from '@modules/users/repositories/IUserRepository';
 import IHashProvider from '../providers/HashProvider/models/IHashProvider';
 import IAuthenticateUserDTO from '../dtos/IAuthenticateUserDTO';
 import IAuthenticatedUserDTO from '../dtos/IAuthenticatedUserDTO';
@@ -11,14 +11,14 @@ import IAuthenticatedUserDTO from '../dtos/IAuthenticatedUserDTO';
 class AuthenticateUserService {
   constructor(
     @inject('UserRepository')
-    private usersRepository: IUsersRepository,
+    private userRepository: IUserRepository,
     @inject('HashProvider')
     private hashProvider: IHashProvider,
   ) {}
 
   async execute(data: IAuthenticateUserDTO): Promise<IAuthenticatedUserDTO> {
     const { email, password } = data;
-    const user = await this.usersRepository.findByEmail(email);
+    const user = await this.userRepository.findByEmail(email);
 
     if (!user) {
       throw new AppError('Incorrect email/password combination', 401);
