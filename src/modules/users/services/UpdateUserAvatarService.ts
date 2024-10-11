@@ -3,11 +3,7 @@ import User from '@modules/users/infra/typeorm/entities/User';
 import AppError from '@shared/errors/AppError';
 import IStorageProvider from '@shared/container/providers/StorageProvider/models/IStorageProvader';
 import IUsersRepository from '../repositories/IUserRepository';
-
-interface IRequest {
-  user_id: string;
-  avatarfilename: string;
-}
+import IUpdateUserAvatarDTO from '../dtos/IUpdateUserAvatarDTO';
 
 @injectable()
 class UpdateUserAvatarService {
@@ -18,8 +14,9 @@ class UpdateUserAvatarService {
     private storageProvider: IStorageProvider,
   ) {}
 
-  async execute({ user_id, avatarfilename }: IRequest): Promise<User> {
-    const user = await this.usersRepository.findById(user_id);
+  async execute(data: IUpdateUserAvatarDTO): Promise<User> {
+    const { userId, avatar } = data;
+    const user = await this.usersRepository.findById(userId);
 
     if (!user) {
       throw new AppError('Only authenticated users can change avatar.', 400);
@@ -29,11 +26,12 @@ class UpdateUserAvatarService {
       await this.storageProvider.deleteFile(user.avatar);
     }
 
-    const fileName = await this.storageProvider.saveFile(avatarfilename);
+    user.avatar = avatar;
 
-    user.avatar = fileName;
-
-    await this.usersRepository.save(user);
+    await Promise.all([
+      this.storageProvider.saveFile(avatar),
+      this.usersRepository.save(user),
+    ]);
 
     return user;
   }
