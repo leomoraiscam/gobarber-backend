@@ -11,7 +11,7 @@ interface IRequest {
 @injectable()
 class ListProvidersService {
   constructor(
-    @inject('UsersRepository')
+    @inject('UserRepository')
     private usersRepository: IUsersRepository,
     @inject('CacheProvider')
     private cacheProvider: ICacheProvider,
@@ -29,7 +29,7 @@ class ListProvidersService {
 
       await this.cacheProvider.save(
         `providers-list:${user_id}`,
-        classToClass(users)
+        classToClass(users),
       );
     }
 

@@ -9,7 +9,7 @@ import ICreateUserDTO from '../dtos/ICreateUserDTO';
 @injectable()
 class CreateUserService {
   constructor(
-    @inject('UsersRepository')
+    @inject('UserRepository')
     private usersRepository: IUsersRepository,
     @inject('HashProvider')
     private hashProvider: IHashProvider,
