@@ -4,7 +4,7 @@ import FakeUserRepository from '../repositories/fakes/FakeUserRepository';
 import FakeHashProvider from '../providers/HashProvider/fakes/FakeHashProvider';
 import CreateUserService from './CreateUserService';
 
-describe('CreateUCreateUserService', () => {
+describe('CreateUserService', () => {
   let fakeUserRepository: FakeUserRepository;
   let fakeHashProvider: FakeHashProvider;
   let fakeCacheProvider: FakeCacheProvider;

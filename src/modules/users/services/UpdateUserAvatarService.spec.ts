@@ -3,7 +3,7 @@ import FakeStorageProvider from '@shared/container/providers/StorageProvider/fak
 import FakeUserRepository from '../repositories/fakes/FakeUserRepository';
 import UpdateUserAvatarService from './UpdateUserAvatarService';
 
-describe('UpdateUserAvatar', () => {
+describe('UpdateUserAvatarService', () => {
   let fakeUserRepository: FakeUserRepository;
   let fakeStorageProvider: FakeStorageProvider;
   let userAvatarService: UpdateUserAvatarService;
