@@ -4,12 +4,7 @@ import AppError from '@shared/errors/AppError';
 import ICacheProvider from '@shared/container/providers/CacheProvider/models/ICacheProvider';
 import IUsersRepository from '../repositories/IUsersRepository';
 import IHashProvider from '../providers/HashProvider/models/IHashProvider';
-
-interface IRequest {
-  name: string;
-  email: string;
-  password: string;
-}
+import ICreateUserDTO from '../dtos/ICreateUserDTO';
 
 @injectable()
 class CreateUserService {
@@ -22,19 +17,19 @@ class CreateUserService {
     private cacheProvider: ICacheProvider,
   ) {}
 
-  async execute({ name, email, password }: IRequest): Promise<User> {
-    const checkUserExists = await this.usersRepository.findByEmail(email);
+  async execute(data: ICreateUserDTO): Promise<User> {
+    const { name, email, password } = data;
+    const userExisting = await this.usersRepository.findByEmail(email);
 
-    if (checkUserExists) {
-      throw new AppError('Email address alredy used', 400);
+    if (userExisting) {
+      throw new AppError('User with this email already exists', 409);
     }
 
-    const hashPassword = await this.hashProvider.generateHash(password);
-
+    const hashedPassword = await this.hashProvider.generateHash(password);
     const user = await this.usersRepository.create({
       name,
       email,
-      password: hashPassword,
+      password: hashedPassword,
     });
 
     await this.cacheProvider.invalidatePrefix('providers-list');
