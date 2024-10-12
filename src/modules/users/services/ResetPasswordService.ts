@@ -1,34 +1,32 @@
 import { injectable, inject } from 'tsyringe';
 import { isAfter, addHours } from 'date-fns';
 import AppError from '@shared/errors/AppError';
-import IUsersRepository from '../repositories/IUserRepository';
+import IUserRepository from '../repositories/IUserRepository';
 import IUsersTokensRepository from '../repositories/IUsersTokensRepository';
 import IHashProvider from '../providers/HashProvider/models/IHashProvider';
-
-interface IRequest {
-  token: string;
-  password: string;
-}
+import IResetPasswordDTO from '../dtos/IResetPasswordDTO';
 
 @injectable()
-class ResetPasswordServices {
+class ResetPasswordService {
   constructor(
     @inject('UserRepository')
-    private usersRepository: IUsersRepository,
+    private userRepository: IUserRepository,
     @inject('UserTokensRepository')
     private usersTokensRepository: IUsersTokensRepository,
     @inject('HashProvider')
     private hashProvider: IHashProvider,
   ) {}
 
-  async execute({ token, password }: IRequest): Promise<void> {
+  async execute(data: IResetPasswordDTO): Promise<void> {
+    const { token, password } = data;
     const userToken = await this.usersTokensRepository.findByToken(token);
 
     if (!userToken) {
-      throw new AppError('User token does not exist', 404);
+      throw new AppError('Invalid or expired token', 401);
     }
 
-    const user = await this.usersRepository.findById(userToken?.user_id);
+    const { user_id: userId } = userToken;
+    const user = await this.userRepository.findById(userId);
 
     if (!user) {
       throw new AppError('User does not exist', 404);
@@ -38,13 +36,16 @@ class ResetPasswordServices {
     const compareDate = addHours(tokenCreatedAt, 2);
 
     if (isAfter(Date.now(), compareDate)) {
-      throw new AppError('Token expired', 401);
+      throw new AppError('Invalid or expired token', 401);
     }
 
-    user.password = await this.hashProvider.generateHash(password);
+    const hashedPassword = await this.hashProvider.generateHash(password);
 
-    await this.usersRepository.save(user);
+    Object.assign(user, {
+      password: hashedPassword,
+    });
+    await this.userRepository.save(user);
   }
 }
 
-export default ResetPasswordServices;
+export default ResetPasswordService;
