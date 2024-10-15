@@ -44,6 +44,7 @@ class ResetPasswordService {
     Object.assign(user, {
       password: hashedPassword,
     });
+
     await this.userRepository.save(user);
   }
 }

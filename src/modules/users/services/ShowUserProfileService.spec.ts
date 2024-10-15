@@ -17,7 +17,6 @@ describe('ShowUserProfileService', () => {
       email: 'joh@example.com',
       password: 'password@',
     });
-
     const user = await showUserProfileService.execute(userId);
 
     expect(user.name).toBe('John Doe');

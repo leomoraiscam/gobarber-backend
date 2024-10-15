@@ -60,7 +60,6 @@ describe('ResetPasswordService', () => {
     ).rejects.toBeInstanceOf(AppError);
   });
 
-  // should not be able to reset password when passed more than 3 hours
   it('should not be able to reset password when passed more than 2 hours', async () => {
     jest.spyOn(Date, 'now').mockImplementation(() => {
       const customDate = new Date();
