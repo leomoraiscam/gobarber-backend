@@ -36,7 +36,7 @@ describe('UpdateUserProfileService', () => {
   it('should not be able to update profile when a non-existing user', async () => {
     await expect(
       updateUserProfileService.execute({
-        userId: 'non-existing-user_id',
+        userId: 'non-existing-user-id',
         name: 'test',
         email: 'test@example.com',
       }),
@@ -44,21 +44,20 @@ describe('UpdateUserProfileService', () => {
   });
 
   it('should not be able to change user with same email from another user when the same already exits', async () => {
-    await fakeUsersRepository.create({
-      name: 'Jonh Doe',
+    await fakeUserRepository.create({
+      name: 'John Doe',
       email: 'joh@example.com',
       password: 'password@',
     });
-
-    const user = await fakeUsersRepository.create({
+    const user = await fakeUserRepository.create({
       name: 'Joe Smith',
       email: 'joe@example.com',
       password: 'password@',
     });
 
     await expect(
-      updateProfile.execute({
-        user_id: user.id,
+      updateUserProfileService.execute({
+        userId: user.id,
         name: 'Brayn kick',
         email: 'joh@example.com',
       }),
