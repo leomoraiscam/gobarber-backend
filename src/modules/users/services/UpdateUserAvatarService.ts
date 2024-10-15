@@ -19,7 +19,7 @@ class UpdateUserAvatarService {
     const user = await this.userRepository.findById(userId);
 
     if (!user) {
-      throw new AppError('Only authenticated users can change avatar.', 400);
+      throw new AppError('Only authenticated users can change avatar', 401);
     }
 
     if (user.avatar) {

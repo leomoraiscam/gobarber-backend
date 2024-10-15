@@ -22,9 +22,9 @@ class UpdateUserProfileService {
       throw new AppError('User not found', 404);
     }
 
-    const existingUser = await this.userRepository.findByEmail(email);
+    const existingUserWithEmail = await this.userRepository.findByEmail(email);
 
-    if (existingUser && existingUser.id !== user.id) {
+    if (existingUserWithEmail && existingUserWithEmail.id !== user.id) {
       throw new AppError('User with this email already exists', 409);
     }
 
@@ -41,12 +41,12 @@ class UpdateUserProfileService {
     }
 
     if (password && oldPassword) {
-      const checkOldPassword = await this.hashProvider.compareHash(
+      const matchPassword = await this.hashProvider.compareHash(
         oldPassword,
         user.password,
       );
 
-      if (!checkOldPassword) {
+      if (!matchPassword) {
         throw new AppError('Old password does not match', 403);
       }
 

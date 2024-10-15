@@ -19,9 +19,9 @@ class CreateUserService {
 
   async execute(data: ICreateUserDTO): Promise<User> {
     const { name, email, password } = data;
-    const userExisting = await this.userRepository.findByEmail(email);
+    const existingUser = await this.userRepository.findByEmail(email);
 
-    if (userExisting) {
+    if (existingUser) {
       throw new AppError('User with this email already exists', 409);
     }
 
