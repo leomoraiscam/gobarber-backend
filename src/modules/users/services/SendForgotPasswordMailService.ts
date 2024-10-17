@@ -3,17 +3,17 @@ import AppError from '@shared/errors/AppError';
 import IMailProvider from '@shared/container/providers/MailProvider/models/IMailProvider';
 import path from 'path';
 import IUserRepository from '../repositories/IUserRepository';
-import IUsersTokensRepository from '../repositories/IUsersTokensRepository';
+import IUserTokenRepository from '../repositories/IUserTokenRepository';
 
 @injectable()
 class SendForgotPasswordMailService {
   constructor(
     @inject('UserRepository')
     private userRepository: IUserRepository,
+    @inject('UserTokenRepository')
+    private userTokenRepository: IUserTokenRepository,
     @inject('MailProvider')
     private mailProvider: IMailProvider,
-    @inject('UserTokensRepository')
-    private usersTokensRepository: IUsersTokensRepository,
   ) {}
 
   async execute(email: string): Promise<void> {
@@ -23,7 +23,7 @@ class SendForgotPasswordMailService {
       throw new AppError('User not found', 404);
     }
 
-    const { token } = await this.usersTokensRepository.generate(user.id);
+    const { token } = await this.userTokenRepository.generate(user.id);
     const forgotPasswordMailTemplate = path.resolve(
       __dirname,
       '..',
