@@ -1,22 +1,22 @@
 import AppError from '@shared/errors/AppError';
-import FakeUserTokensRepository from '../repositories/fakes/FakeUserTokensRepository';
+import FakeUserTokenRepository from '../repositories/fakes/FakeUserTokenRepository';
 import FakeUserRepository from '../repositories/fakes/FakeUserRepository';
 import FakeHashProvider from '../providers/HashProvider/fakes/FakeHashProvider';
 import ResetPasswordService from './ResetPasswordService';
 
 describe('ResetPasswordService', () => {
   let fakeUserRepository: FakeUserRepository;
-  let fakeUserTokensRepository: FakeUserTokensRepository;
+  let fakeUserTokenRepository: FakeUserTokenRepository;
   let fakeHashProvider: FakeHashProvider;
   let resetPasswordService: ResetPasswordService;
 
   beforeEach(() => {
     fakeUserRepository = new FakeUserRepository();
-    fakeUserTokensRepository = new FakeUserTokensRepository();
+    fakeUserTokenRepository = new FakeUserTokenRepository();
     fakeHashProvider = new FakeHashProvider();
     resetPasswordService = new ResetPasswordService(
       fakeUserRepository,
-      fakeUserTokensRepository,
+      fakeUserTokenRepository,
       fakeHashProvider,
     );
   });
@@ -28,7 +28,7 @@ describe('ResetPasswordService', () => {
       email: 'joh@example.com',
       password: 'password',
     });
-    const { token } = await fakeUserTokensRepository.generate(userId);
+    const { token } = await fakeUserTokenRepository.generate(userId);
 
     await resetPasswordService.execute({
       password: '123123',
@@ -48,7 +48,7 @@ describe('ResetPasswordService', () => {
   });
 
   it('should not be able to reset the password when a non-existing user', async () => {
-    const { token } = await fakeUserTokensRepository.generate(
+    const { token } = await fakeUserTokenRepository.generate(
       'non-existing-user',
     );
 
@@ -72,7 +72,7 @@ describe('ResetPasswordService', () => {
       email: 'joh@example.com',
       password: 'password',
     });
-    const { token } = await fakeUserTokensRepository.generate(userId);
+    const { token } = await fakeUserTokenRepository.generate(userId);
 
     await expect(
       resetPasswordService.execute({
