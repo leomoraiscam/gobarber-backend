@@ -4,12 +4,12 @@ import { classToClass } from 'class-transformer';
 import AuthenticatedUserService from '@modules/users/services/AuthenticateUserService';
 
 export default new (class SessionController {
-  public async create(request: Request, response: Response): Promise<Response> {
+  public async handle(request: Request, response: Response): Promise<Response> {
     const { email, password } = request.body;
-
-    const authenticatedUser = container.resolve(AuthenticatedUserService);
-
-    const { user, token } = await authenticatedUser.execute({
+    const authenticatedUserService = container.resolve(
+      AuthenticatedUserService,
+    );
+    const { user, token } = await authenticatedUserService.execute({
       email,
       password,
     });
