@@ -2,7 +2,7 @@ import { injectable, inject } from 'tsyringe';
 import { isAfter, addHours } from 'date-fns';
 import AppError from '@shared/errors/AppError';
 import IUserRepository from '../repositories/IUserRepository';
-import IUsersTokensRepository from '../repositories/IUsersTokensRepository';
+import IUserTokenRepository from '../repositories/IUserTokenRepository';
 import IHashProvider from '../providers/HashProvider/models/IHashProvider';
 import IResetPasswordDTO from '../dtos/IResetPasswordDTO';
 
@@ -11,15 +11,15 @@ class ResetPasswordService {
   constructor(
     @inject('UserRepository')
     private userRepository: IUserRepository,
-    @inject('UserTokensRepository')
-    private usersTokensRepository: IUsersTokensRepository,
+    @inject('UserTokenRepository')
+    private userTokenRepository: IUserTokenRepository,
     @inject('HashProvider')
     private hashProvider: IHashProvider,
   ) {}
 
   async execute(data: IResetPasswordDTO): Promise<void> {
     const { token, password } = data;
-    const userToken = await this.usersTokensRepository.findByToken(token);
+    const userToken = await this.userTokenRepository.findByToken(token);
 
     if (!userToken) {
       throw new AppError('Invalid or expired token', 401);
