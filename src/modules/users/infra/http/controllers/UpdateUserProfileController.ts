@@ -1,6 +1,6 @@
 import { Request, Response } from 'express';
 import { container } from 'tsyringe';
-import UpdateUserProfileService from '@modules/users/services/UpdateUserProfileService';
+import { UpdateUserProfileService } from '@modules/users/services/UpdateUserProfileService';
 import { classToClass } from 'class-transformer';
 
 export default new (class UpdateUserProfileController {

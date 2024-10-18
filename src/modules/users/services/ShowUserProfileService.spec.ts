@@ -1,6 +1,6 @@
 import AppError from '@shared/errors/AppError';
 import { FakeUserRepository } from '../repositories/fakes/FakeUserRepository';
-import ShowUserProfileService from './ShowUserProfileService';
+import { ShowUserProfileService } from './ShowUserProfileService';
 
 describe('ShowUserProfileService', () => {
   let fakeUserRepository: FakeUserRepository;

@@ -2,7 +2,7 @@ import AppError from '@shared/errors/AppError';
 import FakeCacheProvider from '@shared/container/providers/CacheProvider/fakes/FakeCacheProvider';
 import { FakeUserRepository } from '../repositories/fakes/FakeUserRepository';
 import FakeHashProvider from '../providers/HashProvider/fakes/FakeHashProvider';
-import CreateUserService from './CreateUserService';
+import { CreateUserService } from './CreateUserService';
 
 describe('CreateUserService', () => {
   let fakeUserRepository: FakeUserRepository;

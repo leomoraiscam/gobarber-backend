@@ -1,6 +1,6 @@
 import { Request, Response } from 'express';
 import { container } from 'tsyringe';
-import ShowUserProfileService from '@modules/users/services/ShowUserProfileService';
+import { ShowUserProfileService } from '@modules/users/services/ShowUserProfileService';
 import { classToClass } from 'class-transformer';
 
 export default new (class ShowProfileUserController {
