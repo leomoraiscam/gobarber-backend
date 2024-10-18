@@ -1,7 +1,7 @@
 import { uuid as uuidV4 } from 'uuidv4';
 import { IUserRepository } from '@modules/users/repositories/IUserRepository';
 import { ICreateUserDTO } from '@modules/users/dtos/ICreateUserDTO';
-import User from '../../infra/typeorm/entities/User';
+import { User } from '../../infra/typeorm/entities/User';
 
 export class FakeUserRepository implements IUserRepository {
   private users: User[] = [];
