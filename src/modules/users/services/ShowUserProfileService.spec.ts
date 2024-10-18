@@ -1,5 +1,5 @@
 import AppError from '@shared/errors/AppError';
-import FakeUserRepository from '../repositories/fakes/FakeUserRepository';
+import { FakeUserRepository } from '../repositories/fakes/FakeUserRepository';
 import ShowUserProfileService from './ShowUserProfileService';
 
 describe('ShowUserProfileService', () => {
