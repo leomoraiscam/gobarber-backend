@@ -9,7 +9,7 @@ import { Exclude, Expose } from 'class-transformer';
 import uploadConfig from '@config/upload';
 
 @Entity('users')
-class User {
+export class User {
   @PrimaryGeneratedColumn('uuid')
   id: string;
 
@@ -48,5 +48,3 @@ class User {
     }
   }
 }
-
-export default User;
