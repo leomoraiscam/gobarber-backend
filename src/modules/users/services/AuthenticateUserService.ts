@@ -2,7 +2,7 @@ import { sign } from 'jsonwebtoken';
 import { injectable, inject } from 'tsyringe';
 import authConfig from '@config/auth';
 import AppError from '@shared/errors/AppError';
-import IUserRepository from '@modules/users/repositories/IUserRepository';
+import { IUserRepository } from '@modules/users/repositories/IUserRepository';
 import IHashProvider from '../providers/HashProvider/models/IHashProvider';
 import { IAuthenticateUserDTO } from '../dtos/IAuthenticateUserDTO';
 import { IAuthenticatedUserDTO } from '../dtos/IAuthenticatedUserDTO';

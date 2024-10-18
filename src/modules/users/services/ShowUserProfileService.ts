@@ -1,7 +1,7 @@
 import { injectable, inject } from 'tsyringe';
 import User from '@modules/users/infra/typeorm/entities/User';
 import AppError from '@shared/errors/AppError';
-import IUserRepository from '../repositories/IUserRepository';
+import { IUserRepository } from '../repositories/IUserRepository';
 
 @injectable()
 class ShowUserProfileService {
