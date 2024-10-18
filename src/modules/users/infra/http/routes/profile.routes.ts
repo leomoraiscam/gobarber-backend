@@ -1,12 +1,12 @@
 import { Router } from 'express';
 import { celebrate, Segments, Joi } from 'celebrate';
-import UpdateUserProfileController from '@modules/users/infra/http/controllers/UpdateUserProfileController';
-import ShowProfileUserController from '@modules/users/infra/http/controllers/ShowProfileUserController';
+import { updateUserProfileController } from '@modules/users/infra/http/controllers/UpdateUserProfileController';
+import { showProfileUserController } from '@modules/users/infra/http/controllers/ShowProfileUserController';
 import ensureAuthenticated from '@modules/users/infra/http/middlewares/ensureAuthenticated';
 
 const profileRouter = Router();
 
-profileRouter.get('/', ensureAuthenticated, ShowProfileUserController.handle);
+profileRouter.get('/', ensureAuthenticated, showProfileUserController.handle);
 profileRouter.put(
   '/',
   ensureAuthenticated,
@@ -19,7 +19,7 @@ profileRouter.put(
       passwordConfirmation: Joi.string().valid(Joi.ref('password')),
     },
   }),
-  UpdateUserProfileController.handle,
+  updateUserProfileController.handle,
 );
 
 export default profileRouter;

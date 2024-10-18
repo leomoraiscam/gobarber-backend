@@ -3,8 +3,8 @@ import multer from 'multer';
 import uploadConfig from '@config/upload';
 import { celebrate, Segments, Joi } from 'celebrate';
 import ensureAuthenticated from '@modules/users/infra/http/middlewares/ensureAuthenticated';
-import CreateUserController from '@modules/users/infra/http/controllers/CreateUserController';
-import UpdateUserAvatarController from '@modules/users/infra/http/controllers/UpdateUserAvatarController';
+import { createUserController } from '@modules/users/infra/http/controllers/CreateUserController';
+import { updateUserAvatarController } from '@modules/users/infra/http/controllers/UpdateUserAvatarController';
 
 const upload = multer(uploadConfig.multer);
 const userRouter = Router();
@@ -18,13 +18,13 @@ userRouter.post(
       password: Joi.string().required(),
     },
   }),
-  CreateUserController.handle,
+  createUserController.handle,
 );
 userRouter.patch(
   '/avatar',
   ensureAuthenticated,
   upload.single('avatar'),
-  UpdateUserAvatarController.handle,
+  updateUserAvatarController.handle,
 );
 
 export default userRouter;

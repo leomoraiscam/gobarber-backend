@@ -1,6 +1,6 @@
 import { Router } from 'express';
 import { celebrate, Segments, Joi } from 'celebrate';
-import SessionController from '@modules/users/infra/http/controllers/SessionController';
+import { sessionController } from '@modules/users/infra/http/controllers/SessionController';
 
 const sessionRouter = Router();
 
@@ -12,7 +12,7 @@ sessionRouter.post(
       password: Joi.string().required(),
     },
   }),
-  SessionController.handle,
+  sessionController.handle,
 );
 
 export default sessionRouter;
