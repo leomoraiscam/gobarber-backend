@@ -22,4 +22,4 @@ profileRouter.put(
   updateUserProfileController.handle,
 );
 
-export default profileRouter;
+export { profileRouter };

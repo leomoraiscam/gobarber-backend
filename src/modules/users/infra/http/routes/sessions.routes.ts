@@ -15,4 +15,4 @@ sessionRouter.post(
   sessionController.handle,
 );
 
-export default sessionRouter;
+export { sessionRouter };

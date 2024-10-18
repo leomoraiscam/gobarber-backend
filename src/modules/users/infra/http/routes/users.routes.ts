@@ -27,4 +27,4 @@ userRouter.patch(
   updateUserAvatarController.handle,
 );
 
-export default userRouter;
+export { userRouter };
