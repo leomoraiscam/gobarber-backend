@@ -7,7 +7,7 @@ import IHashProvider from '../providers/HashProvider/models/IHashProvider';
 import { ICreateUserDTO } from '../dtos/ICreateUserDTO';
 
 @injectable()
-class CreateUserService {
+export class CreateUserService {
   constructor(
     @inject('UserRepository')
     private userRepository: IUserRepository,
@@ -37,5 +37,3 @@ class CreateUserService {
     return user;
   }
 }
-
-export default CreateUserService;

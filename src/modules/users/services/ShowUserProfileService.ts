@@ -4,7 +4,7 @@ import AppError from '@shared/errors/AppError';
 import { IUserRepository } from '../repositories/IUserRepository';
 
 @injectable()
-class ShowUserProfileService {
+export class ShowUserProfileService {
   constructor(
     @inject('UserRepository')
     private userRepository: IUserRepository,
@@ -20,5 +20,3 @@ class ShowUserProfileService {
     return user;
   }
 }
-
-export default ShowUserProfileService;

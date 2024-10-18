@@ -6,7 +6,7 @@ import { IUserRepository } from '../repositories/IUserRepository';
 import { IUpdateUserAvatarDTO } from '../dtos/IUpdateUserAvatarDTO';
 
 @injectable()
-class UpdateUserAvatarService {
+export class UpdateUserAvatarService {
   constructor(
     @inject('UserRepository')
     private userRepository: IUserRepository,
@@ -36,5 +36,3 @@ class UpdateUserAvatarService {
     return user;
   }
 }
-
-export default UpdateUserAvatarService;

@@ -8,7 +8,7 @@ import { IAuthenticateUserDTO } from '../dtos/IAuthenticateUserDTO';
 import { IAuthenticatedUserDTO } from '../dtos/IAuthenticatedUserDTO';
 
 @injectable()
-class AuthenticateUserService {
+export class AuthenticateUserService {
   constructor(
     @inject('UserRepository')
     private userRepository: IUserRepository,
@@ -42,5 +42,3 @@ class AuthenticateUserService {
     return { user, token };
   }
 }
-
-export default AuthenticateUserService;

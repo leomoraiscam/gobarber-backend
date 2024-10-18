@@ -6,7 +6,7 @@ import { IUserRepository } from '../repositories/IUserRepository';
 import { IUserTokenRepository } from '../repositories/IUserTokenRepository';
 
 @injectable()
-class SendForgotPasswordMailService {
+export class SendForgotPasswordMailService {
   constructor(
     @inject('UserRepository')
     private userRepository: IUserRepository,
@@ -51,5 +51,3 @@ class SendForgotPasswordMailService {
     });
   }
 }
-
-export default SendForgotPasswordMailService;

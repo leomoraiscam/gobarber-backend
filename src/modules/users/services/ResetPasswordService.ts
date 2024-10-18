@@ -7,7 +7,7 @@ import IHashProvider from '../providers/HashProvider/models/IHashProvider';
 import { IResetPasswordDTO } from '../dtos/IResetPasswordDTO';
 
 @injectable()
-class ResetPasswordService {
+export class ResetPasswordService {
   constructor(
     @inject('UserRepository')
     private userRepository: IUserRepository,
@@ -48,5 +48,3 @@ class ResetPasswordService {
     await this.userRepository.save(user);
   }
 }
-
-export default ResetPasswordService;
