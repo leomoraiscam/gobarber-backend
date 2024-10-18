@@ -2,7 +2,7 @@ import { Request, Response } from 'express';
 import { container } from 'tsyringe';
 import { ResetPasswordService } from '@modules/users/services/ResetPasswordService';
 
-export default new (class ResetPasswordController {
+class ResetPasswordController {
   public async handle(request: Request, response: Response): Promise<Response> {
     const { password, token } = request.body;
     const resetPasswordService = container.resolve(ResetPasswordService);
@@ -14,4 +14,6 @@ export default new (class ResetPasswordController {
 
     return response.status(204).json();
   }
-})();
+}
+
+export const resetPasswordController = new ResetPasswordController();

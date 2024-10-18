@@ -3,7 +3,7 @@ import { container } from 'tsyringe';
 import { UpdateUserAvatarService } from '@modules/users/services/UpdateUserAvatarService';
 import { classToClass } from 'class-transformer';
 
-export default new (class UpdateUserAvatarController {
+class UpdateUserAvatarController {
   public async handle(request: Request, response: Response): Promise<Response> {
     const { id: userId } = request.user;
     const imageFileName = request.file.filename;
@@ -15,4 +15,6 @@ export default new (class UpdateUserAvatarController {
 
     return response.json(classToClass(user));
   }
-})();
+}
+
+export const updateUserAvatarController = new UpdateUserAvatarController();

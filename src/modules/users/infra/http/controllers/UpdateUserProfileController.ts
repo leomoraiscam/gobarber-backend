@@ -3,7 +3,7 @@ import { container } from 'tsyringe';
 import { UpdateUserProfileService } from '@modules/users/services/UpdateUserProfileService';
 import { classToClass } from 'class-transformer';
 
-export default new (class UpdateUserProfileController {
+class UpdateUserProfileController {
   public async handle(request: Request, response: Response): Promise<Response> {
     const { name, email, password, oldPassword } = request.body;
     const { id: userId } = request.user;
@@ -20,4 +20,6 @@ export default new (class UpdateUserProfileController {
 
     return response.json(classToClass(user));
   }
-})();
+}
+
+export const updateUserProfileController = new UpdateUserProfileController();

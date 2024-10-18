@@ -3,7 +3,7 @@ import { container } from 'tsyringe';
 import { ShowUserProfileService } from '@modules/users/services/ShowUserProfileService';
 import { classToClass } from 'class-transformer';
 
-export default new (class ShowProfileUserController {
+class ShowProfileUserController {
   public async handle(request: Request, response: Response): Promise<Response> {
     const { id: userId } = request.user;
     const showUserProfileService = await container.resolve(
@@ -13,4 +13,6 @@ export default new (class ShowProfileUserController {
 
     return response.json(classToClass(user));
   }
-})();
+}
+
+export const showProfileUserController = new ShowProfileUserController();
