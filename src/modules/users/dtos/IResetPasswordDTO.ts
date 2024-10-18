@@ -1,6 +1,4 @@
-interface IResetPasswordDTO {
+export interface IResetPasswordDTO {
   token: string;
   password: string;
 }
-
-export default IResetPasswordDTO;
