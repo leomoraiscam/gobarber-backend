@@ -3,7 +3,7 @@ import User from '@modules/users/infra/typeorm/entities/User';
 import AppError from '@shared/errors/AppError';
 import IStorageProvider from '@shared/container/providers/StorageProvider/models/IStorageProvader';
 import IUserRepository from '../repositories/IUserRepository';
-import IUpdateUserAvatarDTO from '../dtos/IUpdateUserAvatarDTO';
+import { IUpdateUserAvatarDTO } from '../dtos/IUpdateUserAvatarDTO';
 
 @injectable()
 class UpdateUserAvatarService {

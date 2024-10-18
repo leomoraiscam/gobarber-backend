@@ -4,7 +4,7 @@ import AppError from '@shared/errors/AppError';
 import ICacheProvider from '@shared/container/providers/CacheProvider/models/ICacheProvider';
 import IUserRepository from '../repositories/IUserRepository';
 import IHashProvider from '../providers/HashProvider/models/IHashProvider';
-import ICreateUserDTO from '../dtos/ICreateUserDTO';
+import { ICreateUserDTO } from '../dtos/ICreateUserDTO';
 
 @injectable()
 class CreateUserService {
