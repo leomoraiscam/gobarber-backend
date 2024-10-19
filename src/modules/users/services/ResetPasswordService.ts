@@ -25,14 +25,14 @@ export class ResetPasswordService {
       throw new AppError('Invalid or expired token', 401);
     }
 
-    const { user_id: userId } = userToken;
+    const { userId } = userToken;
     const user = await this.userRepository.findById(userId);
 
     if (!user) {
       throw new AppError('User does not exist', 404);
     }
 
-    const tokenCreatedAt = userToken.created_at;
+    const tokenCreatedAt = userToken.createdAt;
     const compareDate = addHours(tokenCreatedAt, 2);
 
     if (isAfter(Date.now(), compareDate)) {

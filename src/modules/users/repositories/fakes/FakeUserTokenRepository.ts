@@ -16,8 +16,8 @@ export class FakeUserTokenRepository implements IUserTokenRepository {
       id: uuidV4(),
       token: uuidV4(),
       userId,
-      created_at: new Date(),
-      updated_at: new Date(),
+      createdAt: new Date(),
+      updatedAt: null,
     });
 
     this.userTokens.push(userToken);
