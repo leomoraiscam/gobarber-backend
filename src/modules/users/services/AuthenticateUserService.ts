@@ -1,6 +1,6 @@
 import { sign } from 'jsonwebtoken';
 import { injectable, inject } from 'tsyringe';
-import authConfig from '@config/auth';
+import { auth } from '@config/auth';
 import AppError from '@shared/errors/AppError';
 import { IUserRepository } from '@modules/users/repositories/IUserRepository';
 import IHashProvider from '../providers/HashProvider/models/IHashProvider';
@@ -33,7 +33,7 @@ export class AuthenticateUserService {
       throw new AppError('Incorrect email/password combination', 401);
     }
 
-    const { secret, expiresIn } = authConfig.jwt;
+    const { secret, expiresIn } = auth.jwt;
     const token = sign({}, secret, {
       subject: user.id,
       expiresIn,
