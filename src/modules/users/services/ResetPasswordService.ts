@@ -1,9 +1,9 @@
 import { injectable, inject } from 'tsyringe';
 import { isAfter, addHours } from 'date-fns';
 import AppError from '@shared/errors/AppError';
+import { IHashProvider } from '@shared/container/providers/HashProvider/models/IHashProvider';
 import { IUserRepository } from '../repositories/IUserRepository';
 import { IUserTokenRepository } from '../repositories/IUserTokenRepository';
-import IHashProvider from '../providers/HashProvider/models/IHashProvider';
 import { IResetPasswordDTO } from '../dtos/IResetPasswordDTO';
 
 @injectable()

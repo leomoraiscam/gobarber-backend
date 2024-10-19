@@ -1,7 +1,7 @@
 import AppError from '@shared/errors/AppError';
+import { FakeHashProvider } from '@shared/container/providers/HashProvider/fakes/FakeHashProvider';
 import { FakeUserTokenRepository } from '../repositories/fakes/FakeUserTokenRepository';
 import { FakeUserRepository } from '../repositories/fakes/FakeUserRepository';
-import FakeHashProvider from '../providers/HashProvider/fakes/FakeHashProvider';
 import { ResetPasswordService } from './ResetPasswordService';
 
 describe('ResetPasswordService', () => {

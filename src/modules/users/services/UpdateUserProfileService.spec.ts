@@ -1,5 +1,5 @@
 import AppError from '@shared/errors/AppError';
-import FakeHashProvider from '../providers/HashProvider/fakes/FakeHashProvider';
+import { FakeHashProvider } from '@shared/container/providers/HashProvider/fakes/FakeHashProvider';
 import { FakeUserRepository } from '../repositories/fakes/FakeUserRepository';
 import { UpdateUserProfileService } from './UpdateUserProfileService';
 

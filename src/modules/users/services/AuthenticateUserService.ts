@@ -3,7 +3,7 @@ import { injectable, inject } from 'tsyringe';
 import { auth } from '@config/auth';
 import AppError from '@shared/errors/AppError';
 import { IUserRepository } from '@modules/users/repositories/IUserRepository';
-import IHashProvider from '../providers/HashProvider/models/IHashProvider';
+import { IHashProvider } from '@shared/container/providers/HashProvider/models/IHashProvider';
 import { IAuthenticateUserDTO } from '../dtos/IAuthenticateUserDTO';
 import { IAuthenticatedUserDTO } from '../dtos/IAuthenticatedUserDTO';
 

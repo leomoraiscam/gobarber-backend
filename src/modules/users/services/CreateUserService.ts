@@ -2,8 +2,8 @@ import { injectable, inject } from 'tsyringe';
 import { User } from '@modules/users/infra/typeorm/entities/User';
 import AppError from '@shared/errors/AppError';
 import ICacheProvider from '@shared/container/providers/CacheProvider/models/ICacheProvider';
+import { IHashProvider } from '@shared/container/providers/HashProvider/models/IHashProvider';
 import { IUserRepository } from '../repositories/IUserRepository';
-import IHashProvider from '../providers/HashProvider/models/IHashProvider';
 import { ICreateUserDTO } from '../dtos/ICreateUserDTO';
 
 @injectable()
