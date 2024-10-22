@@ -6,7 +6,7 @@ import {
   UpdateDateColumn,
 } from 'typeorm';
 import { Exclude, Expose } from 'class-transformer';
-import uploadConfig from '@config/upload';
+import { upload } from '@config/upload';
 
 @Entity('users')
 export class User {
@@ -38,7 +38,7 @@ export class User {
       return null;
     }
 
-    switch (uploadConfig.driver) {
+    switch (upload.driver) {
       case 'disk':
         return `${process.env.APP_URL}/files/${this.avatar}`;
       case 's3':
