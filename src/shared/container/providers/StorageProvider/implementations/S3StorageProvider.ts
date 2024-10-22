@@ -3,9 +3,9 @@ import fs from 'fs';
 import mime from 'mime';
 import aws, { S3 } from 'aws-sdk';
 import { upload } from '@config/upload';
-import IStorageProvider from '../models/IStorageProvader';
+import { IStorageProvider } from '../models/IStorageProvader';
 
-class S3StorageProvider implements IStorageProvider {
+export class S3StorageProvider implements IStorageProvider {
   private client: S3;
 
   constructor() {
@@ -16,7 +16,6 @@ class S3StorageProvider implements IStorageProvider {
 
   public async saveFile(file: string): Promise<string> {
     const originalPath = path.resolve(upload.tmpFolder, file);
-
     const ContentType = mime.getType(originalPath);
 
     if (!ContentType) {
@@ -34,7 +33,6 @@ class S3StorageProvider implements IStorageProvider {
         ContentType,
       })
       .promise();
-
     await fs.promises.unlink(originalPath);
 
     return file;
@@ -49,5 +47,3 @@ class S3StorageProvider implements IStorageProvider {
       .promise();
   }
 }
-
-export default S3StorageProvider;
