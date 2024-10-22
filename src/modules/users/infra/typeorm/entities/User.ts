@@ -9,7 +9,7 @@ import { Exclude, Expose } from 'class-transformer';
 import uploadConfig from '@config/upload';
 
 @Entity('users')
-class User {
+export class User {
   @PrimaryGeneratedColumn('uuid')
   id: string;
 
@@ -26,14 +26,14 @@ class User {
   @Column()
   avatar: string;
 
-  @CreateDateColumn()
-  created_at: Date;
+  @CreateDateColumn({ name: 'created_at' })
+  createdAt: Date;
 
-  @UpdateDateColumn()
-  updated_at: Date;
+  @UpdateDateColumn({ name: 'updated_at' })
+  updatedAt: Date;
 
-  @Expose({ name: 'avatar_url' })
-  getAvatar_url(): string | null {
+  @Expose({ name: 'avatarUrl' })
+  getAvatarUrl(): string | null {
     if (!this.avatar) {
       return null;
     }
@@ -48,5 +48,3 @@ class User {
     }
   }
 }
-
-export default User;

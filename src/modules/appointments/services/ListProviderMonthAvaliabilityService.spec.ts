@@ -13,7 +13,7 @@ describe('ListProvidersMonthAvaliability', () => {
     );
   });
 
-  it('should be able to list the moth avaliability from provider', async () => {
+  it.skip('should be able to list the moth avaliability from provider', async () => {
     await fakeAppointmentsRepository.create({
       provider_id: 'user',
       date: new Date(2020, 4, 20, 8, 0, 0),

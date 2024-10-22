@@ -1,36 +1,36 @@
 import AppError from '@shared/errors/AppError';
 import FakeCacheProvider from '@shared/container/providers/CacheProvider/fakes/FakeCacheProvider';
-import FakeUsersRepository from '../../users/repositories/fakes/FakeUsersRepository';
+import { FakeUserRepository } from '../../users/repositories/fakes/FakeUserRepository';
 import ListProvidersService from './ListProvidersServices';
 
-let fakeUsersRepository: FakeUsersRepository;
+let fakeUserRepository: FakeUserRepository;
 let listProviders: ListProvidersService;
 let fakeCacheProvider: FakeCacheProvider;
 
 describe('List Providers', () => {
   beforeEach(() => {
-    fakeUsersRepository = new FakeUsersRepository();
+    fakeUserRepository = new FakeUserRepository();
     fakeCacheProvider = new FakeCacheProvider();
     listProviders = new ListProvidersService(
-      fakeUsersRepository,
+      fakeUserRepository,
       fakeCacheProvider,
     );
   });
 
   it('should be able to list the providers', async () => {
-    const user01 = await fakeUsersRepository.create({
+    const user01 = await fakeUserRepository.create({
       name: 'Jonh Doe',
       email: 'joh@example.com',
       password: 'password@',
     });
 
-    const user02 = await fakeUsersRepository.create({
+    const user02 = await fakeUserRepository.create({
       name: 'Jonh Tre',
       email: 'johtre@example.com',
       password: 'password@',
     });
 
-    const loggedUser = await fakeUsersRepository.create({
+    const loggedUser = await fakeUserRepository.create({
       name: 'Brayan Kall',
       email: 'brayan@example.com',
       password: 'password@',

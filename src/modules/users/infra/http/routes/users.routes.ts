@@ -3,14 +3,13 @@ import multer from 'multer';
 import uploadConfig from '@config/upload';
 import { celebrate, Segments, Joi } from 'celebrate';
 import ensureAuthenticated from '@modules/users/infra/http/middlewares/ensureAuthenticated';
-import UsersController from '@modules/users/infra/http/controllers/UsersController';
-import UserAvatarController from '@modules/users/infra/http/controllers/UserAvatarController';
+import { createUserController } from '@modules/users/infra/http/controllers/CreateUserController';
+import { updateUserAvatarController } from '@modules/users/infra/http/controllers/UpdateUserAvatarController';
 
 const upload = multer(uploadConfig.multer);
+const userRouter = Router();
 
-const usersRouter = Router();
-
-usersRouter.post(
+userRouter.post(
   '/',
   celebrate({
     [Segments.BODY]: {
@@ -19,13 +18,13 @@ usersRouter.post(
       password: Joi.string().required(),
     },
   }),
-  UsersController.create,
+  createUserController.handle,
 );
-usersRouter.patch(
+userRouter.patch(
   '/avatar',
   ensureAuthenticated,
   upload.single('avatar'),
-  UserAvatarController.update,
+  updateUserAvatarController.handle,
 );
 
-export default usersRouter;
+export { userRouter };
