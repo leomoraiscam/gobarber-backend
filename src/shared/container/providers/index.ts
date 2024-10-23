@@ -4,8 +4,8 @@ import './CacheProvider';
 
 import { IStorageProvider } from './StorageProvider/models/IStorageProvader';
 import { DiskStorageProvider } from './StorageProvider/implementations/DiskStorageProvider';
-import IMailProvider from './MailProvider/models/IMailProvider';
-import EthrealMailProvider from './MailProvider/implementations/EthrealMailProvider';
+import { IMailProvider } from './MailProvider/models/IMailProvider';
+import { EtherealMailProvider } from './MailProvider/implementations/EtherealMailProvider';
 import IMailTemplateProvider from './MailTemplateProvider/models/IMailTemplateProvider';
 import HandlebarsMailTemplateProvider from './MailTemplateProvider/implementations/HandlebarsMailTemplateProvider';
 import { IHashProvider } from './HashProvider/models/IHashProvider';
@@ -23,7 +23,7 @@ container.registerSingleton<IMailTemplateProvider>(
 
 container.registerInstance<IMailProvider>(
   'MailProvider',
-  container.resolve(EthrealMailProvider),
+  container.resolve(EtherealMailProvider),
 );
 
 container.registerSingleton<IHashProvider>('HashProvider', BCryptHashProvider);
