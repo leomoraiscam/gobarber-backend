@@ -43,7 +43,7 @@ export class User {
       case 'disk':
         return `${process.env.APP_URL}/files/${UploadFolders.UPLOADS}/${this.avatar}`;
       case 's3':
-        return `https://${uploadConfig.config.aws.bucket}.s3.amazonaws.com/${this.avatar}`;
+        return `https://${upload.config.aws.bucket}.s3.amazonaws.com/${this.avatar}`;
       default:
         return null;
     }
