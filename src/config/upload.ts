@@ -14,10 +14,10 @@ export const upload = {
       destination: tmpFolder,
       filename: (_, file, callback) => {
         const SALT_RANDOM_BYTES = 10;
-        const CRYPTO_TYPE = 'hex';
+        const CRYPTO_HASH = 'hex';
         const fileHash = crypto
           .randomBytes(SALT_RANDOM_BYTES)
-          .toString(CRYPTO_TYPE);
+          .toString(CRYPTO_HASH);
         const fileName = `${fileHash}-${file.originalname}`;
 
         return callback(null, fileName);
