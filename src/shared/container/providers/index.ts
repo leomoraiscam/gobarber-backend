@@ -6,8 +6,8 @@ import { IStorageProvider } from './StorageProvider/models/IStorageProvader';
 import { DiskStorageProvider } from './StorageProvider/implementations/DiskStorageProvider';
 import { IMailProvider } from './MailProvider/models/IMailProvider';
 import { EtherealMailProvider } from './MailProvider/implementations/EtherealMailProvider';
-import IMailTemplateProvider from './MailTemplateProvider/models/IMailTemplateProvider';
-import HandlebarsMailTemplateProvider from './MailTemplateProvider/implementations/HandlebarsMailTemplateProvider';
+import { IMailTemplateProvider } from './MailTemplateProvider/models/IMailTemplateProvider';
+import { HandlebarsMailTemplateProvider } from './MailTemplateProvider/implementations/HandlebarsMailTemplateProvider';
 import { IHashProvider } from './HashProvider/models/IHashProvider';
 import { BCryptHashProvider } from './HashProvider/implementations/BCryptHashProvider';
 
