@@ -1,33 +1,23 @@
 import path from 'path';
 import crypto from 'crypto';
-import multer, { StorageEngine } from 'multer';
+import multer from 'multer';
+import { IUploadConfig } from './dtos/IUploadConfig';
+import { UploadFolders } from './enums/uploadFolders';
 
-const tmpFolder = path.resolve(__dirname, '..', '..', 'tmp');
-
-interface IUploadConfig {
-  driver: 's3' | 'disk';
-  multer: {
-    storage: StorageEngine;
-  };
-  config: {
-    disk: {};
-    aws: {
-      bucket: string;
-    };
-  };
-  tmpFolder: string;
-  uploadsFolder: string;
-}
-
-export default {
+const tmpFolder = path.resolve(__dirname, '..', '..', UploadFolders.TMP);
+export const upload = {
   driver: process.env.STORAGE_DRIVER,
   tmpFolder,
-  uploadsFolder: path.resolve(tmpFolder, 'uploads'),
+  uploadsFolder: path.resolve(tmpFolder, UploadFolders.UPLOADS),
   multer: {
     storage: multer.diskStorage({
       destination: tmpFolder,
-      filename: (request, file, callback) => {
-        const fileHash = crypto.randomBytes(10).toString('hex');
+      filename: (_, file, callback) => {
+        const SALT_RANDOM_BYTES = 10;
+        const CRYPTO_HASH = 'hex';
+        const fileHash = crypto
+          .randomBytes(SALT_RANDOM_BYTES)
+          .toString(CRYPTO_HASH);
         const fileName = `${fileHash}-${file.originalname}`;
 
         return callback(null, fileName);
@@ -37,7 +27,7 @@ export default {
   config: {
     disk: {},
     aws: {
-      bucket: 'application-barber',
+      bucket: process.env.UPLOAD_AWS_BUCKET,
     },
   },
 } as IUploadConfig;

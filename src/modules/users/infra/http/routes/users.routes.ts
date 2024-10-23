@@ -1,12 +1,12 @@
 import { Router } from 'express';
 import multer from 'multer';
-import uploadConfig from '@config/upload';
+import { upload } from '@config/upload';
 import { celebrate, Segments, Joi } from 'celebrate';
 import ensureAuthenticated from '@modules/users/infra/http/middlewares/ensureAuthenticated';
 import { createUserController } from '@modules/users/infra/http/controllers/CreateUserController';
 import { updateUserAvatarController } from '@modules/users/infra/http/controllers/UpdateUserAvatarController';
 
-const upload = multer(uploadConfig.multer);
+const uploadAvatar = multer(upload.multer);
 const userRouter = Router();
 
 userRouter.post(
@@ -23,7 +23,7 @@ userRouter.post(
 userRouter.patch(
   '/avatar',
   ensureAuthenticated,
-  upload.single('avatar'),
+  uploadAvatar.single('avatar'),
   updateUserAvatarController.handle,
 );
 
