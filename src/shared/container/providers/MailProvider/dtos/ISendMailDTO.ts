@@ -5,7 +5,7 @@ interface IMailContact {
   email: string;
 }
 
-export default interface ISendMailDTO {
+export interface ISendMailDTO {
   to: IMailContact;
   from?: IMailContact;
   subject: string;
