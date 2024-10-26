@@ -3,13 +3,7 @@ import ICacheProvider from '@shared/container/providers/CacheProvider/models/ICa
 import { classToClass } from 'class-transformer';
 import IAppointmentsRepository from '../repositories/IAppointmentsRepository';
 import Appointment from '../infra/typeorm/entities/Appointments';
-
-interface IRequest {
-  provider_id: string;
-  month: number;
-  year: number;
-  day: number;
-}
+import IListProviderAppointmentsDTO from '../dtos/IListProviderAppointmentsDTO';
 
 @injectable()
 class ListProviderAppointmentsService {
@@ -20,14 +14,9 @@ class ListProviderAppointmentsService {
     private cacheProvider: ICacheProvider,
   ) {}
 
-  async execute({
-    provider_id,
-    month,
-    year,
-    day,
-  }: IRequest): Promise<Appointment[]> {
-    const cacheKey = `provider-appointments: ${provider_id}:${year}-${month}-${day}`;
-
+  async execute(data: IListProviderAppointmentsDTO): Promise<Appointment[]> {
+    const { providerId, month, year, day } = data;
+    const cacheKey = `provider-appointments: ${providerId}:${year}-${month}-${day}`;
     let appointments = await this.cacheProvider.recover<Appointment[]>(
       cacheKey,
     );
@@ -35,7 +24,7 @@ class ListProviderAppointmentsService {
     if (!appointments) {
       appointments = await this.appointmentsRepository.findAllInDayFromProvider(
         {
-          provider_id,
+          provider_id: providerId,
           month,
           year,
           day,
