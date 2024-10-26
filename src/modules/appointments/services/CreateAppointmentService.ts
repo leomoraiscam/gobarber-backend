@@ -5,12 +5,7 @@ import AppError from '@shared/errors/AppError';
 import ICacheProvider from '@shared/container/providers/CacheProvider/models/ICacheProvider';
 import IAppointmentsRepository from '../repositories/IAppointmentsRepository';
 import INotificationRepository from '../../notifications/repositories/INotificationRepository';
-
-interface IRequest {
-  provider_id: string;
-  user_id: string;
-  date: Date;
-}
+import ICreateAppointmentDTO from '../dtos/ICreateAppointmentDTO';
 
 @injectable()
 class CreateAppointmentService {
@@ -23,51 +18,46 @@ class CreateAppointmentService {
     private cacheProvider: ICacheProvider,
   ) {}
 
-  public async execute({
-    date,
-    provider_id,
-    user_id,
-  }: IRequest): Promise<Appointment> {
+  public async execute(data: ICreateAppointmentDTO): Promise<Appointment> {
+    const { date, providerId, userId } = data;
     const appointmentDate = startOfHour(date);
 
     if (isBefore(appointmentDate, Date.now())) {
-      throw new AppError("You can't create an appointment on a past date.");
+      throw new AppError("You can't create an appointment on a past date", 422);
     }
 
-    if (user_id === provider_id) {
-      throw new AppError("You can't create an appointment with yourself");
+    if (userId === providerId) {
+      throw new AppError("You can't create an appointment with yourself", 422);
     }
 
     if (getHours(appointmentDate) < 8 || getHours(appointmentDate) > 17) {
       throw new AppError(
         "You can't create an appointments between 8am and 5pm",
+        403,
       );
     }
 
-    const findAppointmentInSameDate = await this.appointmentsRepository.findByDate(
-      appointmentDate,
-      provider_id,
-    );
+    const findAppointmentInTheSameDate =
+      await this.appointmentsRepository.findByDate(appointmentDate, providerId);
 
-    if (findAppointmentInSameDate) {
-      throw new AppError('This appointment is alredy booked', 400);
+    if (findAppointmentInTheSameDate) {
+      throw new AppError('This appointment is already booked', 409);
     }
 
     const appointment = await this.appointmentsRepository.create({
-      provider_id,
-      user_id,
+      providerId,
+      userId,
       date: appointmentDate,
     });
-
-    const dateformatted = format(appointmentDate, "dd 'de' MMMM 'às' HH:mm'h'");
+    const formattedDate = format(appointmentDate, "dd 'de' MMMM 'às' HH:mm'h'");
 
     await this.notificationsRepository.create({
-      recipient_id: provider_id,
-      content: `Novo agendamento para ${dateformatted}`,
+      recipient_id: providerId,
+      content: `Novo agendamento para ${formattedDate}`,
     });
 
     await this.cacheProvider.invalidate(
-      `provider-appointments: ${provider_id}:${format(
+      `provider-appointments: ${providerId}:${format(
         appointmentDate,
         'yyyy-M-d',
       )}`,
