@@ -9,9 +9,9 @@ import { profileRouter } from '@modules/users/infra/http/routes/profile.routes';
 const routes = Router();
 routes.use('/appointments', appointmentsRouter);
 routes.use('/users', userRouter);
-routes.use('/session', sessionRouter);
+routes.use('/users/profile', profileRouter);
+routes.use('/sessions', sessionRouter);
 routes.use('/password', passwordRouter);
-routes.use('/profile', profileRouter);
 routes.use('/providers', providersRouter);
 
 export default routes;
