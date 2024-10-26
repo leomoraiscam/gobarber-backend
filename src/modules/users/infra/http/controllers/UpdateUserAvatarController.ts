@@ -13,7 +13,7 @@ class UpdateUserAvatarController {
       avatar: imageFileName,
     });
 
-    return response.json(classToClass(user));
+    return response.status(200).json(classToClass(user));
   }
 }
 

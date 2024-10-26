@@ -11,7 +11,7 @@ class SendForgotPasswordMailController {
 
     await sendForgotPasswordMailService.execute(email);
 
-    return response.status(200).json();
+    return response.status(204).json();
   }
 }
 
