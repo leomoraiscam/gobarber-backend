@@ -47,7 +47,7 @@ export class UpdateUserProfileService {
       );
 
       if (!matchPassword) {
-        throw new AppError('Old password does not match', 403);
+        throw new AppError('Old password does not match', 422);
       }
 
       const hashedPassword = await this.hashProvider.generateHash(password);
