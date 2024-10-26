@@ -3,135 +3,320 @@
   "info": {
     "version": "1.0.0",
     "title": "API for appointments in barber shops",
-    "description": "API for appointments",
+    "description": "This is API for appointments",
+    "termsOfService": "http://swagger.io/terms/",
     "license": {
       "name": "MIT",
       "url": "https://opensource.org/licenses/MIT"
     },
     "host": "http://localhost:3333/api-docs",
-    "basePath": "/",
-    "schemes": ["http"],
     "consumes": ["application/json"],
     "produces": ["application/json"]
   },
+  "schemes": ["http"],
   "servers": [
     {
-      "url": "http://localhost:3333/api-docs",
-      "description": "Development Environment - v1"
+      "url": "http://localhost:3333",
+      "description": "Development local environment API"
     }
   ],
   "tags": [
     {
-      "name": "Auth"
+      "name": "users",
+      "description": "Endpoints related to users profile management"
     },
     {
-      "name": "User"
+      "name": "sessions",
+      "description": "Endpoints for user authentication"
     },
     {
-      "name": "Appointment"
+      "name": "password",
+      "description": "Endpoints for reset passwords and send password recovery emails"
     }
   ],
   "paths": {
-    "/session": {
+    "/users": {
       "post": {
-        "tags": ["Auth"],
-        "summary": "Authenticates the user",
-        "description": "Authenticates the user",
+        "tags": ["users"],
+        "summary": "Create a new user",
+        "description": "This endpoint allows the creation of a new user",
+        "operationId": "addUser",
         "requestBody": {
           "content": {
             "application/json": {
               "schema": {
-                "type": "object",
-                "properties": {
-                  "email": {
-                    "type": "string"
-                  },
-                  "password": {
-                    "type": "string"
-                  }
+                "$ref": "#/components/schemas/User"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "201": {
+            "description": "This response will be returned when the created a account resource",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UserResponse"
                 }
-              },
-              "example": {
-                "email": "johndoe@example.com.br",
-                "password": "P@ssw0rd"
+              }
+            }
+          },
+          "400": {
+            "description": "This response will be returned when has validation error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ValidationError"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "This response will be returned when the account resource already exist",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ConflictError"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "This response will be returned when an unexpected error occurs",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/InternalServerError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/users/avatar": {
+      "patch": {
+        "tags": ["users"],
+        "summary": "Upload avatar image to user",
+        "description": "This endpoint allows you to upload image to a specific account",
+        "operationId": "uploadAvatar",
+        "security": [{ "bearerAuth": [] }],
+        "requestBody": {
+          "content": {
+            "multipart/form-data": {
+              "schema": {
+                "$ref": "#/components/schemas/UploadAvatar"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "This response will be returned when the uploaded avatar to account resource",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UserWithAvatarResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "This response will be returned when the user is not authenticated",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UnauthorizedError"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "This response will be returned when an unexpected error occurs",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/InternalServerError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/users/profile": {
+      "get": {
+        "tags": ["users"],
+        "summary": "show the profile of the logged in user",
+        "description": "This endpoint allows logged in to see your profile",
+        "operationId": "showProfile",
+        "security": [{ "bearerAuth": [] }],
+        "responses": {
+          "200": {
+            "description": "This response will be returned when list of car categories with success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UserWithAvatarResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "This response will be returned when the user is not authenticated",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UnauthorizedError"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "This response will be returned when an unexpected error occurs",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/InternalServerError"
+                }
+              }
+            }
+          }
+        }
+      },
+      "put": {
+        "tags": ["users"],
+        "summary": "Update the profile of the logged in user",
+        "description": "This endpoint allows logged in to update your profile",
+        "security": [{ "bearerAuth": [] }],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateUser"
               }
             }
           }
         },
         "responses": {
           "200": {
-            "description": "Successfully authenticates the user",
+            "description": "This response will be returned when updated user with success",
             "content": {
               "application/json": {
                 "schema": {
-                  "properties": {
-                    "user": {
-                      "id": {
-                        "type": "string"
-                      },
-                      "name": {
-                        "type": "string"
-                      },
-                      "email": {
-                        "type": "string"
-                      },
-                      "avatar": {
-                        "type": "string"
-                      },
-                      "created_at": {
-                        "type": "date"
-                      },
-                      "updated_at": {
-                        "type": "date"
-                      },
-                      "avatar_url": {
-                        "type": "string"
-                      }
-                    },
-                    "token": {
-                      "type": "string"
-                    }
-                  }
-                },
-                "example": {
-                  "user": {
-                    "id": "b1ac6b36-b4dc-4ff7-87d7-1da45797f578",
-                      "name": "Jonh Doe",
-                      "email": "johndoe@example.com.br",
-                      "avatar": "e49601bfb50acb092f52-adonis.png",
-                      "created_at": "2021-03-09T16:51:23.057Z",
-                      "updated_at": "2021-03-09T16:51:33.718Z",
-                      "avatar_url": "http://localhost:3333/e49601bfb50acb092f52-adonis.png"
-                  },
-                  "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOnsiaWQiOiI1ZTk5M2E2ZjI0Yzc1ODZjNmFjYmIxNDYiLCJuYW1lIjoiSm9obm55IERvZSIsImVtYWlsIjoiam9obmRvZUBpb2FzeXMuY29tLmJyIn0sImlhdCI6MTU4NzMzODI1OX0.rvLyJvCj0vC3CyuZbrTTSR5NzKgV5-jOybMlZtcY0jM"
+                  "$ref": "#/components/schemas/UserWithAvatarResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "This response will be returned when has validation error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ValidationError"
                 }
               }
             }
           },
           "401": {
-            "description": "The password used is invalid or user was found for the email used",
+            "description": "This response will be returned when the user is not authenticated",
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/ErrorResponse"
-                },
-                "example": {
-                  "name": "error",
-                  "message": "Incorrect email/password combination"
+                  "$ref": "#/components/schemas/UnauthorizedError"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "This response will be returned when the account resource already exist",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ConflictError"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "This response will be returned when some fields did not came the way we needed",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UnprocessableEntityError"
                 }
               }
             }
           },
           "500": {
-            "description": "Internal Server error",
+            "description": "This response will be returned when an unexpected error occurs",
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/ErrorResponse"
-                },
-                "example": {
-                  "name": "error",
-                  "message": "Internal Server error"
+                  "$ref": "#/components/schemas/InternalServerError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/sessions": {
+      "post": {
+        "tags": ["sessions"],
+        "summary": "Authenticate user",
+        "description": "This endpoint allows users to log with their credentials",
+        "operationId": "authenticateUser",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Session"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "This response will be returned when the user was authenticated with success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SessionResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "This response will be returned when has validation error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ValidationError"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "This response will be returned when email or password is incorrect",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UnauthorizedError"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "This response will be returned when an unexpected error occurs",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/InternalServerError"
                 }
               }
             }
@@ -141,54 +326,50 @@
     },
     "/password/forgot": {
       "post": {
-        "tags": ["Auth"],
-        "summary": "Sends an email to reset the users's password",
-        "description": "Sends an email to reset the users's password",
+        "tags": ["password"],
+        "summary": "Send password recovery email",
+        "description": "This endpoint allows users to request a password recovery email",
+        "operationId": "sendForgotPassword",
         "requestBody": {
           "content": {
             "application/json": {
               "schema": {
-                "type": "object",
-                "properties": {
-                  "email": {
-                    "type": "string"
-                  }
-                }
-              },
-              "example": {
-                "email": "johndoe@example.com.br"
+                "$ref": "#/components/schemas/ForgotPassword"
               }
             }
-          }
+          },
+          "required": true
         },
         "responses": {
           "204": {
-            "description": "An email was sent for the email address provided"
+            "description": "This response will be returned when the email was send with success"
           },
-          "404": {
-            "description": "No user was found for the email used",
+          "400": {
+            "description": "This response will be returned when has validation error",
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/ErrorResponse"
-                },
-                "example": {
-                  "name": "error",
-                  "message": "User does not exist"
+                  "$ref": "#/components/schemas/ValidationError"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "This response will be returned when the user to be deleted or does not exist",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/NotFoundError"
                 }
               }
             }
           },
           "500": {
-            "description": "Internal Server error",
+            "description": "This response will be returned when an unexpected error occurs",
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/ErrorResponse"
-                },
-                "example": {
-                  "name": "Error",
-                  "message": "Internal Server error"
+                  "$ref": "#/components/schemas/InternalServerError"
                 }
               }
             }
@@ -198,437 +379,65 @@
     },
     "/password/reset": {
       "post": {
-        "tags": ["Auth"],
-        "summary": "Resets the user's password with the new password provided",
-        "description": "Resets the user's password with the new password provided",
+        "tags": ["password"],
+        "summary": "Reset user password",
+        "description": "This endpoint allows users to reset their passwords",
+        "operationId": "resetPassword",
         "requestBody": {
           "content": {
             "application/json": {
               "schema": {
-                "type": "object",
-                "properties": {
-                  "password": {
-                    "type": "string"
-                  },
-                  "passwod_confirmation": {
-                    "type": "string"
-                  },
-                  "token": {
-                    "type": "string"
-                  }
-                }
-              },
-              "example": {
-                "password":"123123",
-                "passwod_confirmation":"123123",
-                "token":"d3d0d27e-7a84-44a9-bf2e-19fbd405aed0"
+                "$ref": "#/components/schemas/ResetPassword"
               }
             }
-          }
+          },
+          "required": true
         },
         "responses": {
           "204": {
-            "description": "The password was updated and the user can try to authenticate again"
+            "description": "This response will be returned when the password was reseted with success"
           },
-          "404": {
-            "description": "The token provided has expired",
+          "400": {
+            "description": "This response will be returned when has validation error",
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/ErrorResponse"
-                },
-                "example": {
-                  "name": "ApplicationError",
-                  "message": "Token Expired"
+                  "$ref": "#/components/schemas/ValidationError"
                 }
               }
             }
           },
-          "400": {
-            "description": "No user was found for the token provided",
+          "401": {
+            "description": "This response will be returned when the user is not authorized",
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/ErrorResponse"
-                },
-                "example": {
-                  "name": "error",
-                  "message": "User token does not exist"
+                  "$ref": "#/components/schemas/UnauthorizedError"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "This response will be returned when the user to be deleted or does not exist",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/NotFoundError"
                 }
               }
             }
           },
           "500": {
-            "description": "Internal Server error",
+            "description": "This response will be returned when an unexpected error occurs",
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/ErrorResponse"
-                },
-                "example": {
-                  "name": "Error",
-                  "message": "Internal Server error"
+                  "$ref": "#/components/schemas/InternalServerError"
                 }
               }
             }
           }
         }
-      }
-    },
-    "/users/": {
-      "summary": "Users CRUD",
-      "post": {
-        "summary": "Creates an user",
-        "description": "Creates an user in the application",
-        "security": [{ "BearerToken": [] }],
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "type": "object",
-                "properties": {
-                  "name": {
-                    "type": "string"
-                  },
-                  "email": {
-                    "type": "string"
-                  },
-                  "password": {
-                    "type": "string"
-                  }
-                }
-              },
-              "example": {
-                "name": "John Doe",
-                "email": "johndoe@example.com.br",
-                "password": "P@ssw0rd"
-              }
-            }
-          }
-        },
-        "responses": {
-          "200": {
-            "description": "Succesfully creates a new user",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/User"
-                },
-                "example": {
-                  "name": "John Doe",
-                  "email": "johndoe@example.com.br",
-                  "created_at": "2020-04-16T23:00:45.179Z",
-                  "updated_at": "2020-04-16T23:41:38.451Z",
-                  "avatar_url": null
-                }
-              }
-            }
-          },
-          "400": {
-            "description": "The email used is already registered",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ErrorResponse"
-                },
-                "example": {
-                  "name": "error",
-                  "message": "Email address alredy used"
-                }
-              }
-            }
-          },
-          "500": {
-            "description": "Internal Server error",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ErrorResponse"
-                },
-                "example": {
-                  "name": "error",
-                  "message": "Internal server error"
-                }
-              }
-            }
-          }
-        },
-        "tags": ["User"]
-      }
-    },
-    "/profile/": {
-      "summary": "Users CRUD",
-      "get": {
-        "description": "Returns a specific user by id that is in the request header",
-        "summary": "Returns an user specifc by id",
-        "security": [{ "BearerToken": [] }],
-        "responses": {
-          "200": {
-            "description": "Returns the user's data",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "properties": {
-                    "id": {
-                      "type": "string"
-                    },
-                    "name": {
-                      "type": "string"
-                    },
-                    "email": {
-                      "type": "string"
-                    },
-                    "avatar": {
-                      "type": "string"
-                    },
-                    "created_at": {
-                      "type": "date"
-                    },
-                    "updated_at": {
-                      "type": "date"
-                    },
-                    "avatar_url": {
-                      "type": "string"
-                    }
-                  }
-                },
-                "example": {
-                  "id": "b6e5ff3e-d597-4f63-874f-350382478653",
-                  "name": "John Doe",
-                  "email": "johndoe@example.com.br",
-                  "avatar": null,
-                  "created_at": "2021-03-09T11:17:33.496Z",
-                  "updated_at": "2021-03-09T11:17:33.496Z",
-                  "avatar_url": null
-                }
-              }
-            }
-          },
-          "401": {
-            "description": "The authorization header is missing or the token is invalid",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ErrorResponse"
-                },
-                "example": {
-                  "name": "error",
-                  "message": "JWT token is missing"
-                }
-              }
-            }
-          },
-          "500": {
-            "description": "Internal Server error",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ErrorResponse"
-                },
-                "example": {
-                  "name": "error",
-                  "message": "Internal Server error"
-                }
-              }
-            }
-          }
-        },
-        "tags": ["User"]
-      },
-      "put": {
-        "description": "Updates a specific the user's information by id that is in the request header",
-        "summary": "Updates the user's information",
-        "security": [{ "BearerToken": [] }],
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "type": "object",
-                "properties": {
-                  "name": {
-                    "type": "string"
-                  },
-                  "email": {
-                    "type": "string"
-                  },
-                  "old_password": {
-                    "type": "string"
-                  },
-                  "password": {
-                    "type": "string"
-                  },
-                  "password_confirmation": {
-                    "type": "string"
-                  }
-                }
-              },
-              "example": {
-                "name": "John Doe",
-                "email": "johndoe@example.com.br",
-                "old_password":"P@ssw0rd",
-                "password":"123123",
-                "password_confirmation":"123123"
-              }
-            }
-          }
-        },
-        "responses": {
-          "200": {
-            "description": "Succesfully updated an user",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/User"
-                },
-                "example": {
-                  "id": "b6e5ff3e-d597-4f63-874f-350382478653",
-                  "name": "John Doe",
-                  "email": "johndoe@example.com.br",
-                  "avatar": null,
-                  "created_at": "2020-04-16T23:00:45.179Z",
-                  "updated_at": "2020-04-16T23:41:38.451Z",
-                  "avatar_url": null
-                }
-              }
-            }
-          },
-          "401": {
-            "description": "The authorization header is missing or the token is invalid",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ErrorResponse"
-                },
-                "example": {
-                  "name": "error",
-                  "message": "JWT token is missing"
-                }
-              }
-            }
-          },
-          "400": {
-            "description": "E-mail alredy regitered",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ErrorResponse"
-                },
-                "example": {
-                  "name": "error",
-                  "message": "E-mail alredy in use"
-                }
-              }
-            }
-          },
-          "500": {
-            "description": "Internal Server error",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ErrorResponse"
-                },
-                "example": {
-                  "name": "error",
-                  "message": "Internal Server error"
-                }
-              }
-            }
-          }
-        },
-        "tags": ["User"]
-      }
-    },
-    "users/avatar/": {
-      "patch": {
-        "description": "Updates a specific field the user's information by id that is in the request header",
-        "summary": "Updates specific fild in the user's information",
-        "security": [{ "BearerToken": [] }],
-        "requestBody": {
-          "content": {
-            "multipart/form-data": {
-              "schema": {
-                "type": "object",
-                "properties": {
-                  "avatar": {
-                    "type": "string",
-                    "format": "binary"
-                  }
-                }
-              },
-              "example": {
-                "name": "John Doe",
-                "email": "johndoe@example.com.br",
-                "old_password":"P@ssw0rd",
-                "password":"123123",
-                "password_confirmation":"123123"
-              }
-            }
-          }
-        },
-        "responses": {
-          "200": {
-            "description": "Succesfully updated an user",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/User"
-                },
-                "example": {
-                  "id": "b6e5ff3e-d597-4f63-874f-350382478653",
-                  "name": "John Doe",
-                  "email": "johndoe@example.com.br",
-                  "avatar": "444eed7ee22d4f2bd56a-adonis.png",
-                  "created_at": "2020-04-16T23:00:45.179Z",
-                  "updated_at": "2020-04-16T23:41:38.451Z",
-                  "avatar_url": "http://localhost:3333/444eed7ee22d4f2bd56a-adonis.png"
-                }
-              }
-            }
-          },
-          "401": {
-            "description": "The authorization header is missing or the token is invalid",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ErrorResponse"
-                },
-                "example": {
-                  "name": "error",
-                  "message": "JWT token is missing"
-                }
-              }
-            }
-          },
-          "400": {
-            "description": "User not existent or user not logged in",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ErrorResponse"
-                },
-                "example": {
-                  "name": "error",
-                  "message": "Only authenticated users can change avatar."
-                }
-              }
-            }
-          },
-          "500": {
-            "description": "Internal Server error",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ErrorResponse"
-                },
-                "example": {
-                  "name": "error",
-                  "message": "Internal Server error"
-                }
-              }
-            }
-          }
-        },
-        "tags": ["User"]
       }
     },
     "/appointments/": {
@@ -652,8 +461,8 @@
                 }
               },
               "example": {
-                "provider_id":"12d53e84-5fef-4585-b6e6-30eb25e03b42",
-                "date":"2021-02-22 14:00"
+                "provider_id": "12d53e84-5fef-4585-b6e6-30eb25e03b42",
+                "date": "2021-02-22 14:00"
               }
             }
           }
@@ -745,15 +554,17 @@
                     }
                   }
                 },
-                "example": [{
-                  "id": "b6e5ff3e-d597-4f63-874f-350382478653",
-                  "name": "John Doe",
-                  "email": "johndoe@example.com.br",
-                  "avatar": null,
-                  "created_at": "2021-03-09T11:17:33.496Z",
-                  "updated_at": "2021-03-09T11:17:33.496Z",
-                  "avatar_url": null
-                }]
+                "example": [
+                  {
+                    "id": "b6e5ff3e-d597-4f63-874f-350382478653",
+                    "name": "John Doe",
+                    "email": "johndoe@example.com.br",
+                    "avatar": null,
+                    "created_at": "2021-03-09T11:17:33.496Z",
+                    "updated_at": "2021-03-09T11:17:33.496Z",
+                    "avatar_url": null
+                  }
+                ]
               }
             }
           },
@@ -976,23 +787,180 @@
   },
   "components": {
     "schemas": {
-      "User": {
+      "EntityBase": {
         "type": "object",
         "properties": {
           "id": {
-            "type": "string"
+            "type": "string",
+            "example": "e1ecb723-6f8c-4ee6-86f6-64af13a77e8f"
           },
+          "createdAt": {
+            "type": "string",
+            "example": "2024-05-09 00:42:55.136515"
+          }
+        }
+      },
+      "UpdatedAt": {
+        "type": "object",
+        "properties": {
+          "updatedAt": {
+            "type": "string",
+            "example": "2024-05-09 00:42:55.136515"
+          }
+        }
+      },
+      "User": {
+        "required": ["name", "email", "password"],
+        "type": "object",
+        "properties": {
           "name": {
-            "type": "string"
+            "type": "string",
+            "example": "John"
           },
           "email": {
-            "type": "string"
+            "type": "string",
+            "example": "email@email.com"
           },
-          "created_at": {
-            "type": "string"
+          "password": {
+            "type": "string",
+            "example": "pass@123"
+          }
+        }
+      },
+      "UpdateUser": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "example": "John"
           },
-          "updated_at": {
-            "type": "string"
+          "email": {
+            "type": "string",
+            "email": "johndoe@example.com.br"
+          },
+          "password": {
+            "type": "string",
+            "example": "pass@12345"
+          },
+          "oldPassword": {
+            "type": "string",
+            "example": "P@ssw0rd"
+          },
+          "passwordConfirmation": {
+            "type": "string",
+            "example": "pass@12345"
+          }
+        }
+      },
+      "UploadAvatar": {
+        "type": "object",
+        "properties": {
+          "avatar": {
+            "type": "string",
+            "format": "binary"
+          }
+        }
+      },
+      "UserResponse": {
+        "allOf": [
+          {
+            "type": "object",
+            "properties": {
+              "name": {
+                "type": "string",
+                "example": "John"
+              },
+              "email": {
+                "type": "string",
+                "example": "email@email.com"
+              },
+              "avatarUrl": {
+                "type": "string",
+                "example": null
+              }
+            }
+          },
+          {
+            "$ref": "#/components/schemas/EntityBase"
+          },
+          {
+            "$ref": "#/components/schemas/UpdatedAt"
+          }
+        ]
+      },
+      "UserWithAvatarResponse": {
+        "allOf": [
+          { "$ref": "#/components/schemas/UserResponse" },
+          {
+            "type": "object",
+            "properties": {
+              "avatar": {
+                "type": "string",
+                "example": "6aacae7a79539950-ts-2.png"
+              },
+              "avatarUrl": {
+                "type": "string",
+                "example": "http://localhost:3333/avatar/6aacae7a79539950-ts-2.png"
+              }
+            }
+          },
+          { "$ref": "#/components/schemas/EntityBase" }
+        ]
+      },
+      "Session": {
+        "type": "object",
+        "properties": {
+          "email": {
+            "type": "string",
+            "example": "email@email.com"
+          },
+          "password": {
+            "type": "string",
+            "example": "pass@123"
+          }
+        }
+      },
+      "SessionResponse": {
+        "allOf": [
+          {
+            "type": "object",
+            "properties": {
+              "token": {
+                "type": "string",
+                "example": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpYXQiOjE3MTUzNDM5MjQsImV4cCI6MTcxNTM0NTcyNCwic3ViIjoiNjVlMTcxODQtNDRlOC00MTAxLWFhMTMtMjZmMzQxMmYyZDc2In0.NlSLdGPuff8i1Clwq_n-o9jLl2N2c6Ot8iozFLWB37c"
+              },
+              "user": {
+                "allOf": [
+                  { "$ref": "#/components/schemas/UserWithAvatarResponse" }
+                ]
+              }
+            }
+          }
+        ]
+      },
+      "ForgotPassword": {
+        "type": "object",
+        "properties": {
+          "email": {
+            "type": "string",
+            "example": "email+1@email.com"
+          }
+        }
+      },
+      "ResetPassword": {
+        "type": "object",
+        "properties": {
+          "password": {
+            "type": "string",
+            "example": "pass@12345"
+          },
+          "passwordConfirmation": {
+            "type": "string",
+            "example": "pass@12345"
+          },
+          "token": {
+            "type": "string",
+            "example": "99219f13-5d23-4148-9ec4-862a9e2446ef"
           }
         }
       },
@@ -1005,10 +973,10 @@
           "date": {
             "type": "date"
           },
-          "provider_id":{
+          "provider_id": {
             "type": "string"
           },
-          "user_id":{
+          "user_id": {
             "type": "string"
           },
           "created_at": {
@@ -1029,14 +997,91 @@
             "type": "string"
           }
         }
+      },
+      "ValidationError": {
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/ErrorResponse"
+          },
+          {
+            "example": {
+              "status": "error",
+              "message": "The \"property (example)\" parameter is missing in request body"
+            }
+          }
+        ]
+      },
+      "UnauthorizedError": {
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/ErrorResponse"
+          },
+          {
+            "example": {
+              "status": "error",
+              "message": "JWT token is missing from the request headers"
+            }
+          }
+        ]
+      },
+      "NotFoundError": {
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/ErrorResponse"
+          },
+          {
+            "example": {
+              "status": "error",
+              "message": "User not found"
+            }
+          }
+        ]
+      },
+      "ConflictError": {
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/ErrorResponse"
+          },
+          {
+            "example": {
+              "status": "error",
+              "message": "Entity resource already exists"
+            }
+          }
+        ]
+      },
+      "UnprocessableEntityError": {
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/ErrorResponse"
+          },
+          {
+            "example": {
+              "status": "error",
+              "message": "You need to inform the old password to set a new password"
+            }
+          }
+        ]
+      },
+      "InternalServerError": {
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/ErrorResponse"
+          },
+          {
+            "example": {
+              "status": "error",
+              "message": "Internal Server Error"
+            }
+          }
+        ]
       }
     },
     "securitySchemes": {
-      "BearerToken": {
+      "bearerAuth": {
         "type": "http",
         "scheme": "bearer",
-        "bearerFormat": "JWT",
-        "description": "Bearer token to authenticate the user"
+        "bearerFormat": "JWT"
       }
     }
   }
