@@ -1,6 +1,6 @@
 import { injectable, inject } from 'tsyringe';
 import { getDaysInMonth, getDate, isAfter } from 'date-fns';
-import IAppointmentsRepository from '../repositories/IAppointmentsRepository';
+import IAppointmentRepository from '../repositories/IAppointmentRepository';
 import IListAvailableProviderMonthRequestDTO, {
   ListAvailableProviderMonthResponse,
 } from '../dtos/IListAvailableProviderMonthDTO';
@@ -20,8 +20,8 @@ class ListProviderDailyAvailabilityByMonthService {
   private LIMIT_SECONDS = 59;
 
   constructor(
-    @inject('AppointmentsRepository')
-    private appointmentsRepository: IAppointmentsRepository,
+    @inject('AppointmentRepository')
+    private appointmentRepository: IAppointmentRepository,
   ) {}
 
   async execute(
@@ -29,7 +29,7 @@ class ListProviderDailyAvailabilityByMonthService {
   ): Promise<ListAvailableProviderMonthResponse> {
     const { providerId, month, year } = data;
     const appointments =
-      await this.appointmentsRepository.findAllInMonthFromProvider({
+      await this.appointmentRepository.findAllInMonthFromProvider({
         provider_id: providerId,
         month,
         year,

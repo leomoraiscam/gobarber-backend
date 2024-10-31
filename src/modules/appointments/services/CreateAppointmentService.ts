@@ -3,15 +3,15 @@ import { injectable, inject } from 'tsyringe';
 import Appointment from '@modules/appointments/infra/typeorm/entities/Appointments';
 import AppError from '@shared/errors/AppError';
 import ICacheProvider from '@shared/container/providers/CacheProvider/models/ICacheProvider';
-import IAppointmentsRepository from '../repositories/IAppointmentsRepository';
+import IAppointmentRepository from '../repositories/IAppointmentRepository';
 import INotificationRepository from '../../notifications/repositories/INotificationRepository';
 import ICreateAppointmentDTO from '../dtos/ICreateAppointmentDTO';
 
 @injectable()
 class CreateAppointmentService {
   constructor(
-    @inject('AppointmentsRepository')
-    private appointmentsRepository: IAppointmentsRepository,
+    @inject('AppointmentRepository')
+    private appointmentRepository: IAppointmentRepository,
     @inject('NotificationsRepository')
     private notificationsRepository: INotificationRepository,
     @inject('CacheProvider')
@@ -33,18 +33,18 @@ class CreateAppointmentService {
     if (getHours(appointmentDate) < 8 || getHours(appointmentDate) > 17) {
       throw new AppError(
         "You can't create an appointments between 8am and 5pm",
-        403,
+        422,
       );
     }
 
     const findAppointmentInTheSameDate =
-      await this.appointmentsRepository.findByDate(appointmentDate, providerId);
+      await this.appointmentRepository.findByDate(appointmentDate, providerId);
 
     if (findAppointmentInTheSameDate) {
       throw new AppError('This appointment is already booked', 409);
     }
 
-    const appointment = await this.appointmentsRepository.create({
+    const appointment = await this.appointmentRepository.create({
       providerId,
       userId,
       date: appointmentDate,
