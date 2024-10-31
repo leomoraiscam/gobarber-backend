@@ -6,7 +6,7 @@ import IListAvailableProviderHoursRequestDTO, {
 } from '../dtos/IListAvailableProviderHoursDTO';
 
 @injectable()
-class ListAvailableProviderHoursByDayService {
+class ListProviderDailyHourAvailabilityService {
   private APPOINTMENTS_SIZE = 10;
 
   private APPOINTMENTS_START_HOURS = 8;
@@ -58,4 +58,4 @@ class ListAvailableProviderHoursByDayService {
   }
 }
 
-export default ListAvailableProviderHoursByDayService;
+export default ListProviderDailyHourAvailabilityService;
