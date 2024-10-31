@@ -1,12 +1,12 @@
 import { uuid } from 'uuidv4';
 import { getMonth, getYear, getDate, isEqual } from 'date-fns';
-import IAppointmentsRepository from '@modules/appointments/repositories/IAppointmentsRepository';
+import IAppointmentRepository from '@modules/appointments/repositories/IAppointmentRepository';
 import ICreateAppointmentDTO from '@modules/appointments/dtos/ICreateAppointmentDTO';
 import IFindAllInMonthFromProviderDTO from '@modules/appointments/dtos/IFindAllInMonthFromProviderDTO';
 import IFindAllInDayFromProviderDTO from '@modules/appointments/dtos/IFindAllInDayFromProviderDTO';
 import Appointment from '../../infra/typeorm/entities/Appointments';
 
-class AppointmentRepository implements IAppointmentsRepository {
+class AppointmentRepository implements IAppointmentRepository {
   private Appointments: Appointment[] = [];
 
   public async findByDate(
