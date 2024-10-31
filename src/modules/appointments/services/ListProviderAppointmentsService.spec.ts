@@ -1,29 +1,29 @@
 import FakeCacheProvider from '@shared/container/providers/CacheProvider/fakes/FakeCacheProvider';
-import FakeAppointmentsRepository from '../repositories/fakes/FakeAppointmentsRepository';
+import FakeAppointmentRepository from '../repositories/fakes/FakeAppointmentRepository';
 import ListProviderAppointmentService from './ListProviderAppointmentsService';
 
 describe('ListProviderAppointmentsService', () => {
-  let fakeAppointmentsRepository: FakeAppointmentsRepository;
+  let fakeAppointmentRepository: FakeAppointmentRepository;
   let fakeCacheProvider: FakeCacheProvider;
   let listProviderAppointment: ListProviderAppointmentService;
 
   beforeEach(() => {
-    fakeAppointmentsRepository = new FakeAppointmentsRepository();
+    fakeAppointmentRepository = new FakeAppointmentRepository();
     fakeCacheProvider = new FakeCacheProvider();
     listProviderAppointment = new ListProviderAppointmentService(
-      fakeAppointmentsRepository,
+      fakeAppointmentRepository,
       fakeCacheProvider,
     );
   });
 
   it.skip('should be able to list the appointments on a specific day when received correct data', async () => {
     const [firstAppointment, secondAppointment] = await Promise.all([
-      fakeAppointmentsRepository.create({
+      fakeAppointmentRepository.create({
         providerId: 'faked-provider',
         userId: 'faked-user',
         date: new Date(2020, 4, 20, 14, 0, 0),
       }),
-      fakeAppointmentsRepository.create({
+      fakeAppointmentRepository.create({
         providerId: 'faked-provider',
         userId: 'faked-user',
         date: new Date(2020, 4, 20, 15, 0, 0),
