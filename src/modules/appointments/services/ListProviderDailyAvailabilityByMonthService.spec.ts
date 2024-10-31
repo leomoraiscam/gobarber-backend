@@ -1,15 +1,15 @@
-import FakeAppointmentsRepository from '../repositories/fakes/FakeAppointmentsRepository';
+import FakeAppointmentRepository from '../repositories/fakes/FakeAppointmentRepository';
 import ListProviderDailyAvailabilityByMonthService from './ListProviderDailyAvailabilityByMonthService';
 
 let listProviderDailyAvailabilityByMonthService: ListProviderDailyAvailabilityByMonthService;
-let fakeAppointmentsRepository: FakeAppointmentsRepository;
+let fakeAppointmentRepository: FakeAppointmentRepository;
 
 describe('ListProviderDailyAvailabilityByMonthService', () => {
   beforeEach(() => {
-    fakeAppointmentsRepository = new FakeAppointmentsRepository();
+    fakeAppointmentRepository = new FakeAppointmentRepository();
     listProviderDailyAvailabilityByMonthService =
       new ListProviderDailyAvailabilityByMonthService(
-        fakeAppointmentsRepository,
+        fakeAppointmentRepository,
       );
   });
 
