@@ -8,7 +8,7 @@ import {
 } from '../dtos/IListAvailableProviderMonthDTO';
 
 @injectable()
-export class ListProviderDailyAvailabilityByMonthService {
+export class ListProviderDailiesAvailabilityByMonthService {
   private APPOINTMENTS_SIZE = 10;
   private OFF_SET_MONTHS = 1;
   private OFF_SET_INDEX = 1;

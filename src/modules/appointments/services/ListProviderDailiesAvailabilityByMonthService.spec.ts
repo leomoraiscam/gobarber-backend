@@ -1,14 +1,14 @@
 import { FakeAppointmentRepository } from '../repositories/fakes/FakeAppointmentRepository';
-import { ListProviderDailyAvailabilityByMonthService } from './ListProviderDailyAvailabilityByMonthService';
+import { ListProviderDailiesAvailabilityByMonthService } from './ListProviderDailiesAvailabilityByMonthService';
 
-describe('ListProviderDailyAvailabilityByMonthService', () => {
-  let listProviderDailyAvailabilityByMonthService: ListProviderDailyAvailabilityByMonthService;
+describe('ListProviderDailiesAvailabilityByMonthService', () => {
+  let listProviderDailiesAvailabilityByMonthService: ListProviderDailiesAvailabilityByMonthService;
   let fakeAppointmentRepository: FakeAppointmentRepository;
 
   beforeEach(() => {
     fakeAppointmentRepository = new FakeAppointmentRepository();
-    listProviderDailyAvailabilityByMonthService =
-      new ListProviderDailyAvailabilityByMonthService(
+    listProviderDailiesAvailabilityByMonthService =
+      new ListProviderDailiesAvailabilityByMonthService(
         fakeAppointmentRepository,
       );
   });
@@ -73,7 +73,7 @@ describe('ListProviderDailyAvailabilityByMonthService', () => {
     ]);
 
     const availabilityDaysInMonth =
-      await listProviderDailyAvailabilityByMonthService.execute({
+      await listProviderDailiesAvailabilityByMonthService.execute({
         providerId: 'user',
         year: 2020,
         month: 5,

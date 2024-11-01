@@ -8,7 +8,7 @@ import {
 } from '../dtos/IListAvailableProviderHoursDTO';
 
 @injectable()
-export class ListProviderDailyHourAvailabilityService {
+export class ListProviderDailyHoursAvailabilityService {
   private APPOINTMENTS_SIZE = 10;
   private APPOINTMENTS_START_HOURS = 8;
   private OFF_SET_MONTHS = 1;

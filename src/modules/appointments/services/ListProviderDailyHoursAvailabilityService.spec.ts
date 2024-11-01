@@ -1,14 +1,14 @@
 import { FakeAppointmentRepository } from '../repositories/fakes/FakeAppointmentRepository';
-import { ListProviderDailyHourAvailabilityService } from './ListProviderDailyHourAvailabilityService';
+import { ListProviderDailyHoursAvailabilityService } from './ListProviderDailyHoursAvailabilityService';
 
-describe('ListProviderDailyHourAvailabilityService', () => {
+describe('ListProviderDailyHoursAvailabilityService', () => {
   let fakeAppointmentRepository: FakeAppointmentRepository;
-  let listProviderDailyHourAvailabilityService: ListProviderDailyHourAvailabilityService;
+  let listProviderDailyHoursAvailabilityService: ListProviderDailyHoursAvailabilityService;
 
   beforeEach(() => {
     fakeAppointmentRepository = new FakeAppointmentRepository();
-    listProviderDailyHourAvailabilityService =
-      new ListProviderDailyHourAvailabilityService(fakeAppointmentRepository);
+    listProviderDailyHoursAvailabilityService =
+      new ListProviderDailyHoursAvailabilityService(fakeAppointmentRepository);
   });
 
   it('should be able to list the hours available from provider by day when received correct data', async () => {
@@ -30,7 +30,7 @@ describe('ListProviderDailyHourAvailabilityService', () => {
     ]);
 
     const availableHours =
-      await listProviderDailyHourAvailabilityService.execute({
+      await listProviderDailyHoursAvailabilityService.execute({
         providerId: 'user',
         year: 2020,
         month: 5,
