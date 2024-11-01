@@ -4,7 +4,7 @@ import { IFindAllInMonthFromProviderDTO } from '../dtos/IFindAllInMonthFromProvi
 import { IFindAllInDayFromProviderDTO } from '../dtos/IFindAllInDayFromProviderDTO';
 import { IFindAppointmentByDateDTO } from '../dtos/IFindAppointmentByDateDTO';
 
-export default interface IAppointmentRepository {
+export interface IAppointmentRepository {
   findByDate(data: IFindAppointmentByDateDTO): Promise<Appointment | null>;
   findAllInDayFromProvider(
     data: IFindAllInDayFromProviderDTO,
