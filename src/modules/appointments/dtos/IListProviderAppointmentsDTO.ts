@@ -1,4 +1,4 @@
-export default interface IListProviderAppointmentsDTO {
+export interface IListProviderAppointmentsDTO {
   providerId: string;
   month: number;
   year: number;

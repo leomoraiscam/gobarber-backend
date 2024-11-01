@@ -1,4 +1,4 @@
-export default interface IListAvailableProviderMonthRequestDTO {
+export interface IListAvailableProviderMonthRequestDTO {
   providerId: string;
   month: number;
   year: number;
