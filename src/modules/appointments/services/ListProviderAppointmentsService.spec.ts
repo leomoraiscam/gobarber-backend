@@ -1,5 +1,5 @@
 import FakeCacheProvider from '@shared/container/providers/CacheProvider/fakes/FakeCacheProvider';
-import FakeAppointmentRepository from '../repositories/fakes/FakeAppointmentRepository';
+import { FakeAppointmentRepository } from '../repositories/fakes/FakeAppointmentRepository';
 import ListProviderAppointmentService from './ListProviderAppointmentsService';
 
 describe('ListProviderAppointmentsService', () => {
@@ -16,7 +16,7 @@ describe('ListProviderAppointmentsService', () => {
     );
   });
 
-  it.skip('should be able to list the appointments on a specific day when received correct data', async () => {
+  it('should be able to list the appointments on a specific day when received correct data', async () => {
     const [firstAppointment, secondAppointment] = await Promise.all([
       fakeAppointmentRepository.create({
         providerId: 'faked-provider',
@@ -37,6 +37,6 @@ describe('ListProviderAppointmentsService', () => {
       day: 20,
     });
 
-    expect(appointments).toBe([firstAppointment, secondAppointment]);
+    expect(appointments).toEqual([firstAppointment, secondAppointment]);
   });
 });
