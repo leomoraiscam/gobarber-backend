@@ -10,19 +10,19 @@ import {
 import { User } from '@modules/users/infra/typeorm/entities/User';
 
 @Entity('appointments')
-class Appointment {
+export class Appointment {
   @PrimaryGeneratedColumn('uuid')
   id: string;
 
-  @Column()
-  provider_id: string;
+  @Column({ name: 'provider_id' })
+  providerId: string;
 
   @ManyToOne(() => User)
   @JoinColumn({ name: 'provider_id' })
   provider: string;
 
-  @Column()
-  user_id: string;
+  @Column({ name: 'user_id' })
+  userId: string;
 
   @ManyToOne(() => User)
   @JoinColumn({ name: 'user_id' })
@@ -31,11 +31,9 @@ class Appointment {
   @Column('time with time zone')
   date: Date;
 
-  @CreateDateColumn()
-  created_at: Date;
+  @CreateDateColumn({ name: 'created_at' })
+  createdAt: Date;
 
-  @UpdateDateColumn()
-  updated_at: Date;
+  @UpdateDateColumn({ name: 'updated_at' })
+  updatedAt: Date;
 }
-
-export default Appointment;
