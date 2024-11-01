@@ -1,3 +1,4 @@
+/* eslint-disable lines-between-class-members */
 import { injectable, inject } from 'tsyringe';
 import { getDaysInMonth, getDate, isAfter } from 'date-fns';
 import IAppointmentRepository from '../repositories/IAppointmentRepository';
@@ -8,15 +9,10 @@ import IListAvailableProviderMonthRequestDTO, {
 @injectable()
 class ListProviderDailyAvailabilityByMonthService {
   private APPOINTMENTS_SIZE = 10;
-
   private OFF_SET_MONTHS = 1;
-
   private OFF_SET_INDEX = 1;
-
   private LIMIT_HOURS = 23;
-
   private LIMIT_MINUTES = 59;
-
   private LIMIT_SECONDS = 59;
 
   constructor(
@@ -30,20 +26,21 @@ class ListProviderDailyAvailabilityByMonthService {
     const { providerId, month, year } = data;
     const appointments =
       await this.appointmentRepository.findAllInMonthFromProvider({
-        provider_id: providerId,
+        providerId,
         month,
         year,
       });
-    const numberOfDaysInThisMonth = getDaysInMonth(
+    const numberOfDaysInMonth = getDaysInMonth(
       new Date(year, month - this.OFF_SET_MONTHS),
     );
     const eachDayArray = Array.from(
       {
-        length: numberOfDaysInThisMonth,
+        length: numberOfDaysInMonth,
       },
       (_, index) => index + this.OFF_SET_INDEX,
     );
-    const availabilityDaysInMonth = eachDayArray.map(day => {
+
+    return eachDayArray.map(day => {
       const compareDate = new Date(
         year,
         month - this.OFF_SET_MONTHS,
@@ -63,8 +60,6 @@ class ListProviderDailyAvailabilityByMonthService {
           hasAppointmentsInDay.length < this.APPOINTMENTS_SIZE,
       };
     });
-
-    return availabilityDaysInMonth;
   }
 }
 

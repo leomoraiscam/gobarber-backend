@@ -1,3 +1,4 @@
+/* eslint-disable lines-between-class-members */
 import { injectable, inject } from 'tsyringe';
 import { getHours, isAfter } from 'date-fns';
 import IAppointmentRepository from '../repositories/IAppointmentRepository';
@@ -8,9 +9,7 @@ import IListAvailableProviderHoursRequestDTO, {
 @injectable()
 class ListProviderDailyHourAvailabilityService {
   private APPOINTMENTS_SIZE = 10;
-
   private APPOINTMENTS_START_HOURS = 8;
-
   private OFF_SET_MONTHS = 1;
 
   constructor(
@@ -24,7 +23,7 @@ class ListProviderDailyHourAvailabilityService {
     const { providerId, month, year, day } = data;
     const appointments =
       await this.appointmentRepository.findAllInDayFromProvider({
-        provider_id: providerId,
+        providerId,
         month,
         year,
         day,
@@ -36,7 +35,8 @@ class ListProviderDailyHourAvailabilityService {
       (_, index) => index + this.APPOINTMENTS_START_HOURS,
     );
     const currentDate = new Date(Date.now());
-    const availabilityHours = eachHourArray.map(hour => {
+
+    return eachHourArray.map(hour => {
       const hasAppointmentInHour = appointments.find(
         appointment => getHours(appointment.date) === hour,
       );
@@ -53,8 +53,6 @@ class ListProviderDailyHourAvailabilityService {
           !hasAppointmentInHour && isAfter(appointmentDate, currentDate),
       };
     });
-
-    return availabilityHours;
   }
 }
 

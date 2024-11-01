@@ -17,13 +17,14 @@ class ListProviderAppointmentsService {
   async execute(data: IListProviderAppointmentsDTO): Promise<Appointment[]> {
     const { providerId, month, year, day } = data;
     const cacheKey = `provider-appointments: ${providerId}:${year}-${month}-${day}`;
+
     let appointments = await this.cacheProvider.recover<Appointment[]>(
       cacheKey,
     );
 
     if (!appointments) {
       appointments = await this.appointmentRepository.findAllInDayFromProvider({
-        provider_id: providerId,
+        providerId,
         month,
         year,
         day,
