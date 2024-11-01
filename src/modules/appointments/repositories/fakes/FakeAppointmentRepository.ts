@@ -4,7 +4,7 @@ import { IAppointmentRepository } from '@modules/appointments/repositories/IAppo
 import { ICreateAppointmentDTO } from '@modules/appointments/dtos/ICreateAppointmentDTO';
 import { IFindAllInMonthFromProviderDTO } from '@modules/appointments/dtos/IFindAllInMonthFromProviderDTO';
 import { IFindAllInDayFromProviderDTO } from '@modules/appointments/dtos/IFindAllInDayFromProviderDTO';
-import { Appointment } from '../../infra/typeorm/entities/Appointments';
+import { Appointment } from '../../infra/typeorm/entities/Appointment';
 import { IFindAppointmentByDateDTO } from '../../dtos/IFindAppointmentByDateDTO';
 
 export class FakeAppointmentRepository implements IAppointmentRepository {
