@@ -4,7 +4,7 @@ import { IAppointmentRepository } from '@modules/appointments/repositories/IAppo
 import { ICreateAppointmentDTO } from '@modules/appointments/dtos/ICreateAppointmentDTO';
 import { IFindAllInMonthFromProviderDTO } from '@modules/appointments/dtos/IFindAllInMonthFromProviderDTO';
 import { IFindAllInDayFromProviderDTO } from '@modules/appointments/dtos/IFindAllInDayFromProviderDTO';
-import Appointment from '../../infra/typeorm/entities/Appointments';
+import { Appointment } from '../../infra/typeorm/entities/Appointments';
 import { IFindAppointmentByDateDTO } from '../../dtos/IFindAppointmentByDateDTO';
 
 export class FakeAppointmentRepository implements IAppointmentRepository {
@@ -18,7 +18,7 @@ export class FakeAppointmentRepository implements IAppointmentRepository {
     return this.Appointments.find(
       appointment =>
         isEqual(appointment.date, date) &&
-        appointment.provider_id === providerId,
+        appointment.providerId === providerId,
     );
   }
 
@@ -29,7 +29,7 @@ export class FakeAppointmentRepository implements IAppointmentRepository {
 
     return this.Appointments.filter(
       appointment =>
-        appointment.provider_id === providerId &&
+        appointment.providerId === providerId &&
         getDate(appointment.date) === day &&
         getMonth(appointment.date) + 1 === month &&
         getYear(appointment.date) === year,
@@ -43,7 +43,7 @@ export class FakeAppointmentRepository implements IAppointmentRepository {
 
     return this.Appointments.filter(
       appointment =>
-        appointment.provider_id === providerId &&
+        appointment.providerId === providerId &&
         getMonth(appointment.date) + 1 === month &&
         getYear(appointment.date) === year,
     );
@@ -56,8 +56,8 @@ export class FakeAppointmentRepository implements IAppointmentRepository {
     Object.assign(appointment, {
       id: uuidV4(),
       date,
-      provider_id: providerId,
-      user_id: userId,
+      providerId,
+      userId,
     });
 
     this.Appointments.push(appointment);
