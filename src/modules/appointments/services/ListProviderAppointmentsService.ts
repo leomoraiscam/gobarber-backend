@@ -3,7 +3,7 @@ import ICacheProvider from '@shared/container/providers/CacheProvider/models/ICa
 import { classToClass } from 'class-transformer';
 import IAppointmentRepository from '../repositories/IAppointmentRepository';
 import Appointment from '../infra/typeorm/entities/Appointments';
-import IListProviderAppointmentsDTO from '../dtos/IListProviderAppointmentsDTO';
+import { IListProviderAppointmentsDTO } from '../dtos/IListProviderAppointmentsDTO';
 
 @injectable()
 class ListProviderAppointmentsService {

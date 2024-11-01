@@ -2,7 +2,8 @@
 import { injectable, inject } from 'tsyringe';
 import { getDaysInMonth, getDate, isAfter } from 'date-fns';
 import IAppointmentRepository from '../repositories/IAppointmentRepository';
-import IListAvailableProviderMonthRequestDTO, {
+import {
+  IListAvailableProviderMonthRequestDTO,
   ListAvailableProviderMonthResponse,
 } from '../dtos/IListAvailableProviderMonthDTO';
 

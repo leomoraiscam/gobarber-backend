@@ -5,7 +5,7 @@ import AppError from '@shared/errors/AppError';
 import ICacheProvider from '@shared/container/providers/CacheProvider/models/ICacheProvider';
 import IAppointmentRepository from '../repositories/IAppointmentRepository';
 import INotificationRepository from '../../notifications/repositories/INotificationRepository';
-import ICreateAppointmentDTO from '../dtos/ICreateAppointmentDTO';
+import { ICreateAppointmentDTO } from '../dtos/ICreateAppointmentDTO';
 
 @injectable()
 class CreateAppointmentService {
