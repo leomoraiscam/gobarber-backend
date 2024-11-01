@@ -8,7 +8,7 @@ import INotificationRepository from '../../notifications/repositories/INotificat
 import { ICreateAppointmentDTO } from '../dtos/ICreateAppointmentDTO';
 
 @injectable()
-class CreateAppointmentService {
+export class CreateAppointmentService {
   constructor(
     @inject('AppointmentRepository')
     private appointmentRepository: IAppointmentRepository,
@@ -69,5 +69,3 @@ class CreateAppointmentService {
     return appointment;
   }
 }
-
-export default CreateAppointmentService;

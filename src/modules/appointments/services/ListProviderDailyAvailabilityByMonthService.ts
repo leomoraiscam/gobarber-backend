@@ -8,7 +8,7 @@ import {
 } from '../dtos/IListAvailableProviderMonthDTO';
 
 @injectable()
-class ListProviderDailyAvailabilityByMonthService {
+export class ListProviderDailyAvailabilityByMonthService {
   private APPOINTMENTS_SIZE = 10;
   private OFF_SET_MONTHS = 1;
   private OFF_SET_INDEX = 1;
@@ -63,5 +63,3 @@ class ListProviderDailyAvailabilityByMonthService {
     });
   }
 }
-
-export default ListProviderDailyAvailabilityByMonthService;

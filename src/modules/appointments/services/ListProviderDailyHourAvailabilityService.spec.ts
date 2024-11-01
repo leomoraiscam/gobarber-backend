@@ -1,5 +1,5 @@
 import { FakeAppointmentRepository } from '../repositories/fakes/FakeAppointmentRepository';
-import ListProviderDailyHourAvailabilityService from './ListProviderDailyHourAvailabilityService';
+import { ListProviderDailyHourAvailabilityService } from './ListProviderDailyHourAvailabilityService';
 
 describe('ListProviderDailyHourAvailabilityService', () => {
   let fakeAppointmentRepository: FakeAppointmentRepository;

@@ -6,7 +6,7 @@ import { Appointment } from '../infra/typeorm/entities/Appointment';
 import { IListProviderAppointmentsDTO } from '../dtos/IListProviderAppointmentsDTO';
 
 @injectable()
-class ListProviderAppointmentsService {
+export class ListProviderAppointmentsService {
   constructor(
     @inject('AppointmentRepository')
     private appointmentRepository: IAppointmentRepository,
@@ -36,5 +36,3 @@ class ListProviderAppointmentsService {
     return appointments;
   }
 }
-
-export default ListProviderAppointmentsService;

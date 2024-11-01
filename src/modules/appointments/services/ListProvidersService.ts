@@ -5,7 +5,7 @@ import { IUserRepository } from '../../users/repositories/IUserRepository';
 import { User } from '../../users/infra/typeorm/entities/User';
 
 @injectable()
-class ListProvidersService {
+export class ListProvidersService {
   constructor(
     @inject('UserRepository')
     private userRepository: IUserRepository,
@@ -30,5 +30,3 @@ class ListProvidersService {
     return users;
   }
 }
-
-export default ListProvidersService;

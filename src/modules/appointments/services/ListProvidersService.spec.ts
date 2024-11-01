@@ -1,6 +1,6 @@
 import FakeCacheProvider from '@shared/container/providers/CacheProvider/fakes/FakeCacheProvider';
 import { FakeUserRepository } from '../../users/repositories/fakes/FakeUserRepository';
-import ListProvidersService from './ListProvidersService';
+import { ListProvidersService } from './ListProvidersService';
 
 describe('ListProvidersService', () => {
   let fakeUserRepository: FakeUserRepository;
