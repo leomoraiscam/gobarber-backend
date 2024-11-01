@@ -3,7 +3,7 @@ import { container } from 'tsyringe';
 import { classToClass } from 'class-transformer';
 import { ListProvidersService } from '@modules/appointments/services/ListProvidersService';
 
-export class ListProvidersController {
+class ListProvidersController {
   public async handle(request: Request, response: Response): Promise<Response> {
     const { id: userId } = request.user;
     const listProvidersService = container.resolve(ListProvidersService);

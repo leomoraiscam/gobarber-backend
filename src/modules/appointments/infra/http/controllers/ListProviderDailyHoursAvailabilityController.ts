@@ -2,7 +2,7 @@ import { Request, Response } from 'express';
 import { container } from 'tsyringe';
 import { ListProviderDailyHoursAvailabilityService } from '@modules/appointments/services/ListProviderDailyHoursAvailabilityService';
 
-export class ListProviderDailyHoursAvailabilityController {
+class ListProviderDailyHoursAvailabilityController {
   public async handle(request: Request, response: Response): Promise<Response> {
     const { providerId } = request.params;
     const { month, year, day } = request.query;
