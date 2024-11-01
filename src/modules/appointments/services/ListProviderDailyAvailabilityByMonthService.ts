@@ -1,7 +1,7 @@
 /* eslint-disable lines-between-class-members */
 import { injectable, inject } from 'tsyringe';
 import { getDaysInMonth, getDate, isAfter } from 'date-fns';
-import IAppointmentRepository from '../repositories/IAppointmentRepository';
+import { IAppointmentRepository } from '../repositories/IAppointmentRepository';
 import {
   IListAvailableProviderMonthRequestDTO,
   ListAvailableProviderMonthResponse,
