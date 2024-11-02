@@ -24,7 +24,7 @@ providerRoutes.get(
       providerId: Joi.string().uuid().required(),
     },
   }),
-  listProviderDailyHoursAvailabilityController.index,
+  listProviderDailyHoursAvailabilityController.handle,
 );
 
 export { providerRoutes };
