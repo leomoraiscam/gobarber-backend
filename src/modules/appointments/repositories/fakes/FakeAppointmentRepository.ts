@@ -1,5 +1,4 @@
 import { uuid as uuidV4 } from 'uuidv4';
-import { getMonth, getYear, getDate, isEqual } from 'date-fns';
 import { IAppointmentRepository } from '@modules/appointments/repositories/IAppointmentRepository';
 import { ICreateAppointmentDTO } from '@modules/appointments/dtos/ICreateAppointmentDTO';
 import { IFindMonthlyAppointmentsByProviderDTO } from '@modules/appointments/dtos/IFindMonthlyAppointmentsByProviderDTO';
@@ -17,7 +16,7 @@ export class FakeAppointmentRepository implements IAppointmentRepository {
 
     return this.Appointments.find(
       appointment =>
-        isEqual(appointment.date, date) &&
+        appointment.date.getTime() === date.getTime() &&
         appointment.providerId === providerId,
     );
   }
@@ -27,13 +26,15 @@ export class FakeAppointmentRepository implements IAppointmentRepository {
   ): Promise<Appointment[]> {
     const { providerId, day, month, year } = data;
 
-    return this.Appointments.filter(
-      appointment =>
+    return this.Appointments.filter(appointment => {
+      const appointmentDate = appointment.date;
+      return (
         appointment.providerId === providerId &&
-        getDate(appointment.date) === day &&
-        getMonth(appointment.date) + 1 === month &&
-        getYear(appointment.date) === year,
-    );
+        appointmentDate.getDate() === day &&
+        appointmentDate.getMonth() + 1 === month &&
+        appointmentDate.getFullYear() === year
+      );
+    });
   }
 
   public async findAllMonthlyByProvider(
@@ -41,12 +42,14 @@ export class FakeAppointmentRepository implements IAppointmentRepository {
   ): Promise<Appointment[]> {
     const { providerId, month, year } = data;
 
-    return this.Appointments.filter(
-      appointment =>
+    return this.Appointments.filter(appointment => {
+      const appointmentDate = appointment.date;
+      return (
         appointment.providerId === providerId &&
-        getMonth(appointment.date) + 1 === month &&
-        getYear(appointment.date) === year,
-    );
+        appointmentDate.getMonth() + 1 === month &&
+        appointmentDate.getFullYear() === year
+      );
+    });
   }
 
   public async create(data: ICreateAppointmentDTO): Promise<Appointment> {
