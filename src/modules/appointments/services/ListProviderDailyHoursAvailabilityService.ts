@@ -2,10 +2,8 @@
 import { injectable, inject } from 'tsyringe';
 import { getHours, isAfter } from 'date-fns';
 import { IAppointmentRepository } from '../repositories/IAppointmentRepository';
-import {
-  IListAvailableProviderHoursRequestDTO,
-  ListAvailableProviderHoursResponse,
-} from '../dtos/IListAvailableProviderHoursDTO';
+import { ListProviderAvailableHoursResponse } from '../dtos/ListProviderAvailableHoursDTO';
+import { IFindDailyAppointmentsByProviderDTO } from '../dtos/IFindDailyAppointmentsByProviderDTO';
 
 @injectable()
 export class ListProviderDailyHoursAvailabilityService {
@@ -19,11 +17,11 @@ export class ListProviderDailyHoursAvailabilityService {
   ) {}
 
   async execute(
-    data: IListAvailableProviderHoursRequestDTO,
-  ): Promise<ListAvailableProviderHoursResponse> {
+    data: IFindDailyAppointmentsByProviderDTO,
+  ): Promise<ListProviderAvailableHoursResponse> {
     const { providerId, month, year, day } = data;
     const appointments =
-      await this.appointmentRepository.findAllInDayFromProvider({
+      await this.appointmentRepository.findAllDailyByProvider({
         providerId,
         month,
         year,

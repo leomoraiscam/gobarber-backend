@@ -1,4 +1,4 @@
-export interface IFindAllInDayFromProviderDTO {
+export interface IFindDailyAppointmentsByProviderDTO {
   providerId: string;
   day: number;
   month: number;

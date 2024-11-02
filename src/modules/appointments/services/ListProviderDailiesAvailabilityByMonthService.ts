@@ -2,19 +2,16 @@
 import { injectable, inject } from 'tsyringe';
 import { getDaysInMonth, getDate, isAfter } from 'date-fns';
 import { IAppointmentRepository } from '../repositories/IAppointmentRepository';
-import {
-  IListAvailableProviderMonthRequestDTO,
-  ListAvailableProviderMonthResponse,
-} from '../dtos/IListAvailableProviderMonthDTO';
+import { ListProviderAvailableDaysResponse } from '../dtos/ListProviderAvailableDaysDTO';
+import { IFindMonthlyAppointmentsByProviderDTO } from '../dtos/IFindMonthlyAppointmentsByProviderDTO';
 
 @injectable()
 export class ListProviderDailiesAvailabilityByMonthService {
-  private APPOINTMENTS_SIZE = 10;
-  private OFF_SET_MONTHS = 1;
-  private OFF_SET_INDEX = 1;
-  private LIMIT_HOURS = 23;
-  private LIMIT_MINUTES = 59;
-  private LIMIT_SECONDS = 59;
+  private readonly MAX_APPOINTMENTS_PER_DAY = 10;
+  private readonly MONTH_OFFSET = 1;
+  private readonly END_OF_DAY_HOUR = 23;
+  private readonly END_OF_HOUR_MINUTE = 59;
+  private readonly LAST_SECOND_OF_MINUTE = 59;
 
   constructor(
     @inject('AppointmentRepository')
@@ -22,33 +19,33 @@ export class ListProviderDailiesAvailabilityByMonthService {
   ) {}
 
   async execute(
-    data: IListAvailableProviderMonthRequestDTO,
-  ): Promise<ListAvailableProviderMonthResponse> {
+    data: IFindMonthlyAppointmentsByProviderDTO,
+  ): Promise<ListProviderAvailableDaysResponse> {
     const { providerId, month, year } = data;
     const appointments =
-      await this.appointmentRepository.findAllInMonthFromProvider({
+      await this.appointmentRepository.findAllMonthlyByProvider({
         providerId,
         month,
         year,
       });
     const numberOfDaysInMonth = getDaysInMonth(
-      new Date(year, month - this.OFF_SET_MONTHS),
+      new Date(year, month - this.MONTH_OFFSET),
     );
-    const eachDayArray = Array.from(
+    const eachDay = Array.from(
       {
         length: numberOfDaysInMonth,
       },
-      (_, index) => index + this.OFF_SET_INDEX,
+      (_, index) => index + 1,
     );
 
-    return eachDayArray.map(day => {
-      const compareDate = new Date(
+    return eachDay.map(day => {
+      const compareEndDate = new Date(
         year,
-        month - this.OFF_SET_MONTHS,
+        month - this.MONTH_OFFSET,
         day,
-        this.LIMIT_HOURS,
-        this.LIMIT_MINUTES,
-        this.LIMIT_SECONDS,
+        this.END_OF_DAY_HOUR,
+        this.END_OF_HOUR_MINUTE,
+        this.LAST_SECOND_OF_MINUTE,
       );
       const hasAppointmentsInDay = appointments.filter(
         appointment => getDate(appointment.date) === day,
@@ -57,8 +54,8 @@ export class ListProviderDailiesAvailabilityByMonthService {
       return {
         day,
         available:
-          isAfter(compareDate, new Date()) &&
-          hasAppointmentsInDay.length < this.APPOINTMENTS_SIZE,
+          isAfter(compareEndDate, new Date()) &&
+          hasAppointmentsInDay.length < this.MAX_APPOINTMENTS_PER_DAY,
       };
     });
   }

@@ -1,8 +1,8 @@
 import { getRepository, Repository, Raw } from 'typeorm';
 import { IAppointmentRepository } from '@modules/appointments/repositories/IAppointmentRepository';
 import { ICreateAppointmentDTO } from '@modules/appointments/dtos/ICreateAppointmentDTO';
-import { IFindAllInMonthFromProviderDTO } from '@modules/appointments/dtos/IFindAllInMonthFromProviderDTO';
-import { IFindAllInDayFromProviderDTO } from '@modules/appointments/dtos/IFindAllInDayFromProviderDTO';
+import { IFindDailyAppointmentsByProviderDTO } from '@modules/appointments/dtos/IFindDailyAppointmentsByProviderDTO';
+import { IFindMonthlyAppointmentsByProviderDTO } from '@modules/appointments/dtos/IFindMonthlyAppointmentsByProviderDTO';
 import { IFindAppointmentByDateDTO } from '@modules/appointments/dtos/IFindAppointmentByDateDTO';
 import { Appointment } from '../entities/Appointment';
 
@@ -26,25 +26,8 @@ export class AppointmentRepository implements IAppointmentRepository {
     });
   }
 
-  public async findAllInMonthFromProvider(
-    data: IFindAllInMonthFromProviderDTO,
-  ): Promise<Appointment[]> {
-    const { providerId, month, year } = data;
-    const parserMonth = String(month).padStart(2, '0');
-
-    return this.ormRepository.find({
-      where: {
-        providerId,
-        date: Raw(
-          dateFieldName =>
-            `to_char(${dateFieldName},'MM-YYYY') = '${parserMonth}-${year}'`,
-        ),
-      },
-    });
-  }
-
-  public async findAllInDayFromProvider(
-    data: IFindAllInDayFromProviderDTO,
+  public async findAllDailyByProvider(
+    data: IFindDailyAppointmentsByProviderDTO,
   ): Promise<Appointment[]> {
     const { providerId, day, month, year } = data;
     const parserDay = String(day).padStart(2, '0');
@@ -59,6 +42,23 @@ export class AppointmentRepository implements IAppointmentRepository {
         ),
       },
       relations: ['user'],
+    });
+  }
+
+  public async findAllMonthlyByProvider(
+    data: IFindMonthlyAppointmentsByProviderDTO,
+  ): Promise<Appointment[]> {
+    const { providerId, month, year } = data;
+    const parserMonth = String(month).padStart(2, '0');
+
+    return this.ormRepository.find({
+      where: {
+        providerId,
+        date: Raw(
+          dateFieldName =>
+            `to_char(${dateFieldName},'MM-YYYY') = '${parserMonth}-${year}'`,
+        ),
+      },
     });
   }
 
