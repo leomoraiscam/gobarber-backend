@@ -4,6 +4,7 @@ import { ListProviderDailiesAvailabilityByMonthService } from './ListProviderDai
 describe('ListProviderDailiesAvailabilityByMonthService', () => {
   let listProviderDailiesAvailabilityByMonthService: ListProviderDailiesAvailabilityByMonthService;
   let fakeAppointmentRepository: FakeAppointmentRepository;
+  const OriginalDate = Date;
 
   beforeEach(() => {
     fakeAppointmentRepository = new FakeAppointmentRepository();
@@ -11,9 +12,20 @@ describe('ListProviderDailiesAvailabilityByMonthService', () => {
       new ListProviderDailiesAvailabilityByMonthService(
         fakeAppointmentRepository,
       );
+    global.Date = jest.fn((...args: unknown[]) => {
+      if (args.length === 0) {
+        return new OriginalDate(2020, 4, 20, 11, 0, 0);
+      }
+
+      return Reflect.construct(OriginalDate, args);
+    }) as unknown as DateConstructor;
+
+    global.Date.now = OriginalDate.now;
+    global.Date.parse = OriginalDate.parse;
+    global.Date.UTC = OriginalDate.UTC;
   });
 
-  it.skip('should be able to list the month availability from provider when received correct data', async () => {
+  it('should be able to list the month availability from provider when received correct data', async () => {
     await Promise.all([
       fakeAppointmentRepository.create({
         providerId: 'user',
@@ -81,10 +93,37 @@ describe('ListProviderDailiesAvailabilityByMonthService', () => {
 
     expect(availabilityDaysInMonth).toEqual(
       expect.arrayContaining([
-        { day: 19, available: true },
-        { day: 20, available: false },
-        { day: 21, available: true },
-        { day: 22, available: true },
+        { available: false, day: 1 },
+        { available: false, day: 2 },
+        { available: false, day: 3 },
+        { available: false, day: 4 },
+        { available: false, day: 5 },
+        { available: false, day: 6 },
+        { available: false, day: 7 },
+        { available: false, day: 8 },
+        { available: false, day: 9 },
+        { available: false, day: 10 },
+        { available: false, day: 11 },
+        { available: false, day: 12 },
+        { available: false, day: 13 },
+        { available: false, day: 14 },
+        { available: false, day: 15 },
+        { available: false, day: 16 },
+        { available: false, day: 17 },
+        { available: false, day: 18 },
+        { available: false, day: 19 },
+        { available: false, day: 20 },
+        { available: true, day: 21 },
+        { available: true, day: 22 },
+        { available: true, day: 23 },
+        { available: true, day: 24 },
+        { available: true, day: 25 },
+        { available: true, day: 26 },
+        { available: true, day: 27 },
+        { available: true, day: 28 },
+        { available: true, day: 29 },
+        { available: true, day: 30 },
+        { available: true, day: 31 },
       ]),
     );
   });
