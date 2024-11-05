@@ -2,7 +2,7 @@ import { startOfHour, isBefore, getHours, format } from 'date-fns';
 import { injectable, inject } from 'tsyringe';
 import { Appointment } from '@modules/appointments/infra/typeorm/entities/Appointment';
 import AppError from '@shared/errors/AppError';
-import ICacheProvider from '@shared/container/providers/CacheProvider/models/ICacheProvider';
+import { ICacheProvider } from '@shared/container/providers/CacheProvider/models/ICacheProvider';
 import { IAppointmentRepository } from '../repositories/IAppointmentRepository';
 import INotificationRepository from '../../notifications/repositories/INotificationRepository';
 import { ICreateAppointmentDTO } from '../dtos/ICreateAppointmentDTO';

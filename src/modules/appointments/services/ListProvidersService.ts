@@ -1,5 +1,5 @@
 import { injectable, inject } from 'tsyringe';
-import ICacheProvider from '@shared/container/providers/CacheProvider/models/ICacheProvider';
+import { ICacheProvider } from '@shared/container/providers/CacheProvider/models/ICacheProvider';
 import { classToClass } from 'class-transformer';
 import { IUserRepository } from '../../users/repositories/IUserRepository';
 import { User } from '../../users/infra/typeorm/entities/User';
