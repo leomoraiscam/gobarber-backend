@@ -10,6 +10,8 @@ import { IMailTemplateProvider } from './MailTemplateProvider/models/IMailTempla
 import { HandlebarsMailTemplateProvider } from './MailTemplateProvider/implementations/HandlebarsMailTemplateProvider';
 import { IHashProvider } from './HashProvider/models/IHashProvider';
 import { BCryptHashProvider } from './HashProvider/implementations/BCryptHashProvider';
+import { IDateProvider } from './DateProvider/models/IDateProvider';
+import { DateFnsProvider } from './DateProvider/implementations/DateFnsProvider';
 
 container.registerSingleton<IStorageProvider>(
   'StorageProvider',
@@ -27,3 +29,5 @@ container.registerInstance<IMailProvider>(
 );
 
 container.registerSingleton<IHashProvider>('HashProvider', BCryptHashProvider);
+
+container.registerSingleton<IDateProvider>('DateProvider', DateFnsProvider);
