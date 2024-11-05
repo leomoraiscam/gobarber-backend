@@ -1,4 +1,4 @@
-import FakeCacheProvider from '@shared/container/providers/CacheProvider/fakes/FakeCacheProvider';
+import { FakeCacheProvider } from '@shared/container/providers/CacheProvider/fakes/FakeCacheProvider';
 import { FakeUserRepository } from '../../users/repositories/fakes/FakeUserRepository';
 import { ListProvidersService } from './ListProvidersService';
 

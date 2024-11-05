@@ -1,6 +1,6 @@
 import AppError from '@shared/errors/AppError';
 import FakeNotificationsRepository from '@modules/notifications/repositories/fakes/FakeNotificationRepository';
-import FakeCacheProvider from '@shared/container/providers/CacheProvider/fakes/FakeCacheProvider';
+import { FakeCacheProvider } from '@shared/container/providers/CacheProvider/fakes/FakeCacheProvider';
 import { FakeAppointmentRepository } from '../repositories/fakes/FakeAppointmentRepository';
 import { CreateAppointmentService } from './CreateAppointmentService';
 
