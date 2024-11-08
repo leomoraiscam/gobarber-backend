@@ -1,11 +1,13 @@
 import { AppError } from '@shared/errors/AppError';
 import { FakeHashProvider } from '@shared/container/providers/HashProvider/fakes/FakeHashProvider';
+import { FakeDateProvider } from '@shared/container/providers/DateProvider/fakes/FakeDateProvider';
 import { FakeUserTokenRepository } from '../repositories/fakes/FakeUserTokenRepository';
 import { FakeUserRepository } from '../repositories/fakes/FakeUserRepository';
 import { ResetPasswordService } from './ResetPasswordService';
 
 describe('ResetPasswordService', () => {
   let fakeUserRepository: FakeUserRepository;
+  let fakeDateProvider: FakeDateProvider;
   let fakeUserTokenRepository: FakeUserTokenRepository;
   let fakeHashProvider: FakeHashProvider;
   let resetPasswordService: ResetPasswordService;
@@ -14,10 +16,12 @@ describe('ResetPasswordService', () => {
     fakeUserRepository = new FakeUserRepository();
     fakeUserTokenRepository = new FakeUserTokenRepository();
     fakeHashProvider = new FakeHashProvider();
+    fakeDateProvider = new FakeDateProvider();
     resetPasswordService = new ResetPasswordService(
       fakeUserRepository,
       fakeUserTokenRepository,
       fakeHashProvider,
+      fakeDateProvider,
     );
   });
 
@@ -61,11 +65,9 @@ describe('ResetPasswordService', () => {
   });
 
   it('should not be able to reset password when passed more than 2 hours', async () => {
-    jest.spyOn(Date, 'now').mockImplementation(() => {
-      const customDate = new Date();
-
-      return customDate.setHours(customDate.getHours() + 3);
-    });
+    jest
+      .spyOn(fakeDateProvider, 'dateNow')
+      .mockReturnValueOnce(new Date(2020, 4, 20, 11, 0, 0));
 
     const { id: userId } = await fakeUserRepository.create({
       name: 'john Doe',
@@ -73,6 +75,14 @@ describe('ResetPasswordService', () => {
       password: 'password',
     });
     const { token } = await fakeUserTokenRepository.generate(userId);
+
+    jest.spyOn(fakeUserTokenRepository, 'findByToken').mockResolvedValueOnce({
+      userId,
+      token,
+      createdAt: new Date(2020, 4, 20, 8, 0, 0),
+      id: 'faked-id',
+      updatedAt: null,
+    });
 
     await expect(
       resetPasswordService.execute({

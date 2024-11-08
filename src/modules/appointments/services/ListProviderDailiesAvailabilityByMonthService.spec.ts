@@ -1,16 +1,20 @@
+import { FakeDateProvider } from '@shared/container/providers/DateProvider/fakes/FakeDateProvider';
 import { FakeAppointmentRepository } from '../repositories/fakes/FakeAppointmentRepository';
 import { ListProviderDailiesAvailabilityByMonthService } from './ListProviderDailiesAvailabilityByMonthService';
 
 describe('ListProviderDailiesAvailabilityByMonthService', () => {
   let listProviderDailiesAvailabilityByMonthService: ListProviderDailiesAvailabilityByMonthService;
   let fakeAppointmentRepository: FakeAppointmentRepository;
+  let fakeDateProvider: FakeDateProvider;
   const OriginalDate = Date;
 
   beforeEach(() => {
     fakeAppointmentRepository = new FakeAppointmentRepository();
+    fakeDateProvider = new FakeDateProvider();
     listProviderDailiesAvailabilityByMonthService =
       new ListProviderDailiesAvailabilityByMonthService(
         fakeAppointmentRepository,
+        fakeDateProvider,
       );
     global.Date = jest.fn((...args: unknown[]) => {
       if (args.length === 0) {

@@ -1,14 +1,20 @@
+import { FakeDateProvider } from '@shared/container/providers/DateProvider/fakes/FakeDateProvider';
 import { FakeAppointmentRepository } from '../repositories/fakes/FakeAppointmentRepository';
 import { ListProviderDailyHoursAvailabilityService } from './ListProviderDailyHoursAvailabilityService';
 
 describe('ListProviderDailyHoursAvailabilityService', () => {
   let fakeAppointmentRepository: FakeAppointmentRepository;
+  let fakeDateProvider: FakeDateProvider;
   let listProviderDailyHoursAvailabilityService: ListProviderDailyHoursAvailabilityService;
 
   beforeEach(() => {
     fakeAppointmentRepository = new FakeAppointmentRepository();
+    fakeDateProvider = new FakeDateProvider();
     listProviderDailyHoursAvailabilityService =
-      new ListProviderDailyHoursAvailabilityService(fakeAppointmentRepository);
+      new ListProviderDailyHoursAvailabilityService(
+        fakeAppointmentRepository,
+        fakeDateProvider,
+      );
   });
 
   it('should be able to list the hours available from provider by day when received correct data', async () => {

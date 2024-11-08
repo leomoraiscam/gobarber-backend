@@ -1,6 +1,7 @@
 import { AppError } from '@shared/errors/AppError';
 import FakeNotificationsRepository from '@modules/notifications/repositories/fakes/FakeNotificationRepository';
 import { FakeCacheProvider } from '@shared/container/providers/CacheProvider/fakes/FakeCacheProvider';
+import { FakeDateProvider } from '@shared/container/providers/DateProvider/fakes/FakeDateProvider';
 import { FakeAppointmentRepository } from '../repositories/fakes/FakeAppointmentRepository';
 import { CreateAppointmentService } from './CreateAppointmentService';
 
@@ -8,22 +9,25 @@ describe('CreateAppointmentService', () => {
   let fakeAppointmentRepository: FakeAppointmentRepository;
   let fakeNotificationsRepository: FakeNotificationsRepository;
   let fakeCacheProvider: FakeCacheProvider;
+  let fakeDateProvider: FakeDateProvider;
   let createAppointmentService: CreateAppointmentService;
 
   beforeEach(() => {
     fakeAppointmentRepository = new FakeAppointmentRepository();
     fakeNotificationsRepository = new FakeNotificationsRepository();
     fakeCacheProvider = new FakeCacheProvider();
+    fakeDateProvider = new FakeDateProvider();
     createAppointmentService = new CreateAppointmentService(
       fakeAppointmentRepository,
       fakeNotificationsRepository,
       fakeCacheProvider,
+      fakeDateProvider,
     );
   });
 
   it('should be able to create an appointment when received correct data', async () => {
-    jest.spyOn(Date, 'now').mockImplementationOnce(() => {
-      return new Date(2020, 4, 10, 12).getTime();
+    jest.spyOn(fakeDateProvider, 'dateNow').mockImplementationOnce(() => {
+      return new Date(2020, 4, 10, 12);
     });
 
     const appointment = await createAppointmentService.execute({
@@ -36,8 +40,8 @@ describe('CreateAppointmentService', () => {
   });
 
   it('should not be able to create an appointments when has two on the same time', async () => {
-    jest.spyOn(Date, 'now').mockImplementationOnce(() => {
-      return new Date(2020, 4, 10, 10).getTime();
+    jest.spyOn(fakeDateProvider, 'dateNow').mockImplementationOnce(() => {
+      return new Date(2020, 4, 10, 10);
     });
 
     const appointmentDate = new Date(2020, 4, 10, 11);
