@@ -2,79 +2,52 @@ import { IDateProvider } from '../models/IDateProvider';
 
 export class FakeDateProvider implements IDateProvider {
   private currentDate: Date;
-  private readonly MONTH_INDEX_OFFSET = 1;
-  private readonly MILLISECONDS_IN_MINUTE = 1000 * 60;
-  private readonly MILLISECONDS_IN_HOUR = 1000 * 60 * 60;
 
   constructor() {
     this.currentDate = new Date();
   }
 
-  private getMonthName(month: number): string {
-    const monthNames = [
-      'jan',
-      'fev',
-      'mar',
-      'abr',
-      'mai',
-      'jun',
-      'jul',
-      'ago',
-      'set',
-      'out',
-      'nov',
-      'dez',
-    ];
-    return monthNames[month - this.MONTH_INDEX_OFFSET];
-  }
-
-  convertToUTC(date: Date): string {
-    const utcDate = new Date(
-      date.getTime() + date.getTimezoneOffset() * this.MILLISECONDS_IN_MINUTE,
+  private normalizeToHour(date: Date): Date {
+    return new Date(
+      date.getFullYear(),
+      date.getMonth(),
+      date.getDate(),
+      date.getHours(),
     );
-
-    return utcDate.toISOString();
   }
 
   setCurrentDate(date: Date): void {
     this.currentDate = date;
   }
 
-  format(date: Date, to: string): string {
-    return `${date.toDateString()} - formatted as ${to}`;
-  }
-
   dateNow(): Date {
     return this.currentDate;
   }
 
-  getHours(hour: Date): string {
-    return hour.toTimeString();
+  format(date: Date, to: string): string {
+    return `${date.toDateString()} - formatted as ${to}`;
   }
 
-  getDate(date: Date): string {
-    const day = date.getDate();
-    const month = this.getMonthName(date.getMonth() + 1);
-    const year = date.getFullYear();
+  getHours(hour: Date): number {
+    return hour.getHours();
+  }
 
-    return `${day}, ${month} ${year}`;
+  getDate(date: Date): number {
+    return date.getDate();
   }
 
   addHours(date: Date, hours: number): Date {
     const newDate = new Date(date);
     newDate.setHours(newDate.getHours() + hours);
+
     return newDate;
   }
 
-  compareIfBefore(startDate: Date, endDate: Date): unknown {
-    const endDateUTC = this.convertToUTC(endDate);
-    const startDateUTC = this.convertToUTC(startDate);
+  compareIfBefore(startDate: Date, endDate: Date): boolean {
+    const start = this.normalizeToHour(startDate);
+    const end = this.normalizeToHour(endDate);
 
-    return (
-      Math.abs(
-        new Date(endDateUTC).getTime() - new Date(startDateUTC).getTime(),
-      ) / this.MILLISECONDS_IN_HOUR
-    );
+    return start.getTime() <= end.getTime();
   }
 
   getStartOfHour(date: Date): Date {
