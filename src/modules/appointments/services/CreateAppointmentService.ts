@@ -1,8 +1,8 @@
-import { startOfHour, isBefore, getHours, format } from 'date-fns';
 import { injectable, inject } from 'tsyringe';
 import { Appointment } from '@modules/appointments/infra/typeorm/entities/Appointment';
 import { AppError } from '@shared/errors/AppError';
 import { ICacheProvider } from '@shared/container/providers/CacheProvider/models/ICacheProvider';
+import { IDateProvider } from '@shared/container/providers/DateProvider/models/IDateProvider';
 import { IAppointmentRepository } from '../repositories/IAppointmentRepository';
 import INotificationRepository from '../../notifications/repositories/INotificationRepository';
 import { ICreateAppointmentDTO } from '../dtos/ICreateAppointmentDTO';
@@ -16,13 +16,19 @@ export class CreateAppointmentService {
     private notificationsRepository: INotificationRepository,
     @inject('CacheProvider')
     private cacheProvider: ICacheProvider,
+    @inject('DateProvider')
+    private dateProvider: IDateProvider,
   ) {}
 
   public async execute(data: ICreateAppointmentDTO): Promise<Appointment> {
     const { date, providerId, userId } = data;
-    const appointmentDate = startOfHour(date);
+    const appointmentDate = this.dateProvider.getStartOfHour(date);
+    const isPastDate = this.dateProvider.compareIfBefore(
+      appointmentDate,
+      this.dateProvider.dateNow(),
+    );
 
-    if (isBefore(appointmentDate, Date.now())) {
+    if (isPastDate) {
       throw new AppError("You can't create an appointment on a past date", 422);
     }
 
@@ -30,7 +36,9 @@ export class CreateAppointmentService {
       throw new AppError("You can't create an appointment with yourself", 422);
     }
 
-    if (getHours(appointmentDate) < 8 || getHours(appointmentDate) > 17) {
+    const appointmentDateHour = this.dateProvider.getHours(appointmentDate);
+
+    if (appointmentDateHour < 8 || appointmentDateHour > 17) {
       throw new AppError(
         "You can't create an appointments between 8am and 5pm",
         422,
@@ -52,18 +60,22 @@ export class CreateAppointmentService {
       userId,
       date: appointmentDate,
     });
-    const formattedDate = format(appointmentDate, "dd 'de' MMMM 'às' HH:mm'h'");
+    const formattedDate = this.dateProvider.format(
+      appointmentDate,
+      "dd 'de' MMMM 'às' HH:mm'h'",
+    );
 
     await this.notificationsRepository.create({
       recipient_id: providerId,
       content: `Novo agendamento para ${formattedDate}`,
     });
 
+    const formattedDateToCacheKey = this.dateProvider.format(
+      appointmentDate,
+      'yyyy-M-d',
+    );
     await this.cacheProvider.invalidate(
-      `provider-appointments: ${providerId}:${format(
-        appointmentDate,
-        'yyyy-M-d',
-      )}`,
+      `provider-appointments: ${providerId}:${formattedDateToCacheKey}`,
     );
 
     return appointment;

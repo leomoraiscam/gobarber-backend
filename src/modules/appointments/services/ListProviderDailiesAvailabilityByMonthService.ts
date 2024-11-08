@@ -1,5 +1,5 @@
 import { injectable, inject } from 'tsyringe';
-import { getDaysInMonth, getDate, isAfter } from 'date-fns';
+import { IDateProvider } from '@shared/container/providers/DateProvider/models/IDateProvider';
 import { IAppointmentRepository } from '../repositories/IAppointmentRepository';
 import { ListProviderAvailableDaysResponse } from '../dtos/ListProviderAvailableDaysDTO';
 import { IFindMonthlyAppointmentsByProviderDTO } from '../dtos/IFindMonthlyAppointmentsByProviderDTO';
@@ -15,6 +15,8 @@ export class ListProviderDailiesAvailabilityByMonthService {
   constructor(
     @inject('AppointmentRepository')
     private appointmentRepository: IAppointmentRepository,
+    @inject('DateProvider')
+    private dateProvider: IDateProvider,
   ) {}
 
   async execute(
@@ -27,7 +29,7 @@ export class ListProviderDailiesAvailabilityByMonthService {
         month,
         year,
       });
-    const numberOfDaysInMonth = getDaysInMonth(
+    const numberOfDaysInMonth = this.dateProvider.getDaysInMonth(
       new Date(year, month - this.MONTH_OFFSET),
     );
     const eachDay = Array.from(
@@ -46,14 +48,20 @@ export class ListProviderDailiesAvailabilityByMonthService {
         this.END_OF_HOUR_MINUTE,
         this.LAST_SECOND_OF_MINUTE,
       );
-      const hasAppointmentsInDay = appointments.filter(
-        appointment => getDate(appointment.date) === day,
+      const hasAppointmentsInDay = appointments.filter(appointment => {
+        const getDayInDate = this.dateProvider.getDate(appointment.date);
+
+        return getDayInDate === day;
+      });
+      const isBefore = this.dateProvider.compareIfBefore(
+        compareEndDate,
+        new Date(),
       );
 
       return {
         day,
         available:
-          isAfter(compareEndDate, new Date()) &&
+          !isBefore &&
           hasAppointmentsInDay.length < this.MAX_APPOINTMENTS_PER_DAY,
       };
     });
