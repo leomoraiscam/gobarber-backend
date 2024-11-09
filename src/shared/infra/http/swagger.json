@@ -2,8 +2,8 @@
   "openapi": "3.0.0",
   "info": {
     "version": "1.0.0",
-    "title": "API for appointments in barber shops",
-    "description": "This is API for appointments",
+    "title": "Appointments barber shops API - Swagger Documentation",
+    "description": "This is API for appointments in barber shops",
     "termsOfService": "http://swagger.io/terms/",
     "license": {
       "name": "MIT",
@@ -32,6 +32,10 @@
     {
       "name": "password",
       "description": "Endpoints for reset passwords and send password recovery emails"
+    },
+    {
+      "name": "appointments",
+      "description": "Endpoints related to appointments management"
     }
   ],
   "paths": {
@@ -155,7 +159,7 @@
         "security": [{ "bearerAuth": [] }],
         "responses": {
           "200": {
-            "description": "This response will be returned when list of car categories with success",
+            "description": "This response will be returned when show user profile with success",
             "content": {
               "application/json": {
                 "schema": {
@@ -440,306 +444,183 @@
         }
       }
     },
-    "/appointments/": {
-      "summary": "Users CRUD",
+    "/appointments": {
       "post": {
-        "summary": "Creates an appointment",
-        "description": "Creates an appointment in the application",
-        "security": [{ "BearerToken": [] }],
+        "tags": ["appointments"],
+        "summary": "Create a new appointment",
+        "description": "This endpoint allows the creation of a new appointment",
+        "operationId": "addAppointment",
+        "security": [{ "bearerAuth": [] }],
         "requestBody": {
           "content": {
             "application/json": {
               "schema": {
-                "type": "object",
-                "properties": {
-                  "provider_id": {
-                    "type": "string"
-                  },
-                  "date": {
-                    "type": "string"
-                  }
-                }
-              },
-              "example": {
-                "provider_id": "12d53e84-5fef-4585-b6e6-30eb25e03b42",
-                "date": "2021-02-22 14:00"
+                "$ref": "#/components/schemas/Appointment"
               }
             }
-          }
+          },
+          "required": true
         },
         "responses": {
-          "200": {
-            "description": "Succesfully creates a new appointment",
+          "201": {
+            "description": "This response will be returned when the created a appointment resource",
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/User"
-                },
-                "example": {
-                  "provider_id": "12d53e84-5fef-4585-b6e6-30eb25e03b42",
-                  "user_id": "9a8bf55c-e8d1-49c5-85e3-65eeea5d7634",
-                  "date": "2021-02-22T17:00:00.000Z",
-                  "id": "d3cdaffd-3433-4a5c-98aa-599b908307ae",
-                  "created_at": "2021-02-21T23:11:25.436Z",
-                  "updated_at": "2021-02-21T23:11:25.436Z"
+                  "$ref": "#/components/schemas/AppointmentResponse"
                 }
               }
             }
           },
           "400": {
-            "description": "The Appointment used is already registered",
+            "description": "This response will be returned when has validation error",
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/ErrorResponse"
-                },
-                "example": {
-                  "name": "error",
-                  "message": "You can't create an appointment on a past date."
+                  "$ref": "#/components/schemas/ValidationError"
                 }
-              }
-            }
-          },
-          "500": {
-            "description": "Internal Server error",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ErrorResponse"
-                },
-                "example": {
-                  "name": "error",
-                  "message": "Internal server error"
-                }
-              }
-            }
-          }
-        },
-        "tags": ["Appointment"]
-      }
-    },
-    "providers": {
-      "summary": "Users CRUD",
-      "get": {
-        "description": "Returns a list of user's",
-        "summary": "Returns a list of user's",
-        "security": [{ "BearerToken": [] }],
-        "responses": {
-          "200": {
-            "description": "List users",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "properties": {
-                    "id": {
-                      "type": "string"
-                    },
-                    "name": {
-                      "type": "string"
-                    },
-                    "email": {
-                      "type": "string"
-                    },
-                    "avatar": {
-                      "type": "string"
-                    },
-                    "created_at": {
-                      "type": "date"
-                    },
-                    "updated_at": {
-                      "type": "date"
-                    },
-                    "avatar_url": {
-                      "type": "string"
-                    }
-                  }
-                },
-                "example": [
-                  {
-                    "id": "b6e5ff3e-d597-4f63-874f-350382478653",
-                    "name": "John Doe",
-                    "email": "johndoe@example.com.br",
-                    "avatar": null,
-                    "created_at": "2021-03-09T11:17:33.496Z",
-                    "updated_at": "2021-03-09T11:17:33.496Z",
-                    "avatar_url": null
-                  }
-                ]
               }
             }
           },
           "401": {
-            "description": "The authorization header is missing or the token is invalid",
+            "description": "This response will be returned when the user is not authenticated",
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/ErrorResponse"
-                },
-                "example": {
-                  "name": "error",
-                  "message": "JWT token is missing"
+                  "$ref": "#/components/schemas/UnauthorizedError"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "This response will be returned when the appointment resource already exist",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ConflictError"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "This response will be returned when some fields did not came the way we needed",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UnprocessableEntityError"
                 }
               }
             }
           },
           "500": {
-            "description": "Internal Server error",
+            "description": "This response will be returned when an unexpected error occurs",
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/ErrorResponse"
-                },
-                "example": {
-                  "name": "error",
-                  "message": "Internal Server error"
+                  "$ref": "#/components/schemas/InternalServerError"
                 }
               }
             }
           }
-        },
-        "tags": ["Appointment"]
+        }
       }
     },
-    "providers/${id}/month-availability": {
-      "parameters": [
-        {
-          "name": "id",
-          "in": "path",
-          "description": "User ID",
-          "required": true,
-          "schema": {
-            "type": "string"
-          }
-        },
-        {
-          "in": "query",
-          "name": "year",
-          "schema": {
-            "type": "integer"
-          },
-          "description": "The year to be returned"
-        },
-        {
-          "in": "query",
-          "name": "month",
-          "schema": {
-            "type": "integer"
-          },
-          "description": "The month to be returned"
-        }
-      ],
+    "/providers": {
       "get": {
-        "description": "Returns a available of user in specific month and year",
-        "summary": "Returns dates available of spefic provider",
-        "security": [{ "BearerToken": [] }],
+        "tags": ["appointments"],
+        "summary": "Returns a list of providers except the logged in user",
+        "description": "This endpoint allows the logged in user to see the list of registered providers",
+        "security": [{ "bearerAuth": [] }],
         "responses": {
           "200": {
-            "description": "Return list available of users",
+            "description": "This response will be returned when return an provider list with success",
             "content": {
               "application/json": {
                 "schema": {
-                  "properties": {
-                    "day": {
-                      "type": "integer"
-                    },
-                    "available": {
-                      "type": "boolean"
-                    }
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/ProvidersResponse"
                   }
-                },
-                "example": [
-                  {
-                    "day": 1,
-                    "available": false
-                  },
-                  {
-                    "day": 2,
-                    "available": false
-                  },
-                  {
-                    "day": 3,
-                    "available": false
-                  },
-                  {
-                    "day": 4,
-                    "available": false
-                  }
-                ]
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "This response will be returned when the user is not authenticated",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UnauthorizedError"
+                }
               }
             }
           },
           "500": {
-            "description": "Internal Server error",
+            "description": "This response will be returned when an unexpected error occurs",
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/ErrorResponse"
-                },
-                "example": {
-                  "name": "error",
-                  "message": "Internal Server error"
+                  "$ref": "#/components/schemas/InternalServerError"
                 }
               }
             }
           }
-        },
-        "tags": ["Appointment"]
+        }
       }
     },
-    "providers/${id}/day-availability": {
-      "parameters": [
-        {
-          "name": "id",
-          "in": "path",
-          "description": "User ID",
-          "required": true,
-          "schema": {
-            "type": "string"
-          }
-        },
-        {
-          "in": "query",
-          "name": "year",
-          "schema": {
-            "type": "integer"
-          },
-          "description": "The year to be returned"
-        },
-        {
-          "in": "query",
-          "name": "month",
-          "schema": {
-            "type": "integer"
-          },
-          "description": "The month to be returned"
-        },
-        {
-          "in": "query",
-          "name": "day",
-          "schema": {
-            "type": "integer"
-          },
-          "description": "The day to be returned"
-        }
-      ],
+    "/providers/{providerId}/day-availability": {
       "get": {
-        "description": "Returns a available of user in specific year, month and day",
-        "summary": "Returns dates available of spefic provider",
-        "security": [{ "BearerToken": [] }],
+        "tags": ["appointments"],
+        "summary": "Returns a list of available and unavailable times of day for the selected provider",
+        "description": "This endpoint allows you to see the list of available and unavailable hours for the selected provider by day, month and year",
+        "operationId": "listProviderDailyHoursAvailability",
+        "security": [{ "bearerAuth": [] }],
+        "parameters": [
+          {
+            "name": "providerId",
+            "in": "path",
+            "description": "User ID",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "example": "3c2d1188-ab65-41d3-b3b6-49adf24082d6"
+            }
+          },
+          {
+            "name": "year",
+            "in": "query",
+            "description": "Year values ​​to be considered for filter",
+            "schema": {
+              "type": "integer",
+              "example": "2024"
+            }
+          },
+          {
+            "name": "month",
+            "in": "query",
+            "description": "Month values ​​to be considered for filter",
+            "schema": {
+              "type": "integer",
+              "example": "11"
+            }
+          },
+          {
+            "name": "day",
+            "in": "query",
+            "description": "Day values ​​to be considered for filter",
+            "schema": {
+              "type": "integer",
+              "example": "01"
+            }
+          }
+        ],
         "responses": {
           "200": {
-            "description": "Return list available of users",
+            "description": "This response will be returned when list of available and unavailable hours of the for selected day with success",
             "content": {
               "application/json": {
                 "schema": {
-                  "properties": {
-                    "hour": {
-                      "type": "integer"
-                    },
-                    "available": {
-                      "type": "boolean"
-                    }
-                  }
+                  "$ref": "#/components/schemas/ListProviderDailyHoursAvailability"
                 },
                 "example": [
                   {
@@ -766,22 +647,116 @@
               }
             }
           },
-          "500": {
-            "description": "Internal Server error",
+          "401": {
+            "description": "This response will be returned when the user is not authenticated",
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/ErrorResponse"
-                },
-                "example": {
-                  "name": "error",
-                  "message": "Internal Server error"
+                  "$ref": "#/components/schemas/UnauthorizedError"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "This response will be returned when an unexpected error occurs",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/InternalServerError"
                 }
               }
             }
           }
-        },
-        "tags": ["Appointment"]
+        }
+      }
+    },
+    "/providers/{providerId}/month-availability": {
+      "get": {
+        "tags": ["appointments"],
+        "summary": "Returns a list of available and unavailable days of the month for the selected provider",
+        "description": "This endpoint allows the see the list of available and unavailable days of the for the selected provider from month and year",
+        "operationId": "listProviderDailiesAvailabilityByMonth",
+        "security": [{ "bearerAuth": [] }],
+        "parameters": [
+          {
+            "name": "providerId",
+            "in": "path",
+            "description": "User ID",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "example": "3c2d1188-ab65-41d3-b3b6-49adf24082d6"
+            }
+          },
+          {
+            "name": "year",
+            "in": "query",
+            "description": "Year values ​​to be considered for filter",
+            "schema": {
+              "type": "integer",
+              "example": "2024"
+            }
+          },
+          {
+            "name": "month",
+            "in": "query",
+            "description": "Month values ​​to be considered for filter",
+            "schema": {
+              "type": "integer",
+              "example": "11"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "This response will be returned when list of available and unavailable days of the for selected month with success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ListProviderDailiesAvailabilityByMonth"
+                },
+                "example": [
+                  {
+                    "day": 1,
+                    "available": false
+                  },
+                  {
+                    "day": 2,
+                    "available": false
+                  },
+                  {
+                    "day": 3,
+                    "available": false
+                  },
+                  {
+                    "day": 4,
+                    "available": false
+                  }
+                ]
+              }
+            }
+          },
+          "401": {
+            "description": "This response will be returned when the user is not authenticated",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UnauthorizedError"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "This response will be returned when an unexpected error occurs",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/InternalServerError"
+                }
+              }
+            }
+          }
+        }
       }
     }
   },
@@ -964,26 +939,58 @@
           }
         }
       },
-      "Appointments": {
+      "Appointment": {
+        "required": ["date", "providerId"],
         "type": "object",
         "properties": {
-          "id": {
-            "type": "string"
-          },
           "date": {
-            "type": "date"
+            "type": "date",
+            "example": "2024-11-10 08:00:00"
           },
-          "provider_id": {
-            "type": "string"
+          "providerId": {
+            "type": "string",
+            "example": "18a82685-a4ae-4435-8cd2-b7c429e63fbb"
+          }
+        }
+      },
+      "AppointmentResponse": {
+        "allOf": [
+          { "$ref": "#/components/schemas/EntityBase" },
+          { "$ref": "#/components/schemas/Appointment" },
+          {
+            "type": "object",
+            "properties": {
+              "userId": {
+                "type": "string",
+                "example": "b8139b60-bef9-4106-9131-0ba9b4bf5a0b"
+              }
+            }
           },
-          "user_id": {
-            "type": "string"
+          { "$ref": "#/components/schemas/UpdatedAt" }
+        ]
+      },
+      "ProvidersResponse": {
+        "allOf": [{ "$ref": "#/components/schemas/UserWithAvatarResponse" }]
+      },
+      "ListProviderDailiesAvailabilityByMonth": {
+        "type": "object",
+        "properties": {
+          "day": {
+            "type": "integer"
           },
-          "created_at": {
-            "type": "string"
+          "available": {
+            "type": "boolean"
+          }
+        }
+      },
+      "ListProviderDailyHoursAvailability": {
+        "type": "object",
+        "properties": {
+          "day": {
+            "type": "integer"
           },
-          "updated_at": {
-            "type": "string"
+          "available": {
+            "type": "boolean"
           }
         }
       },
