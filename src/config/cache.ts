@@ -1,18 +1,11 @@
-import { RedisOptions } from 'ioredis';
+import { ICacheConfig } from './dtos/ICacheConfig';
 
-interface ICacheConfig {
-  driver: 'redis';
-  config: {
-    redis: RedisOptions;
-  };
-}
-
-export default {
+export const cache = {
   driver: 'redis',
   config: {
     redis: {
       host: process.env.REDIS_HOST,
-      port: process.env.REDIS_PORT,
+      port: Number(process.env.REDIS_PORT),
       password: process.env.REDIS_PASS || undefined,
     },
   },
