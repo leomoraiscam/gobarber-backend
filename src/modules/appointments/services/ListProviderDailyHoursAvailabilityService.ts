@@ -28,7 +28,7 @@ export class ListProviderDailyHoursAvailabilityService {
         year,
         day,
       });
-    const eachHourArray = Array.from(
+    const eachHour = Array.from(
       {
         length: this.APPOINTMENTS_SIZE,
       },
@@ -36,7 +36,7 @@ export class ListProviderDailyHoursAvailabilityService {
     );
     const currentDate = new Date(Date.now());
 
-    return eachHourArray.map(hour => {
+    return eachHour.map(hour => {
       const hasAppointmentInHour = appointments.find(appointment => {
         const getHourInDate = this.dateProvider.getHours(appointment.date);
 
