@@ -36,20 +36,6 @@ export class FakeDateProvider implements IDateProvider {
     return date.getDate();
   }
 
-  addHours(date: Date, hours: number): Date {
-    const newDate = new Date(date);
-    newDate.setHours(newDate.getHours() + hours);
-
-    return newDate;
-  }
-
-  compareIfBefore(startDate: Date, endDate: Date): boolean {
-    const start = this.normalizeToHour(startDate);
-    const end = this.normalizeToHour(endDate);
-
-    return start.getTime() <= end.getTime();
-  }
-
   getStartOfHour(date: Date): Date {
     const newDate = new Date(date);
 
@@ -62,5 +48,19 @@ export class FakeDateProvider implements IDateProvider {
     const month = date.getMonth() + 1;
 
     return new Date(year, month, 0).getDate();
+  }
+
+  addHours(date: Date, hours: number): Date {
+    const newDate = new Date(date);
+    newDate.setHours(newDate.getHours() + hours);
+
+    return newDate;
+  }
+
+  compareIfBefore(startDate: Date, endDate: Date): boolean {
+    const start = this.normalizeToHour(startDate);
+    const end = this.normalizeToHour(endDate);
+
+    return start.getTime() <= end.getTime();
   }
 }
