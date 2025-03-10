@@ -43,7 +43,7 @@
       "post": {
         "tags": ["users"],
         "summary": "Create a new user",
-        "description": "This endpoint allows the creation of a new user",
+        "description": "This endpoint allows the create of a new users",
         "operationId": "addUser",
         "requestBody": {
           "content": {
@@ -103,7 +103,7 @@
       "patch": {
         "tags": ["users"],
         "summary": "Upload avatar image to user",
-        "description": "This endpoint allows you to upload image to a specific account",
+        "description": "This endpoint allows you to upload image to logged user",
         "operationId": "uploadAvatar",
         "security": [{ "bearerAuth": [] }],
         "requestBody": {
@@ -412,7 +412,7 @@
             }
           },
           "401": {
-            "description": "This response will be returned when the user is not authorized",
+            "description": "This response will be returned when the the token is invalid or expired",
             "content": {
               "application/json": {
                 "schema": {
@@ -883,6 +883,7 @@
         ]
       },
       "Session": {
+        "required": ["email", "password"],
         "type": "object",
         "properties": {
           "email": {
@@ -914,6 +915,7 @@
         ]
       },
       "ForgotPassword": {
+        "required": ["email"],
         "type": "object",
         "properties": {
           "email": {
@@ -923,6 +925,7 @@
         }
       },
       "ResetPassword": {
+        "required": ["password", "passwordConfirmation", "token"],
         "type": "object",
         "properties": {
           "password": {
