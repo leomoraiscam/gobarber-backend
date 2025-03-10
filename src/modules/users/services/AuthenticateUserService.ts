@@ -24,12 +24,12 @@ export class AuthenticateUserService {
       throw new AppError('Incorrect email/password combination', 401);
     }
 
-    const matchPassword = await this.hashProvider.compareHash(
+    const isMatchedPassword = await this.hashProvider.compareHash(
       password,
       user.password,
     );
 
-    if (!matchPassword) {
+    if (!isMatchedPassword) {
       throw new AppError('Incorrect email/password combination', 401);
     }
 

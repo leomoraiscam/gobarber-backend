@@ -33,7 +33,7 @@ export class ResetPasswordService {
     const user = await this.userRepository.findById(userId);
 
     if (!user) {
-      throw new AppError('User does not exist', 404);
+      throw new AppError('User not found', 404);
     }
 
     const expiresDateLimitToken = this.dateProvider.addHours(
