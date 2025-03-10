@@ -12,11 +12,35 @@ profileRouter.put(
   ensureAuthenticated,
   celebrate({
     [Segments.BODY]: {
-      name: Joi.string().required(),
-      email: Joi.string().email().required(),
-      oldPassword: Joi.string(),
-      password: Joi.string(),
-      passwordConfirmation: Joi.string().valid(Joi.ref('password')),
+      name: Joi.string()
+        .min(3)
+        .max(255)
+        .pattern(/^[A-Za-zÀ-ÖØ-öø-ÿ]+(?: [A-Za-zÀ-ÖØ-öø-ÿ]+)*$/)
+        .optional()
+        .messages({
+          'string.pattern.base':
+            'The name must contain only letters and spaces.',
+        }),
+      email: Joi.string().email().optional(),
+      password: Joi.string()
+        .min(6)
+        .max(14)
+        .pattern(/^(?=.*[0-9])(?=.*[!@#$%^&*])/)
+        .optional()
+        .messages({
+          'string.pattern.base':
+            'The password must contain at least one number and one special character.',
+        }),
+      oldPassword: Joi.string().optional(),
+      passwordConfirmation: Joi.string()
+        .min(6)
+        .max(14)
+        .pattern(/^(?=.*[0-9])(?=.*[!@#$%^&*])/)
+        .optional()
+        .messages({
+          'string.pattern.base':
+            'The password must contain at least one number and one special character.',
+        }),
     },
   }),
   updateUserProfileController.handle,

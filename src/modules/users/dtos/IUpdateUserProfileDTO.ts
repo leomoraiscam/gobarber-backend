@@ -4,4 +4,5 @@ export interface IUpdateUserProfileDTO {
   email: string;
   password?: string;
   oldPassword?: string;
+  passwordConfirmation?: string;
 }

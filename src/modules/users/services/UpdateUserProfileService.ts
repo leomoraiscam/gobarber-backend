@@ -15,23 +15,33 @@ export class UpdateUserProfileService {
   ) {}
 
   async execute(data: IUpdateUserProfileDTO): Promise<User> {
-    const { name, email, password, oldPassword, userId } = data;
-    const user = await this.userRepository.findById(userId);
+    const { name, email, password, oldPassword, passwordConfirmation, userId } =
+      data;
+    const [user, userWithSameEmail] = await Promise.all([
+      this.userRepository.findById(userId),
+      this.userRepository.findByEmail(email),
+    ]);
+    const isEmailTaken = userWithSameEmail && userWithSameEmail.id !== user.id;
 
-    if (!user) {
-      throw new AppError('User not found', 404);
+    if (isEmailTaken) {
+      throw new AppError('User already exists', 409);
     }
 
-    const existingUserWithEmail = await this.userRepository.findByEmail(email);
+    if (!password && !oldPassword && !passwordConfirmation) {
+      Object.assign(user, {
+        name,
+        email,
+      });
 
-    if (existingUserWithEmail && existingUserWithEmail.id !== user.id) {
-      throw new AppError('User with this email already exists', 409);
+      return this.userRepository.save(user);
     }
 
-    Object.assign(user, {
-      name,
-      email,
-    });
+    if (password && password !== passwordConfirmation) {
+      throw new AppError(
+        'Password and password confirmation are not the same',
+        422,
+      );
+    }
 
     if (password && !oldPassword) {
       throw new AppError(
@@ -40,23 +50,26 @@ export class UpdateUserProfileService {
       );
     }
 
-    if (password && oldPassword) {
-      const matchPassword = await this.hashProvider.compareHash(
-        oldPassword,
-        user.password,
+    if (password && !passwordConfirmation) {
+      throw new AppError(
+        'You need to inform the password confirmation to set a new password',
+        422,
       );
-
-      if (!matchPassword) {
-        throw new AppError('Old password does not match', 422);
-      }
-
-      const hashedPassword = await this.hashProvider.generateHash(password);
-
-      Object.assign(user, {
-        password: hashedPassword,
-      });
     }
 
-    return this.userRepository.save(user);
+    const isOldPasswordValid = await this.hashProvider.compareHash(
+      oldPassword,
+      user.password,
+    );
+
+    if (!isOldPasswordValid) {
+      throw new AppError('Invalid old password', 422);
+    }
+
+    const hashedPassword = await this.hashProvider.generateHash(password);
+
+    Object.assign(user, { password: hashedPassword });
+
+    return user;
   }
 }
