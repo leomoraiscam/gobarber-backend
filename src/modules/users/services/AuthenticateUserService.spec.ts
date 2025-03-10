@@ -17,7 +17,7 @@ describe('AuthenticateUserService', () => {
     );
   });
 
-  it('should be able to return token property to user when the same is authenticate with success', async () => {
+  it('should be able to return token to user when the same is authenticate with success', async () => {
     const user = await fakeUserRepository.create({
       name: 'John Doe',
       email: 'joh@example.com',
@@ -32,7 +32,7 @@ describe('AuthenticateUserService', () => {
     expect(response.user).toEqual(user);
   });
 
-  it('should not be able to authenticate user when the same a non existing user', async () => {
+  it('should not be able to authenticate user when the same a non existing', async () => {
     expect(
       authenticateUserService.execute({
         email: 'joh@example.com',

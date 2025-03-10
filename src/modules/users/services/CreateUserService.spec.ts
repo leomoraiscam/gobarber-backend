@@ -21,7 +21,7 @@ describe('CreateUserService', () => {
     );
   });
 
-  it('should be able to create a new user when received correct data', async () => {
+  it('should be able to create a new user when it does not exist', async () => {
     const user = await createUserService.execute({
       name: 'John Doe',
       email: 'joh@example.com',
@@ -31,7 +31,7 @@ describe('CreateUserService', () => {
     expect(user).toHaveProperty('id');
   });
 
-  it('should not be able to create user with same email from another user when the same already exits ', async () => {
+  it('should not be able to create a new user when received email that is already registered by another user', async () => {
     await createUserService.execute({
       name: 'John Doe',
       email: 'joh@example.com',

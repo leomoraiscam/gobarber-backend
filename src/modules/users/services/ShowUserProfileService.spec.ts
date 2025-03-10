@@ -11,7 +11,7 @@ describe('ShowUserProfileService', () => {
     showUserProfileService = new ShowUserProfileService(fakeUserRepository);
   });
 
-  it('should be able to show profile when received correct data', async () => {
+  it('should be able to show user when received correct data', async () => {
     const { id: userId } = await fakeUserRepository.create({
       name: 'John Doe',
       email: 'joh@example.com',
@@ -23,9 +23,9 @@ describe('ShowUserProfileService', () => {
     expect(user.email).toBe('joh@example.com');
   });
 
-  it('should not be able to show profile when a non-existing user', async () => {
+  it('should not be able to show user when the same a non-existing', async () => {
     await expect(
-      showUserProfileService.execute('non-existing-user_id'),
+      showUserProfileService.execute('non-existing-user'),
     ).rejects.toBeInstanceOf(AppError);
   });
 });

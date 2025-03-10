@@ -39,7 +39,7 @@ describe('ResetPasswordService', () => {
       token,
     });
 
-    expect(generateHashSpied).toHaveBeenCalledWith('123123');
+    expect(generateHashSpied).toHaveBeenNthCalledWith(1, '123123');
   });
 
   it('should not be able to reset the password when a non-existing token', async () => {

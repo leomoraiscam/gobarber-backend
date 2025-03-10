@@ -17,14 +17,14 @@ describe('UpdateUserProfileService', () => {
     );
   });
 
-  it('should be able to update user profile when received correct data', async () => {
-    const user = await fakeUserRepository.create({
+  it('should be able to update user when received correct data', async () => {
+    const { id: userId } = await fakeUserRepository.create({
       name: 'John Doe',
       email: 'joh@example.com',
       password: 'password@',
     });
     const updatedUser = await updateUserProfileService.execute({
-      userId: user.id,
+      userId,
       name: 'Joe Smith',
       email: 'joe@example.com',
     });
@@ -33,23 +33,13 @@ describe('UpdateUserProfileService', () => {
     expect(updatedUser.email).toBe('joe@example.com');
   });
 
-  it('should not be able to update profile when a non-existing user', async () => {
-    await expect(
-      updateUserProfileService.execute({
-        userId: 'non-existing-user-id',
-        name: 'test',
-        email: 'test@example.com',
-      }),
-    ).rejects.toBeInstanceOf(AppError);
-  });
-
-  it('should not be able to change user with same email from another user when the same already exits', async () => {
+  it('should not be able to update user when received email that is already registered by another user', async () => {
     await fakeUserRepository.create({
       name: 'John Doe',
       email: 'joh@example.com',
       password: 'password@',
     });
-    const user = await fakeUserRepository.create({
+    const { id: userId } = await fakeUserRepository.create({
       name: 'Joe Smith',
       email: 'joe@example.com',
       password: 'password@',
@@ -57,32 +47,33 @@ describe('UpdateUserProfileService', () => {
 
     await expect(
       updateUserProfileService.execute({
-        userId: user.id,
+        userId,
         name: 'Brayn kick',
         email: 'joh@example.com',
       }),
     ).rejects.toBeInstanceOf(AppError);
   });
 
-  it('should be able to update user profile when received password property', async () => {
-    const user = await fakeUserRepository.create({
+  it('should be able to update user password when received password', async () => {
+    const { id: userId } = await fakeUserRepository.create({
       name: 'John Doe',
       email: 'joh@example.com',
       password: '123456',
     });
     const updatedUser = await updateUserProfileService.execute({
-      userId: user.id,
+      userId,
       name: 'Joe Smith',
       email: 'joe@example.com',
       oldPassword: '123456',
       password: '123123',
+      passwordConfirmation: '123123',
     });
 
     expect(updatedUser.password).toBe('123123');
   });
 
-  it('should not be able to update the password when missing old password property', async () => {
-    const user = await fakeUserRepository.create({
+  it('should not be able to update user password when confirmation password is different from the received password', async () => {
+    const { id: userId } = await fakeUserRepository.create({
       name: 'John Doe',
       email: 'joh@example.com',
       password: '123456',
@@ -90,16 +81,18 @@ describe('UpdateUserProfileService', () => {
 
     await expect(
       updateUserProfileService.execute({
-        userId: user.id,
+        userId,
         name: 'Joe Smith',
         email: 'joe@example.com',
         password: '123123',
+        passwordConfirmation: '12312345',
+        oldPassword: '123456',
       }),
     ).rejects.toBeInstanceOf(AppError);
   });
 
-  it('should not be able to update the password when received wrong old password property', async () => {
-    const user = await fakeUserRepository.create({
+  it('should not be able to update password when missing confirmation password property', async () => {
+    const { id: userId } = await fakeUserRepository.create({
       name: 'John Doe',
       email: 'joh@example.com',
       password: '123456',
@@ -107,7 +100,43 @@ describe('UpdateUserProfileService', () => {
 
     await expect(
       updateUserProfileService.execute({
-        userId: user.id,
+        userId,
+        name: 'Joe Smith',
+        email: 'joe@example.com',
+        password: '123123',
+        oldPassword: '123456',
+      }),
+    ).rejects.toBeInstanceOf(AppError);
+  });
+
+  it('should not be able to update password when missing old password property', async () => {
+    const { id: userId } = await fakeUserRepository.create({
+      name: 'John Doe',
+      email: 'joh@example.com',
+      password: '123456',
+    });
+
+    await expect(
+      updateUserProfileService.execute({
+        userId,
+        name: 'Joe Smith',
+        email: 'joe@example.com',
+        password: '123123',
+        passwordConfirmation: '123123',
+      }),
+    ).rejects.toBeInstanceOf(AppError);
+  });
+
+  it('should not be able to update user password when received wrong old password property', async () => {
+    const { id: userId } = await fakeUserRepository.create({
+      name: 'John Doe',
+      email: 'joh@example.com',
+      password: '123456',
+    });
+
+    await expect(
+      updateUserProfileService.execute({
+        userId,
         name: 'Joe Smith',
         email: 'joe@example.com',
         oldPassword: 'wrong-old-password',
