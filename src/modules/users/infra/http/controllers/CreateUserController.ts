@@ -8,8 +8,9 @@ class CreateUserController {
     const { name, email, password } = request.body;
     const createUserService = container.resolve(CreateUserService);
     const user = await createUserService.execute({ name, email, password });
+    const userResponse = classToClass(user);
 
-    return response.status(201).json(classToClass(user));
+    return response.status(201).json(userResponse);
   }
 }
 

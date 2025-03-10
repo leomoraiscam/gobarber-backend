@@ -12,8 +12,9 @@ class UpdateUserAvatarController {
       userId,
       avatar: imageFileName,
     });
+    const userResponse = classToClass(user);
 
-    return response.status(200).json(classToClass(user));
+    return response.status(200).json(userResponse);
   }
 }
 

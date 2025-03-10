@@ -5,7 +5,8 @@ import { classToClass } from 'class-transformer';
 
 class UpdateUserProfileController {
   public async handle(request: Request, response: Response): Promise<Response> {
-    const { name, email, password, oldPassword } = request.body;
+    const { name, email, password, oldPassword, passwordConfirmation } =
+      request.body;
     const { id: userId } = request.user;
     const updateUserProfileService = container.resolve(
       UpdateUserProfileService,
@@ -15,10 +16,12 @@ class UpdateUserProfileController {
       email,
       password,
       oldPassword,
+      passwordConfirmation,
       userId,
     });
+    const userResponse = classToClass(user);
 
-    return response.status(200).json(classToClass(user));
+    return response.status(200).json(userResponse);
   }
 }
 

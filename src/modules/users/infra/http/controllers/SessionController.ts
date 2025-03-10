@@ -6,13 +6,14 @@ import { AuthenticateUserService } from '@modules/users/services/AuthenticateUse
 class SessionController {
   public async handle(request: Request, response: Response): Promise<Response> {
     const { email, password } = request.body;
-    const authenticatedUserService = container.resolve(AuthenticateUserService);
-    const { user, token } = await authenticatedUserService.execute({
+    const authenticateUserService = container.resolve(AuthenticateUserService);
+    const { user, token } = await authenticateUserService.execute({
       email,
       password,
     });
+    const sessionResponse = { user: classToClass(user), token };
 
-    return response.status(200).json({ user: classToClass(user), token });
+    return response.status(200).json(sessionResponse);
   }
 }
 

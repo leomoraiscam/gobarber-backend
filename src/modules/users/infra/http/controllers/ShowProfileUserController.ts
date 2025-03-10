@@ -10,8 +10,9 @@ class ShowProfileUserController {
       ShowUserProfileService,
     );
     const user = await showUserProfileService.execute(userId);
+    const userResponse = classToClass(user);
 
-    return response.status(200).json(classToClass(user));
+    return response.status(200).json(userResponse);
   }
 }
 
