@@ -17,10 +17,19 @@ passwordRouter.post(
 passwordRouter.post(
   '/reset',
   celebrate({
-    [Segments.BODY]: {
+    [Segments.QUERY]: {
       token: Joi.string().uuid().required(),
-      password: Joi.string().required(),
-      passwordConfirmation: Joi.string().required().valid(Joi.ref('password')),
+    },
+    [Segments.BODY]: {
+      password: Joi.string()
+        .min(6)
+        .max(14)
+        .pattern(/^(?=.*[0-9])(?=.*[!@#$%^&*])/)
+        .required()
+        .messages({
+          'string.pattern.base':
+            'The password must contain at least one number and one special character.',
+        }),
     },
   }),
   resetPasswordController.handle,

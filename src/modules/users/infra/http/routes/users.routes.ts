@@ -1,8 +1,8 @@
 import multer from 'multer';
 import { Router } from 'express';
 import { celebrate, Segments, Joi } from 'celebrate';
-import ensureAuthenticated from '@modules/users/infra/http/middlewares/ensureAuthenticated';
 import { upload } from '@config/upload';
+import ensureAuthenticated from '@modules/users/infra/http/middlewares/ensureAuthenticated';
 import { createUserController } from '@modules/users/infra/http/controllers/CreateUserController';
 import { updateUserProfileController } from '@modules/users/infra/http/controllers/UpdateUserProfileController';
 import { showProfileUserController } from '@modules/users/infra/http/controllers/ShowProfileUserController';
