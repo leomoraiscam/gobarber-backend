@@ -9,7 +9,7 @@ export class FakeUserTokenRepository implements IUserTokenRepository {
     return this.userTokens.find(userToken => userToken.token === token);
   }
 
-  public async generate(userId: string): Promise<UserToken> {
+  public async create(userId: string): Promise<UserToken> {
     const userToken = new UserToken();
 
     Object.assign(userToken, {

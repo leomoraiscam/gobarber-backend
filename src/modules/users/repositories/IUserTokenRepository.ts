@@ -2,5 +2,5 @@ import { UserToken } from '../infra/typeorm/entities/UserToken';
 
 export interface IUserTokenRepository {
   findByToken(token: string): Promise<UserToken | null>;
-  generate(userId: string): Promise<UserToken>;
+  create(userId: string): Promise<UserToken>;
 }
