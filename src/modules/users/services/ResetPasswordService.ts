@@ -40,8 +40,9 @@ export class ResetPasswordService {
       createdAt,
       this.TOKEN_EXPIRATION_HOURS,
     );
+    const currentDate = this.dateProvider.dateNow();
     const isExpiredToken = this.dateProvider.compareIfBefore(
-      this.dateProvider.dateNow(),
+      currentDate,
       expiresDateLimitToken,
     );
 
