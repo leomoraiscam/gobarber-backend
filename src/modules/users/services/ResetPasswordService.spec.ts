@@ -32,7 +32,7 @@ describe('ResetPasswordService', () => {
       email: 'joh@example.com',
       password: 'password',
     });
-    const { token } = await fakeUserTokenRepository.generate(userId);
+    const { token } = await fakeUserTokenRepository.create(userId);
 
     await resetPasswordService.execute({
       password: '123123',
@@ -52,9 +52,7 @@ describe('ResetPasswordService', () => {
   });
 
   it('should not be able to reset the password when a non-existing user', async () => {
-    const { token } = await fakeUserTokenRepository.generate(
-      'non-existing-user',
-    );
+    const { token } = await fakeUserTokenRepository.create('non-existing-user');
 
     await expect(
       resetPasswordService.execute({
@@ -74,7 +72,7 @@ describe('ResetPasswordService', () => {
       email: 'joh@example.com',
       password: 'password',
     });
-    const { token } = await fakeUserTokenRepository.generate(userId);
+    const { token } = await fakeUserTokenRepository.create(userId);
 
     jest.spyOn(fakeUserTokenRepository, 'findByToken').mockResolvedValueOnce({
       userId,

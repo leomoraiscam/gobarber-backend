@@ -42,7 +42,7 @@ describe('UpdateUserAvatarService', () => {
   });
 
   it('should be able to delete old avatar file when updating user avatar', async () => {
-    const deleteFile = jest.spyOn(fakeStorageProvider, 'deleteFile');
+    const deleteFileSpied = jest.spyOn(fakeStorageProvider, 'deleteFile');
     const { id: userId } = await fakeUserRepository.create({
       name: 'John Doe',
       email: 'joh@example.com',
@@ -60,7 +60,7 @@ describe('UpdateUserAvatarService', () => {
       }),
     ]);
 
-    expect(deleteFile).toHaveBeenCalledWith('avatar.jpg');
+    expect(deleteFileSpied).toHaveBeenCalledWith('avatar.jpg');
     expect(updatedUser.avatar).toBe('avatar1.jpg');
   });
 });
