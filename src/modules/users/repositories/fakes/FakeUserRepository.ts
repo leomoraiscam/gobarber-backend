@@ -6,11 +6,11 @@ import { User } from '../../infra/typeorm/entities/User';
 export class FakeUserRepository implements IUserRepository {
   private users: User[] = [];
 
-  public async findById(id: string): Promise<User | undefined> {
+  public async findById(id: string): Promise<User | null> {
     return this.users.find(user => user.id === id);
   }
 
-  public async findByEmail(email: string): Promise<User | undefined> {
+  public async findByEmail(email: string): Promise<User | null> {
     return this.users.find(user => user.email === email);
   }
 
