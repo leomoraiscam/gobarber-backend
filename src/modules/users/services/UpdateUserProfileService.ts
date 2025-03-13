@@ -27,16 +27,16 @@ export class UpdateUserProfileService {
       throw new AppError('User already exists', 409);
     }
 
-    if (!password && !oldPassword && !passwordConfirmation) {
-      Object.assign(user, {
-        name,
-        email,
-      });
+    Object.assign(user, {
+      name,
+      email,
+    });
 
+    if (!password) {
       return this.userRepository.save(user);
     }
 
-    if (password && password !== passwordConfirmation) {
+    if (password && passwordConfirmation && password !== passwordConfirmation) {
       throw new AppError(
         'Password and password confirmation are not the same',
         422,
