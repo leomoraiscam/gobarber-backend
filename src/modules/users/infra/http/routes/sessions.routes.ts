@@ -5,7 +5,7 @@ import { sessionController } from '@modules/users/infra/http/controllers/Session
 const sessionRouter = Router();
 
 sessionRouter.post(
-  '/',
+  '/sessions',
   celebrate({
     [Segments.BODY]: {
       email: Joi.string().email().required(),
