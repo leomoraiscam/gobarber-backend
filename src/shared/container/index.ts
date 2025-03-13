@@ -6,22 +6,19 @@ import { IUserRepository } from '@modules/users/repositories/IUserRepository';
 import { UserRepository } from '@modules/users/infra/typeorm/repositories/UserRepository';
 import { IUserTokenRepository } from '@modules/users/repositories/IUserTokenRepository';
 import { UserTokenRepository } from '@modules/users/infra/typeorm/repositories/UserTokenRepository';
-import INotificationsRepository from '@modules/notifications/repositories/INotificationRepository';
-import NotificationsRepository from '@modules/notifications/infra/typeorm/repositories/NotificationsRepository';
+import { INotificationRepository } from '@modules/notifications/repositories/INotificationRepository';
+import { NotificationRepository } from '@modules/notifications/infra/typeorm/repositories/NotificationRepository';
 
 container.registerSingleton<IAppointmentRepository>(
   'AppointmentRepository',
   AppointmentRepository,
 );
-
 container.registerSingleton<IUserRepository>('UserRepository', UserRepository);
-
 container.registerSingleton<IUserTokenRepository>(
   'UserTokenRepository',
   UserTokenRepository,
 );
-
-container.registerSingleton<INotificationsRepository>(
-  'NotificationsRepository',
-  NotificationsRepository,
+container.registerSingleton<INotificationRepository>(
+  'NotificationRepository',
+  NotificationRepository,
 );

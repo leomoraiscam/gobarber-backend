@@ -4,16 +4,19 @@ import { AppError } from '@shared/errors/AppError';
 import { ICacheProvider } from '@shared/container/providers/CacheProvider/models/ICacheProvider';
 import { IDateProvider } from '@shared/container/providers/DateProvider/models/IDateProvider';
 import { IAppointmentRepository } from '../repositories/IAppointmentRepository';
-import INotificationRepository from '../../notifications/repositories/INotificationRepository';
+import { INotificationRepository } from '../../notifications/repositories/INotificationRepository';
 import { ICreateAppointmentDTO } from '../dtos/ICreateAppointmentDTO';
 
 @injectable()
 export class CreateAppointmentService {
+  private MIN_APPOINTMENT_HOUR = 8;
+  private MAX_APPOINTMENT_HOUR = 17;
+
   constructor(
     @inject('AppointmentRepository')
     private appointmentRepository: IAppointmentRepository,
-    @inject('NotificationsRepository')
-    private notificationsRepository: INotificationRepository,
+    @inject('NotificationRepository')
+    private notificationRepository: INotificationRepository,
     @inject('CacheProvider')
     private cacheProvider: ICacheProvider,
     @inject('DateProvider')
@@ -23,9 +26,10 @@ export class CreateAppointmentService {
   public async execute(data: ICreateAppointmentDTO): Promise<Appointment> {
     const { date, providerId, userId } = data;
     const appointmentDate = this.dateProvider.getStartOfHour(date);
+    const currentDate = this.dateProvider.dateNow();
     const isPastDate = this.dateProvider.compareIfBefore(
       appointmentDate,
-      this.dateProvider.dateNow(),
+      currentDate,
     );
 
     if (isPastDate) {
@@ -36,22 +40,25 @@ export class CreateAppointmentService {
       throw new AppError("You can't create an appointment with yourself", 422);
     }
 
-    const appointmentDateHour = this.dateProvider.getHours(appointmentDate);
+    const appointmentHours = this.dateProvider.getHours(appointmentDate);
 
-    if (appointmentDateHour < 8 || appointmentDateHour > 17) {
+    if (
+      appointmentHours < this.MIN_APPOINTMENT_HOUR ||
+      appointmentHours > this.MAX_APPOINTMENT_HOUR
+    ) {
       throw new AppError(
         "You can't create an appointments between 8am and 5pm",
         422,
       );
     }
 
-    const findAppointmentInTheSameDate =
-      await this.appointmentRepository.findByDate({
+    const hasAppointmentInTheSameDate =
+      !!(await this.appointmentRepository.findByDate({
         date: appointmentDate,
         providerId,
-      });
+      }));
 
-    if (findAppointmentInTheSameDate) {
+    if (hasAppointmentInTheSameDate) {
       throw new AppError('This appointment is already booked', 409);
     }
 
@@ -60,22 +67,23 @@ export class CreateAppointmentService {
       userId,
       date: appointmentDate,
     });
-    const formattedDate = this.dateProvider.format(
+    const notificationAppointmentDate = this.dateProvider.format(
       appointmentDate,
       "dd 'de' MMMM 'às' HH:mm'h'",
     );
 
-    await this.notificationsRepository.create({
-      recipient_id: providerId,
-      content: `Novo agendamento para ${formattedDate}`,
+    await this.notificationRepository.create({
+      recipientId: providerId,
+      content: `Novo agendamento para ${notificationAppointmentDate}`,
     });
 
-    const formattedDateToCacheKey = this.dateProvider.format(
+    const appointmentCacheKeyDate = this.dateProvider.format(
       appointmentDate,
       'yyyy-M-d',
     );
+
     await this.cacheProvider.invalidate(
-      `provider-appointments: ${providerId}:${formattedDateToCacheKey}`,
+      `provider-appointments:${providerId}:${appointmentCacheKeyDate}`,
     );
 
     return appointment;
