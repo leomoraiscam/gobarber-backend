@@ -3,7 +3,7 @@ import { INotificationRepository } from '@modules/notifications/repositories/INo
 import { ICreateNotificationDTO } from '@modules/notifications/dtos/ICreateNotificationDTO';
 import { Notification } from '@modules/notifications/infra/typeorm/schemas/Notification';
 
-export class NotificationRepository implements INotificationRepository {
+export class FakeNotificationRepository implements INotificationRepository {
   private notifications: Notification[] = [];
 
   public async create(data: ICreateNotificationDTO): Promise<Notification> {
