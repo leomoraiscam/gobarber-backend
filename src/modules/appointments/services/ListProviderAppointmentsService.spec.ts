@@ -41,7 +41,7 @@ describe('ListProviderAppointmentsService', () => {
   });
 
   it('should be able to cache the list of appointments when occurs an first execution', async () => {
-    const cacheSaveSpy = jest.spyOn(fakeCacheProvider, 'save');
+    const cacheSaveSpied = jest.spyOn(fakeCacheProvider, 'save');
     const [appointment] = await Promise.all([
       fakeAppointmentRepository.create({
         providerId: 'faked-provider',
@@ -57,14 +57,14 @@ describe('ListProviderAppointmentsService', () => {
       day: 20,
     });
 
-    expect(cacheSaveSpy).toHaveBeenCalledWith(
+    expect(cacheSaveSpied).toHaveBeenCalledWith(
       `provider-appointments: faked-provider:2020-5-20`,
       expect.arrayContaining([appointment]),
     );
   });
 
-  it('should be able to retrieve appointments from cache if available when the same has persisted in cache', async () => {
-    const cacheRecoverSpy = jest.spyOn(fakeCacheProvider, 'recover');
+  it('should be able to retrieve appointments from cache when the same has persisted in cache', async () => {
+    const cacheRecoverSpied = jest.spyOn(fakeCacheProvider, 'recover');
     const [appointment] = await Promise.all([
       fakeAppointmentRepository.create({
         providerId: 'faked-provider',
@@ -85,7 +85,7 @@ describe('ListProviderAppointmentsService', () => {
       day: 20,
     });
 
-    expect(cacheRecoverSpy).toHaveBeenCalledWith(
+    expect(cacheRecoverSpied).toHaveBeenCalledWith(
       `provider-appointments: faked-provider:2020-5-20`,
     );
     expect(appointments).toEqual([

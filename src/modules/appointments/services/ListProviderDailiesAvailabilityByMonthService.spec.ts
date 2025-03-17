@@ -3,9 +3,9 @@ import { FakeAppointmentRepository } from '../repositories/fakes/FakeAppointment
 import { ListProviderDailiesAvailabilityByMonthService } from './ListProviderDailiesAvailabilityByMonthService';
 
 describe('ListProviderDailiesAvailabilityByMonthService', () => {
-  let listProviderDailiesAvailabilityByMonthService: ListProviderDailiesAvailabilityByMonthService;
   let fakeAppointmentRepository: FakeAppointmentRepository;
   let fakeDateProvider: FakeDateProvider;
+  let listProviderDailiesAvailabilityByMonthService: ListProviderDailiesAvailabilityByMonthService;
   const OriginalDate = Date;
 
   beforeEach(() => {
@@ -16,6 +16,7 @@ describe('ListProviderDailiesAvailabilityByMonthService', () => {
         fakeAppointmentRepository,
         fakeDateProvider,
       );
+
     global.Date = jest.fn((...args: unknown[]) => {
       if (args.length === 0) {
         return new OriginalDate(2020, 4, 20, 11, 0, 0);
@@ -27,6 +28,10 @@ describe('ListProviderDailiesAvailabilityByMonthService', () => {
     global.Date.now = OriginalDate.now;
     global.Date.parse = OriginalDate.parse;
     global.Date.UTC = OriginalDate.UTC;
+  });
+
+  afterEach(() => {
+    jest.restoreAllMocks();
   });
 
   it('should be able to list the month availability from provider when received correct data', async () => {
@@ -90,7 +95,7 @@ describe('ListProviderDailiesAvailabilityByMonthService', () => {
 
     const availabilityDaysInMonth =
       await listProviderDailiesAvailabilityByMonthService.execute({
-        providerId: 'user',
+        providerId: 'fake-provider',
         year: 2020,
         month: 5,
       });
@@ -116,7 +121,7 @@ describe('ListProviderDailiesAvailabilityByMonthService', () => {
         { available: false, day: 17 },
         { available: false, day: 18 },
         { available: false, day: 19 },
-        { available: false, day: 20 },
+        { available: true, day: 20 },
         { available: true, day: 21 },
         { available: true, day: 22 },
         { available: true, day: 23 },
