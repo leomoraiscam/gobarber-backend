@@ -5,7 +5,7 @@ import { ListProviderAvailableHoursResponse } from '../dtos/ListProviderAvailabl
 import { IFindDailyAppointmentsByProviderDTO } from '../dtos/IFindDailyAppointmentsByProviderDTO';
 
 @injectable()
-export class ListProviderDailyHoursAvailabilityService {
+export class ListProviderAvailabilityHoursByDailyService {
   private APPOINTMENTS_SIZE = 10;
   private APPOINTMENTS_START_HOUR = 8;
   private OFF_SET_MONTH = 1;

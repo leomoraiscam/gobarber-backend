@@ -2,8 +2,8 @@ import { Router } from 'express';
 import { celebrate, Segments, Joi } from 'celebrate';
 import ensureAuthenticated from '@modules/users/infra/http/middlewares/ensureAuthenticated';
 import { listProvidersController } from '@modules/appointments/infra/http/controllers/ListProvidersController';
-import { listProviderDailyHoursAvailabilityController } from '@modules/appointments/infra/http/controllers/ListProviderDailyHoursAvailabilityController';
-import { listProviderDailiesAvailabilityByMonthController } from '@modules/appointments/infra/http/controllers/ListProviderDailiesAvailabilityByMonthController';
+import { listProviderAvailabilityDailiesByMonthController } from '@modules/appointments/infra/http/controllers/ListProviderAvailabilityDailiesByMonthController';
+import { listProviderAvailabilityHoursByDailyController } from '@modules/appointments/infra/http/controllers/ListProviderAvailabilityHoursByDailyController';
 
 const providerRoutes = Router();
 
@@ -15,7 +15,7 @@ providerRoutes.get(
       providerId: Joi.string().uuid().required(),
     },
   }),
-  listProviderDailiesAvailabilityByMonthController.handle,
+  listProviderAvailabilityDailiesByMonthController.handle,
 );
 providerRoutes.get(
   '/:providerId/day-availability',
@@ -24,7 +24,7 @@ providerRoutes.get(
       providerId: Joi.string().uuid().required(),
     },
   }),
-  listProviderDailyHoursAvailabilityController.handle,
+  listProviderAvailabilityHoursByDailyController.handle,
 );
 
 export { providerRoutes };

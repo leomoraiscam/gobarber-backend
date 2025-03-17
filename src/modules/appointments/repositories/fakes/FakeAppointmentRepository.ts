@@ -7,6 +7,7 @@ import { Appointment } from '../../infra/typeorm/entities/Appointment';
 import { IFindAppointmentByDateDTO } from '../../dtos/IFindAppointmentByDateDTO';
 
 export class FakeAppointmentRepository implements IAppointmentRepository {
+  private readonly MONTH_OFFSET = 1;
   private Appointments: Appointment[] = [];
 
   public async findByDate(
@@ -31,7 +32,7 @@ export class FakeAppointmentRepository implements IAppointmentRepository {
       return (
         appointment.providerId === providerId &&
         appointmentDate.getDate() === day &&
-        appointmentDate.getMonth() + 1 === month &&
+        appointmentDate.getMonth() + this.MONTH_OFFSET === month &&
         appointmentDate.getFullYear() === year
       );
     });
@@ -46,7 +47,7 @@ export class FakeAppointmentRepository implements IAppointmentRepository {
       const appointmentDate = appointment.date;
       return (
         appointment.providerId === providerId &&
-        appointmentDate.getMonth() + 1 === month &&
+        appointmentDate.getMonth() + this.MONTH_OFFSET === month &&
         appointmentDate.getFullYear() === year
       );
     });

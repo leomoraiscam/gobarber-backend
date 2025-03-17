@@ -5,7 +5,7 @@ import { ListProviderAvailableDaysResponse } from '../dtos/ListProviderAvailable
 import { IFindMonthlyAppointmentsByProviderDTO } from '../dtos/IFindMonthlyAppointmentsByProviderDTO';
 
 @injectable()
-export class ListProviderDailiesAvailabilityByMonthService {
+export class ListProviderAvailabilityDailiesByMonthService {
   private readonly MAX_APPOINTMENTS_PER_DAY = 10;
   private readonly MONTH_OFFSET = 1;
   private readonly INDEX_OFFSET = 1;
