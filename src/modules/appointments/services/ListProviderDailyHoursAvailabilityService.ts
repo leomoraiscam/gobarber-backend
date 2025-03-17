@@ -7,8 +7,8 @@ import { IFindDailyAppointmentsByProviderDTO } from '../dtos/IFindDailyAppointme
 @injectable()
 export class ListProviderDailyHoursAvailabilityService {
   private APPOINTMENTS_SIZE = 10;
-  private APPOINTMENTS_START_HOURS = 8;
-  private OFF_SET_MONTHS = 1;
+  private APPOINTMENTS_START_HOUR = 8;
+  private OFF_SET_MONTH = 1;
 
   constructor(
     @inject('AppointmentRepository')
@@ -28,34 +28,34 @@ export class ListProviderDailyHoursAvailabilityService {
         year,
         day,
       });
-    const eachHour = Array.from(
+    const eachHours = Array.from(
       {
         length: this.APPOINTMENTS_SIZE,
       },
-      (_, index) => index + this.APPOINTMENTS_START_HOURS,
+      (_, index) => index + this.APPOINTMENTS_START_HOUR,
     );
-    const currentDate = new Date(Date.now());
 
-    return eachHour.map(hour => {
-      const hasAppointmentInHour = appointments.find(appointment => {
+    return eachHours.map(hour => {
+      const appointmentInHour = appointments.find(appointment => {
         const getHourInDate = this.dateProvider.getHours(appointment.date);
 
         return getHourInDate === hour;
       });
-      const appointmentDate = new Date(
+      const appointmentDateHour = new Date(
         year,
-        month - this.OFF_SET_MONTHS,
+        month - this.OFF_SET_MONTH,
         day,
         hour,
       );
+      const currentDate = this.dateProvider.dateNow();
       const isBefore = this.dateProvider.compareIfBefore(
-        appointmentDate,
+        appointmentDateHour,
         currentDate,
       );
 
       return {
         hour,
-        available: !hasAppointmentInHour && !isBefore,
+        available: !appointmentInHour && !isBefore,
       };
     });
   }

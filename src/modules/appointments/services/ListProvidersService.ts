@@ -14,7 +14,9 @@ export class ListProvidersService {
   ) {}
 
   async execute(userId: string): Promise<User[]> {
-    let users = await this.cacheProvider.recover<User[]>(
+    let users: User[];
+
+    users = await this.cacheProvider.recover<User[]>(
       `providers-list:${userId}`,
     );
 

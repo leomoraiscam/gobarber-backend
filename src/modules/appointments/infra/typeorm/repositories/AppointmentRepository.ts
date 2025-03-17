@@ -15,7 +15,7 @@ export class AppointmentRepository implements IAppointmentRepository {
 
   public async findByDate(
     data: IFindAppointmentByDateDTO,
-  ): Promise<Appointment | undefined> {
+  ): Promise<Appointment | null> {
     const { date, providerId } = data;
 
     return this.ormRepository.findOne({

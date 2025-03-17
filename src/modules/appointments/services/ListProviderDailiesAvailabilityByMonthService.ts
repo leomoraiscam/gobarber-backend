@@ -8,8 +8,9 @@ import { IFindMonthlyAppointmentsByProviderDTO } from '../dtos/IFindMonthlyAppoi
 export class ListProviderDailiesAvailabilityByMonthService {
   private readonly MAX_APPOINTMENTS_PER_DAY = 10;
   private readonly MONTH_OFFSET = 1;
-  private readonly END_OF_DAY_HOUR = 23;
-  private readonly END_OF_HOUR_MINUTE = 59;
+  private readonly INDEX_OFFSET = 1;
+  private readonly LAST_OF_DAY_HOUR = 23;
+  private readonly LAST_OF_HOUR_MINUTE = 59;
   private readonly LAST_SECOND_OF_MINUTE = 59;
 
   constructor(
@@ -29,40 +30,40 @@ export class ListProviderDailiesAvailabilityByMonthService {
         month,
         year,
       });
-    const numberOfDaysInMonth = this.dateProvider.getDaysInMonth(
-      new Date(year, month - this.MONTH_OFFSET),
-    );
-    const eachDay = Array.from(
+    const date = new Date(year, month - this.MONTH_OFFSET);
+    const numberOfDaysInMonth = this.dateProvider.getDaysInMonth(date);
+    const eachDays = Array.from(
       {
         length: numberOfDaysInMonth,
       },
-      (_, index) => index + 1,
+      (_, index) => index + this.INDEX_OFFSET,
     );
 
-    return eachDay.map(day => {
-      const compareEndDate = new Date(
+    return eachDays.map(day => {
+      const dateWithEndOfDay = new Date(
         year,
         month - this.MONTH_OFFSET,
         day,
-        this.END_OF_DAY_HOUR,
-        this.END_OF_HOUR_MINUTE,
+        this.LAST_OF_DAY_HOUR,
+        this.LAST_OF_HOUR_MINUTE,
         this.LAST_SECOND_OF_MINUTE,
       );
-      const hasAppointmentsInDay = appointments.filter(appointment => {
+      const appointmentsInDay = appointments.filter(appointment => {
         const getDayInDate = this.dateProvider.getDate(appointment.date);
 
         return getDayInDate === day;
       });
+      const currentDate = new Date();
       const isBefore = this.dateProvider.compareIfBefore(
-        compareEndDate,
-        new Date(),
+        dateWithEndOfDay,
+        currentDate,
       );
+      const isAvailable =
+        !isBefore && appointmentsInDay.length < this.MAX_APPOINTMENTS_PER_DAY;
 
       return {
         day,
-        available:
-          !isBefore &&
-          hasAppointmentsInDay.length < this.MAX_APPOINTMENTS_PER_DAY,
+        available: isAvailable,
       };
     });
   }
