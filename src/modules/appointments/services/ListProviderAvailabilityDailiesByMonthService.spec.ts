@@ -1,18 +1,18 @@
 import { FakeDateProvider } from '@shared/container/providers/DateProvider/fakes/FakeDateProvider';
 import { FakeAppointmentRepository } from '../repositories/fakes/FakeAppointmentRepository';
-import { ListProviderDailiesAvailabilityByMonthService } from './ListProviderDailiesAvailabilityByMonthService';
+import { ListProviderAvailabilityDailiesByMonthService } from './ListProviderAvailabilityDailiesByMonthService';
 
-describe('ListProviderDailiesAvailabilityByMonthService', () => {
+describe('ListProviderAvailabilityDailiesByMonthService', () => {
   let fakeAppointmentRepository: FakeAppointmentRepository;
   let fakeDateProvider: FakeDateProvider;
-  let listProviderDailiesAvailabilityByMonthService: ListProviderDailiesAvailabilityByMonthService;
+  let listProviderAvailabilityDailiesByMonthService: ListProviderAvailabilityDailiesByMonthService;
   const OriginalDate = Date;
 
   beforeEach(() => {
     fakeAppointmentRepository = new FakeAppointmentRepository();
     fakeDateProvider = new FakeDateProvider();
-    listProviderDailiesAvailabilityByMonthService =
-      new ListProviderDailiesAvailabilityByMonthService(
+    listProviderAvailabilityDailiesByMonthService =
+      new ListProviderAvailabilityDailiesByMonthService(
         fakeAppointmentRepository,
         fakeDateProvider,
       );
@@ -94,7 +94,7 @@ describe('ListProviderDailiesAvailabilityByMonthService', () => {
     ]);
 
     const availabilityDaysInMonth =
-      await listProviderDailiesAvailabilityByMonthService.execute({
+      await listProviderAvailabilityDailiesByMonthService.execute({
         providerId: 'fake-provider',
         year: 2020,
         month: 5,

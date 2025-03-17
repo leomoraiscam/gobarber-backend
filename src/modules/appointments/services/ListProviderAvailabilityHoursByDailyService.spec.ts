@@ -1,17 +1,17 @@
 import { FakeDateProvider } from '@shared/container/providers/DateProvider/fakes/FakeDateProvider';
 import { FakeAppointmentRepository } from '../repositories/fakes/FakeAppointmentRepository';
-import { ListProviderDailyHoursAvailabilityService } from './ListProviderDailyHoursAvailabilityService';
+import { ListProviderAvailabilityHoursByDailyService } from './ListProviderAvailabilityHoursByDailyService';
 
-describe('ListProviderDailyHoursAvailabilityService', () => {
+describe('ListProviderAvailabilityHoursByDailyService', () => {
   let fakeAppointmentRepository: FakeAppointmentRepository;
   let fakeDateProvider: FakeDateProvider;
-  let listProviderDailyHoursAvailabilityService: ListProviderDailyHoursAvailabilityService;
+  let listProviderAvailabilityHoursByDailyService: ListProviderAvailabilityHoursByDailyService;
 
   beforeEach(() => {
     fakeAppointmentRepository = new FakeAppointmentRepository();
     fakeDateProvider = new FakeDateProvider();
-    listProviderDailyHoursAvailabilityService =
-      new ListProviderDailyHoursAvailabilityService(
+    listProviderAvailabilityHoursByDailyService =
+      new ListProviderAvailabilityHoursByDailyService(
         fakeAppointmentRepository,
         fakeDateProvider,
       );
@@ -36,7 +36,7 @@ describe('ListProviderDailyHoursAvailabilityService', () => {
     ]);
 
     const availableHours =
-      await listProviderDailyHoursAvailabilityService.execute({
+      await listProviderAvailabilityHoursByDailyService.execute({
         providerId: 'user',
         year: 2020,
         month: 5,
