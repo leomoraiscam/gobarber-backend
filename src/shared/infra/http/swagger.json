@@ -2,8 +2,8 @@
   "openapi": "3.0.0",
   "info": {
     "version": "1.0.0",
-    "title": "Appointments barber shops API - Swagger Documentation",
-    "description": "This is API for appointments in barber shops",
+    "title": "Barber Shop Booking API",
+    "description": "This is the API for booking appointments in barbershops",
     "termsOfService": "http://swagger.io/terms/",
     "license": {
       "name": "MIT",
@@ -17,7 +17,7 @@
   "servers": [
     {
       "url": "http://localhost:3333",
-      "description": "Development local environment API"
+      "description": "API Local Development Environment"
     }
   ],
   "tags": [
@@ -31,11 +31,15 @@
     },
     {
       "name": "password",
-      "description": "Endpoints for reset passwords and send password recovery emails"
+      "description": "Endpoints for resetting passwords and sending password recovery emails"
     },
     {
       "name": "appointments",
       "description": "Endpoints related to appointments management"
+    },
+    {
+      "name": "providers",
+      "description": "Endpoints related to service providers"
     }
   ],
   "paths": {
@@ -43,7 +47,7 @@
       "post": {
         "tags": ["users"],
         "summary": "Create a new user",
-        "description": "This endpoint allows the create of a new users",
+        "description": "This endpoint allows the creation of a new user.",
         "operationId": "addUser",
         "requestBody": {
           "content": {
@@ -57,7 +61,7 @@
         },
         "responses": {
           "201": {
-            "description": "This response will be returned when the created a account resource",
+            "description": "This response will be returned when the account resource is created successfully",
             "content": {
               "application/json": {
                 "schema": {
@@ -67,7 +71,7 @@
             }
           },
           "400": {
-            "description": "This response will be returned when has validation error",
+            "description": "This response will be returned when there is a validation error.",
             "content": {
               "application/json": {
                 "schema": {
@@ -99,11 +103,11 @@
         }
       }
     },
-    "/users/avatar": {
+    "/users/me/avatar": {
       "patch": {
         "tags": ["users"],
-        "summary": "Upload avatar image to user",
-        "description": "This endpoint allows you to upload image to logged user",
+        "summary": "Upload avatar image for the user",
+        "description": "This endpoint allows you to upload an image for the logged-in user",
         "operationId": "uploadAvatar",
         "security": [{ "bearerAuth": [] }],
         "requestBody": {
@@ -118,7 +122,7 @@
         },
         "responses": {
           "200": {
-            "description": "This response will be returned when the uploaded avatar to account resource",
+            "description": "This response will be returned when the avatar is successfully uploaded",
             "content": {
               "application/json": {
                 "schema": {
@@ -150,16 +154,16 @@
         }
       }
     },
-    "/users/profile": {
+    "/users/me": {
       "get": {
         "tags": ["users"],
-        "summary": "show the profile of the logged in user",
-        "description": "This endpoint allows logged in to see your profile",
+        "summary": "Show the profile of the logged-in user",
+        "description": "This endpoint allows the logged-in user to view their profile",
         "operationId": "showProfile",
         "security": [{ "bearerAuth": [] }],
         "responses": {
           "200": {
-            "description": "This response will be returned when show user profile with success",
+            "description": "This response will be returned when the user profile is successfully retrieved",
             "content": {
               "application/json": {
                 "schema": {
@@ -192,8 +196,8 @@
       },
       "put": {
         "tags": ["users"],
-        "summary": "Update the profile of the logged in user",
-        "description": "This endpoint allows logged in to update your profile",
+        "summary": "Update the profile of the logged-in user",
+        "description": "This endpoint allows logged-in user to update your profile",
         "security": [{ "bearerAuth": [] }],
         "requestBody": {
           "content": {
@@ -206,7 +210,7 @@
         },
         "responses": {
           "200": {
-            "description": "This response will be returned when updated user with success",
+            "description": "This response will be returned when the user is successfully updated",
             "content": {
               "application/json": {
                 "schema": {
@@ -246,7 +250,7 @@
             }
           },
           "422": {
-            "description": "This response will be returned when some fields did not came the way we needed",
+            "description": "This response is returned when some fields are not provided as required.",
             "content": {
               "application/json": {
                 "schema": {
@@ -268,11 +272,11 @@
         }
       }
     },
-    "/sessions": {
+    "/auth/sessions": {
       "post": {
         "tags": ["sessions"],
         "summary": "Authenticate user",
-        "description": "This endpoint allows users to log with their credentials",
+        "description": "This endpoint allows users to log in with their credentials",
         "operationId": "authenticateUser",
         "requestBody": {
           "content": {
@@ -286,7 +290,7 @@
         },
         "responses": {
           "200": {
-            "description": "This response will be returned when the user was authenticated with success",
+            "description": "This response will be returned when the user is successfully authenticated",
             "content": {
               "application/json": {
                 "schema": {
@@ -306,7 +310,7 @@
             }
           },
           "401": {
-            "description": "This response will be returned when email or password is incorrect",
+            "description": "This response will be returned when the email or password is incorrect",
             "content": {
               "application/json": {
                 "schema": {
@@ -346,7 +350,7 @@
         },
         "responses": {
           "204": {
-            "description": "This response will be returned when the email was send with success"
+            "description": "This response will be returned when the email is sent successfully"
           },
           "400": {
             "description": "This response will be returned when has validation error",
@@ -359,7 +363,7 @@
             }
           },
           "404": {
-            "description": "This response will be returned when the user to be deleted or does not exist",
+            "description": "This response is returned when the user does not exist",
             "content": {
               "application/json": {
                 "schema": {
@@ -387,6 +391,18 @@
         "summary": "Reset user password",
         "description": "This endpoint allows users to reset their passwords",
         "operationId": "resetPassword",
+        "parameters": [
+          {
+            "name": "token",
+            "in": "query",
+            "description": "Token to reset password",
+            "required": false,
+            "schema": {
+              "type": "uuid",
+              "example": "4eddcedc-9a2d-4a65-a75a-77d526c351e3"
+            }
+          }
+        ],
         "requestBody": {
           "content": {
             "application/json": {
@@ -399,7 +415,7 @@
         },
         "responses": {
           "204": {
-            "description": "This response will be returned when the password was reseted with success"
+            "description": "This response will be returned when the password is successfully reset"
           },
           "400": {
             "description": "This response will be returned when has validation error",
@@ -422,7 +438,7 @@
             }
           },
           "404": {
-            "description": "This response will be returned when the user to be deleted or does not exist",
+            "description": "This response will be returned when the user does not exist",
             "content": {
               "application/json": {
                 "schema": {
@@ -463,7 +479,7 @@
         },
         "responses": {
           "201": {
-            "description": "This response will be returned when the created a appointment resource",
+            "description": "This response will be returned when the appointment resource is created successfully",
             "content": {
               "application/json": {
                 "schema": {
@@ -503,7 +519,7 @@
             }
           },
           "422": {
-            "description": "This response will be returned when some fields did not came the way we needed",
+            "description": "This response will be returned when some fields are not provided as required",
             "content": {
               "application/json": {
                 "schema": {
@@ -525,15 +541,44 @@
         }
       }
     },
-    "/providers": {
+    "/appointments/me": {
       "get": {
         "tags": ["appointments"],
-        "summary": "Returns a list of providers except the logged in user",
-        "description": "This endpoint allows the logged in user to see the list of registered providers",
+        "summary": "Returns a list of providers except the logged-in user",
+        "description": "This endpoint allows the logged-in user to see the list of registered providers",
         "security": [{ "bearerAuth": [] }],
+        "parameters": [
+          {
+            "name": "day",
+            "in": "query",
+            "description": "Day values ​​to be considered for filtering",
+            "schema": {
+              "type": "integer",
+              "example": "01"
+            }
+          },
+          {
+            "name": "month",
+            "in": "query",
+            "description": "Month values ​​to be considered for filtering",
+            "schema": {
+              "type": "integer",
+              "example": "11"
+            }
+          },
+          {
+            "name": "year",
+            "in": "query",
+            "description": "Year values ​​to be considered for filtering",
+            "schema": {
+              "type": "integer",
+              "example": "2024"
+            }
+          }
+        ],
         "responses": {
           "200": {
-            "description": "This response will be returned when return an provider list with success",
+            "description": "This response will be returned when return an provider list is successfully retrieved",
             "content": {
               "application/json": {
                 "schema": {
@@ -570,7 +615,7 @@
     },
     "/providers/{providerId}/day-availability": {
       "get": {
-        "tags": ["appointments"],
+        "tags": ["providers"],
         "summary": "Returns a list of available and unavailable times of day for the selected provider",
         "description": "This endpoint allows you to see the list of available and unavailable hours for the selected provider by day, month and year",
         "operationId": "listProviderDailyHoursAvailability",
@@ -579,7 +624,7 @@
           {
             "name": "providerId",
             "in": "path",
-            "description": "User ID",
+            "description": "Provider ID.",
             "required": true,
             "schema": {
               "type": "string",
@@ -589,7 +634,7 @@
           {
             "name": "year",
             "in": "query",
-            "description": "Year values ​​to be considered for filter",
+            "description": "Year values ​​to be considered for filtering",
             "schema": {
               "type": "integer",
               "example": "2024"
@@ -598,7 +643,7 @@
           {
             "name": "month",
             "in": "query",
-            "description": "Month values ​​to be considered for filter",
+            "description": "Month values ​​to be considered for filtering",
             "schema": {
               "type": "integer",
               "example": "11"
@@ -607,7 +652,7 @@
           {
             "name": "day",
             "in": "query",
-            "description": "Day values ​​to be considered for filter",
+            "description": "Day values ​​to be considered for filtering",
             "schema": {
               "type": "integer",
               "example": "01"
@@ -616,34 +661,15 @@
         ],
         "responses": {
           "200": {
-            "description": "This response will be returned when list of available and unavailable hours of the for selected day with success",
+            "description": "This response will be returned when list of available and unavailable hours of the for selected day is successfully retrieved",
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/ListProviderDailyHoursAvailability"
-                },
-                "example": [
-                  {
-                    "hour": 8,
-                    "available": false
-                  },
-                  {
-                    "hour": 9,
-                    "available": false
-                  },
-                  {
-                    "hour": 10,
-                    "available": false
-                  },
-                  {
-                    "hour": 11,
-                    "available": false
-                  },
-                  {
-                    "hour": 12,
-                    "available": false
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/ListProviderDailyHoursAvailability"
                   }
-                ]
+                }
               }
             }
           },
@@ -672,9 +698,9 @@
     },
     "/providers/{providerId}/month-availability": {
       "get": {
-        "tags": ["appointments"],
+        "tags": ["providers"],
         "summary": "Returns a list of available and unavailable days of the month for the selected provider",
-        "description": "This endpoint allows the see the list of available and unavailable days of the for the selected provider from month and year",
+        "description": "This endpoint allows you to see the list of available and unavailable days for the selected provider for a specific month and year",
         "operationId": "listProviderDailiesAvailabilityByMonth",
         "security": [{ "bearerAuth": [] }],
         "parameters": [
@@ -709,30 +735,15 @@
         ],
         "responses": {
           "200": {
-            "description": "This response will be returned when list of available and unavailable days of the for selected month with success",
+            "description": "This response will be returned when the list of available and unavailable days for the selected month is successfully retrieved",
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/ListProviderDailiesAvailabilityByMonth"
-                },
-                "example": [
-                  {
-                    "day": 1,
-                    "available": false
-                  },
-                  {
-                    "day": 2,
-                    "available": false
-                  },
-                  {
-                    "day": 3,
-                    "available": false
-                  },
-                  {
-                    "day": 4,
-                    "available": false
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/ListProviderDailiesAvailabilityByMonth"
                   }
-                ]
+                }
               }
             }
           },
@@ -811,19 +822,19 @@
           },
           "email": {
             "type": "string",
-            "email": "johndoe@example.com.br"
+            "example": "johndoe@example.com.br"
           },
           "password": {
+            "type": "string",
+            "example": "pass@12345"
+          },
+          "passwordConfirmation": {
             "type": "string",
             "example": "pass@12345"
           },
           "oldPassword": {
             "type": "string",
             "example": "P@ssw0rd"
-          },
-          "passwordConfirmation": {
-            "type": "string",
-            "example": "pass@12345"
           }
         }
       },
@@ -931,14 +942,6 @@
           "password": {
             "type": "string",
             "example": "pass@12345"
-          },
-          "passwordConfirmation": {
-            "type": "string",
-            "example": "pass@12345"
-          },
-          "token": {
-            "type": "string",
-            "example": "99219f13-5d23-4148-9ec4-862a9e2446ef"
           }
         }
       },
@@ -973,27 +976,51 @@
         ]
       },
       "ProvidersResponse": {
-        "allOf": [{ "$ref": "#/components/schemas/UserWithAvatarResponse" }]
+        "allOf": [
+          { "$ref": "#/components/schemas/EntityBase" },
+          { "$ref": "#/components/schemas/Appointment" },
+          {
+            "type": "object",
+            "properties": {
+              "userId": {
+                "type": "string",
+                "example": "b8139b60-bef9-4106-9131-0ba9b4bf5a0b"
+              }
+            }
+          },
+          {
+            "type": "object",
+            "properties": {
+              "user": {
+                "$ref": "#/components/schemas/UserWithAvatarResponse"
+              }
+            }
+          }
+        ]
       },
       "ListProviderDailiesAvailabilityByMonth": {
         "type": "object",
         "properties": {
           "day": {
-            "type": "integer"
+            "type": "integer",
+            "example": 1
           },
           "available": {
-            "type": "boolean"
+            "type": "boolean",
+            "example": "false"
           }
         }
       },
       "ListProviderDailyHoursAvailability": {
         "type": "object",
         "properties": {
-          "day": {
-            "type": "integer"
+          "hour": {
+            "type": "integer",
+            "example": 9
           },
           "available": {
-            "type": "boolean"
+            "type": "boolean",
+            "example": true
           }
         }
       },
