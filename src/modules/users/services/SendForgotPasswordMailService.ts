@@ -23,6 +23,16 @@ export class SendForgotPasswordMailService {
       throw new AppError('User not found', 404);
     }
 
+    const existingUserTokenAvailable =
+      await this.userTokenRepository.findByUserId(user.id);
+
+    if (existingUserTokenAvailable) {
+      await this.userTokenRepository.delete(
+        existingUserTokenAvailable.token,
+        user.id,
+      );
+    }
+
     const { token } = await this.userTokenRepository.create(user.id);
     const forgotPasswordMailTemplate = path.resolve(
       __dirname,

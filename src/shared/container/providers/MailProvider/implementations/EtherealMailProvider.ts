@@ -26,12 +26,8 @@ export class EtherealMailProvider implements IMailProvider {
     });
   }
 
-  public async sendMail({
-    to,
-    subject,
-    from,
-    templateData,
-  }: ISendMailDTO): Promise<void> {
+  public async sendMail(data: ISendMailDTO): Promise<void> {
+    const { to, subject, from, templateData } = data;
     const parsedTemplate = await this.mailTemplateProvider.parse(templateData);
     const message = await this.client.sendMail({
       from: {

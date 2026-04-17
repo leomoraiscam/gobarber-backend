@@ -20,7 +20,7 @@ export class ListProviderAppointmentsService {
     let appointments: Appointment[];
 
     const { providerId, month, year, day } = data;
-    const appointmentsCacheKey = `provider-appointments: ${providerId}:${year}-${month}-${day}`;
+    const appointmentsCacheKey = `provider-appointments:${providerId}:${year}-${month}-${day}`;
 
     appointments = await this.cacheProvider.recover<Appointment[]>(
       appointmentsCacheKey,

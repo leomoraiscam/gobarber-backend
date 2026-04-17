@@ -131,12 +131,32 @@
               }
             }
           },
+          "400": {
+            "description": "This response will be returned when there is a validation error.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ValidationError"
+                }
+              }
+            }
+          },
           "401": {
             "description": "This response will be returned when the user is not authenticated",
             "content": {
               "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/UnauthorizedError"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "This response is returned when some fields are not provided as required.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UnprocessableEntityError"
                 }
               }
             }
@@ -396,7 +416,7 @@
             "name": "token",
             "in": "query",
             "description": "Token to reset password",
-            "required": false,
+            "required": true,
             "schema": {
               "type": "uuid",
               "example": "4eddcedc-9a2d-4a65-a75a-77d526c351e3"
@@ -613,6 +633,49 @@
         }
       }
     },
+    "providers": {
+      "get": {
+        "tags": ["providers"],
+        "summary": "Returns a list of service providers",
+        "description": "This endpoint allows you to see the list of service providers to select from.",
+        "operationId": "listProviders",
+        "responses": {
+          "200": {
+            "description": "This response will be returned when list of available and unavailable hours of the for selected day is successfully retrieved",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/UserWithAvatarResponse"
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "This response will be returned when the user is not authenticated",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UnauthorizedError"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "This response will be returned when an unexpected error occurs",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/InternalServerError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/providers/{providerId}/day-availability": {
       "get": {
         "tags": ["providers"],
@@ -679,6 +742,16 @@
               "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/UnauthorizedError"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "This response is returned when the user does not exist",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/NotFoundError"
                 }
               }
             }
@@ -757,6 +830,16 @@
               }
             }
           },
+          "404": {
+            "description": "This response is returned when the user does not exist",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/NotFoundError"
+                }
+              }
+            }
+          },
           "500": {
             "description": "This response will be returned when an unexpected error occurs",
             "content": {
@@ -792,6 +875,15 @@
           "updatedAt": {
             "type": "string",
             "example": "2024-05-09 00:42:55.136515"
+          }
+        }
+      },
+      "UpdatedAtNullable": {
+        "type": "object",
+        "properties": {
+          "updatedAt": {
+            "type": "string",
+            "example": null
           }
         }
       },
@@ -870,7 +962,7 @@
             "$ref": "#/components/schemas/EntityBase"
           },
           {
-            "$ref": "#/components/schemas/UpdatedAt"
+            "$ref": "#/components/schemas/UpdatedAtNullable"
           }
         ]
       },
@@ -890,7 +982,10 @@
               }
             }
           },
-          { "$ref": "#/components/schemas/EntityBase" }
+          { "$ref": "#/components/schemas/EntityBase" },
+          {
+            "$ref": "#/components/schemas/UpdatedAt"
+          }
         ]
       },
       "Session": {
@@ -936,7 +1031,7 @@
         }
       },
       "ResetPassword": {
-        "required": ["password", "passwordConfirmation", "token"],
+        "required": ["password"],
         "type": "object",
         "properties": {
           "password": {
@@ -972,12 +1067,13 @@
               }
             }
           },
-          { "$ref": "#/components/schemas/UpdatedAt" }
+          { "$ref": "#/components/schemas/UpdatedAtNullable" }
         ]
       },
       "ProvidersResponse": {
         "allOf": [
           { "$ref": "#/components/schemas/EntityBase" },
+          { "$ref": "#/components/schemas/UpdatedAtNullable" },
           { "$ref": "#/components/schemas/Appointment" },
           {
             "type": "object",

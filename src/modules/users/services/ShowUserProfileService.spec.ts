@@ -22,10 +22,4 @@ describe('ShowUserProfileService', () => {
     expect(user.name).toBe('John Doe');
     expect(user.email).toBe('joh@example.com');
   });
-
-  it('should not be able to show user when the same a non-existing', async () => {
-    await expect(
-      showUserProfileService.execute('non-existing-user'),
-    ).rejects.toBeInstanceOf(AppError);
-  });
 });

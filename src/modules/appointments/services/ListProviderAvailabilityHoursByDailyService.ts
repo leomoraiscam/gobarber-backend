@@ -1,5 +1,7 @@
 import { injectable, inject } from 'tsyringe';
 import { IDateProvider } from '@shared/container/providers/DateProvider/models/IDateProvider';
+import { AppError } from '@shared/errors/AppError';
+import { IUserRepository } from '@modules/users/repositories/IUserRepository';
 import { IAppointmentRepository } from '../repositories/IAppointmentRepository';
 import { ListProviderAvailableHoursResponse } from '../dtos/ListProviderAvailableHoursDTO';
 import { IFindDailyAppointmentsByProviderDTO } from '../dtos/IFindDailyAppointmentsByProviderDTO';
@@ -13,6 +15,8 @@ export class ListProviderAvailabilityHoursByDailyService {
   constructor(
     @inject('AppointmentRepository')
     private appointmentRepository: IAppointmentRepository,
+    @inject('UserRepository')
+    private userRepository: IUserRepository,
     @inject('DateProvider')
     private dateProvider: IDateProvider,
   ) {}
@@ -21,6 +25,12 @@ export class ListProviderAvailabilityHoursByDailyService {
     data: IFindDailyAppointmentsByProviderDTO,
   ): Promise<ListProviderAvailableHoursResponse> {
     const { providerId, month, year, day } = data;
+    const existingProvider = await this.userRepository.findById(providerId);
+
+    if (!existingProvider) {
+      throw new AppError('Provider not found', 404);
+    }
+
     const appointments =
       await this.appointmentRepository.findAllDailyByProvider({
         providerId,

@@ -1,6 +1,10 @@
 import { IDateProvider } from '../models/IDateProvider';
 
 export class FakeDateProvider implements IDateProvider {
+  private readonly MONTH_OFFSET = 1;
+  private readonly BEGIN_OF_DAY_HOUR = 0;
+  private readonly BEGIN_OF_HOUR_MINUTE = 0;
+  private readonly BEGIN_SECOND_OF_MINUTE = 0;
   private currentDate: Date;
 
   constructor() {
@@ -39,15 +43,19 @@ export class FakeDateProvider implements IDateProvider {
   getStartOfHour(date: Date): Date {
     const newDate = new Date(date);
 
-    newDate.setMinutes(0, 0, 0);
+    newDate.setMinutes(
+      this.BEGIN_OF_DAY_HOUR,
+      this.BEGIN_OF_HOUR_MINUTE,
+      this.BEGIN_SECOND_OF_MINUTE,
+    );
     return newDate;
   }
 
   getDaysInMonth(date: Date): number {
     const year = date.getFullYear();
-    const month = date.getMonth() + 1;
+    const month = date.getMonth() + this.MONTH_OFFSET;
 
-    return new Date(year, month, 0).getDate();
+    return new Date(year, month, this.BEGIN_OF_DAY_HOUR).getDate();
   }
 
   addHours(date: Date, hours: number): Date {

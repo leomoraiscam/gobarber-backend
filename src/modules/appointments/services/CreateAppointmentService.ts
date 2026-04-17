@@ -3,8 +3,9 @@ import { Appointment } from '@modules/appointments/infra/typeorm/entities/Appoin
 import { AppError } from '@shared/errors/AppError';
 import { ICacheProvider } from '@shared/container/providers/CacheProvider/models/ICacheProvider';
 import { IDateProvider } from '@shared/container/providers/DateProvider/models/IDateProvider';
+import { IUserRepository } from '@modules/users/repositories/IUserRepository';
 import { IAppointmentRepository } from '../repositories/IAppointmentRepository';
-import { INotificationRepository } from '../../notifications/repositories/INotificationRepository';
+// import { INotificationRepository } from '../../notifications/repositories/INotificationRepository';
 import { ICreateAppointmentDTO } from '../dtos/ICreateAppointmentDTO';
 
 @injectable()
@@ -15,8 +16,10 @@ export class CreateAppointmentService {
   constructor(
     @inject('AppointmentRepository')
     private appointmentRepository: IAppointmentRepository,
-    @inject('NotificationRepository')
-    private notificationRepository: INotificationRepository,
+    // @inject('NotificationRepository')
+    // private notificationRepository: INotificationRepository,
+    @inject('UserRepository')
+    private userRepository: IUserRepository,
     @inject('CacheProvider')
     private cacheProvider: ICacheProvider,
     @inject('DateProvider')
@@ -31,6 +34,12 @@ export class CreateAppointmentService {
       appointmentDate,
       currentDate,
     );
+
+    const provider = await this.userRepository.findById(providerId);
+
+    if (!provider) {
+      throw new AppError('Provider not found', 404);
+    }
 
     if (isPastDate) {
       throw new AppError("You can't create an appointment on a past date", 422);
@@ -67,15 +76,15 @@ export class CreateAppointmentService {
       userId,
       date: appointmentDate,
     });
-    const notificationAppointmentDate = this.dateProvider.format(
-      appointmentDate,
-      "dd 'de' MMMM 'às' HH:mm'h'",
-    );
+    // const notificationAppointmentDate = this.dateProvider.format(
+    //   appointmentDate,
+    //   "dd 'de' MMMM 'às' HH:mm'h'",
+    // );
 
-    await this.notificationRepository.create({
-      recipientId: providerId,
-      content: `Novo agendamento para ${notificationAppointmentDate}`,
-    });
+    // await this.notificationRepository.create({
+    //   recipientId: providerId,
+    //   content: `Novo agendamento para ${notificationAppointmentDate}`,
+    // });
 
     const appointmentCacheKeyDate = this.dateProvider.format(
       appointmentDate,

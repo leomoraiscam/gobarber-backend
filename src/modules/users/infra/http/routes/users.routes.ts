@@ -7,6 +7,8 @@ import { createUserController } from '@modules/users/infra/http/controllers/Crea
 import { updateUserProfileController } from '@modules/users/infra/http/controllers/UpdateUserProfileController';
 import { showProfileUserController } from '@modules/users/infra/http/controllers/ShowProfileUserController';
 import { updateUserAvatarController } from '@modules/users/infra/http/controllers/UpdateUserAvatarController';
+import { avatarLimit } from '../middlewares/avatar-limit';
+import { validateAvatarPresence } from '../middlewares/validate-avatar-presence';
 
 const uploadAvatar = multer(upload.multer);
 const userRouter = Router();
@@ -81,6 +83,8 @@ userRouter.patch(
   '/me/avatar',
   ensureAuthenticated,
   uploadAvatar.single('avatar'),
+  validateAvatarPresence,
+  avatarLimit,
   updateUserAvatarController.handle,
 );
 

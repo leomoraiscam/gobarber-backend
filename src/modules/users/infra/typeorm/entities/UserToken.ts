@@ -5,6 +5,7 @@ import {
   CreateDateColumn,
   UpdateDateColumn,
   Generated,
+  DeleteDateColumn,
 } from 'typeorm';
 
 @Entity('user_tokens')
@@ -24,4 +25,7 @@ export class UserToken {
 
   @UpdateDateColumn({ name: 'updated_at' })
   updatedAt: Date;
+
+  @DeleteDateColumn({ name: 'deleted_at' })
+  deletedAt?: Date;
 }

@@ -15,6 +15,8 @@ import swaggerDocument from './swagger.json';
 
 const app = express();
 
+app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
+
 app.use(rateLimiter);
 app.use(cors());
 app.use(express.json());

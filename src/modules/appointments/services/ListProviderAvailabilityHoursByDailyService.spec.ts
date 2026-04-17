@@ -6,6 +6,7 @@ describe('ListProviderAvailabilityHoursByDailyService', () => {
   let fakeAppointmentRepository: FakeAppointmentRepository;
   let fakeDateProvider: FakeDateProvider;
   let listProviderAvailabilityHoursByDailyService: ListProviderAvailabilityHoursByDailyService;
+  // const OriginalDate = Date;
 
   beforeEach(() => {
     fakeAppointmentRepository = new FakeAppointmentRepository();
@@ -15,12 +16,32 @@ describe('ListProviderAvailabilityHoursByDailyService', () => {
         fakeAppointmentRepository,
         fakeDateProvider,
       );
+
+    // global.Date = jest.fn((...args: unknown[]) => {
+    //   if (args.length === 0) {
+    //     return new OriginalDate(2020, 4, 20, 11, 0, 0);
+    //   }
+
+    //   return Reflect.construct(OriginalDate, args);
+    // }) as unknown as DateConstructor;
+
+    // global.Date.now = OriginalDate.now;
+    // global.Date.parse = OriginalDate.parse;
+    // global.Date.UTC = OriginalDate.UTC;
   });
 
+  // afterEach(() => {
+  //   jest.restoreAllMocks();
+  // });
+
   it('should be able to list the hours available from provider by day when received correct data', async () => {
-    jest.spyOn(Date, 'now').mockImplementationOnce(() => {
-      return new Date(2020, 4, 20, 11).getTime();
-    });
+    // jest.spyOn(fakeDateProvider, 'dateNow').mockImplementationOnce(() => {
+    //   return new Date(2020, 4, 20, 11);
+    // });
+
+    jest
+      .spyOn(fakeDateProvider, 'dateNow')
+      .mockReturnValue(new Date(2020, 4, 20, 11));
 
     await Promise.all([
       fakeAppointmentRepository.create({

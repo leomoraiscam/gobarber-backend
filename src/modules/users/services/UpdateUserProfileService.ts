@@ -68,8 +68,8 @@ export class UpdateUserProfileService {
 
     const hashedPassword = await this.hashProvider.generateHash(password);
 
-    Object.assign(user, { password: hashedPassword });
+    Object.assign(user, { name, email, password: hashedPassword });
 
-    return user;
+    return this.userRepository.save(user);
   }
 }

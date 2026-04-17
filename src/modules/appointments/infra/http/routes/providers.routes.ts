@@ -15,6 +15,7 @@ providerRoutes.get(
       providerId: Joi.string().uuid().required(),
     },
   }),
+  ensureAuthenticated,
   listProviderAvailabilityDailiesByMonthController.handle,
 );
 providerRoutes.get(
@@ -24,6 +25,7 @@ providerRoutes.get(
       providerId: Joi.string().uuid().required(),
     },
   }),
+  ensureAuthenticated,
   listProviderAvailabilityHoursByDailyController.handle,
 );
 

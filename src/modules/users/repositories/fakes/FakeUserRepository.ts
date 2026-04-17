@@ -33,8 +33,8 @@ export class FakeUserRepository implements IUserRepository {
       name,
       email,
       password,
-      createdAt: new Date(),
-      updatedAt: null,
+      // createdAt: new Date(),
+      // updatedAt: null,
     });
 
     this.users.push(user);

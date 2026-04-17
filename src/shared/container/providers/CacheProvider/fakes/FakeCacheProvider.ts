@@ -1,8 +1,11 @@
-import { ICacheData } from '../dtos/ICacheDataDTO';
 import { ICacheProvider } from '../models/ICacheProvider';
 
+type CacheData = {
+  [key: string]: string;
+};
+
 export class FakeCacheProvider implements ICacheProvider {
-  private cache: ICacheData = {};
+  private cache: CacheData = {};
 
   public async save(key: string, value: unknown): Promise<void> {
     this.cache[key] = JSON.stringify(value);
@@ -15,9 +18,7 @@ export class FakeCacheProvider implements ICacheProvider {
       return null;
     }
 
-    const parsedData = JSON.parse(data) as T;
-
-    return parsedData;
+    return JSON.parse(data) as T;
   }
 
   public async invalidate(key: string): Promise<void> {

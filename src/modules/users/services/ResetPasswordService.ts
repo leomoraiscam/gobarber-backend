@@ -51,11 +51,13 @@ export class ResetPasswordService {
     }
 
     const hashedPassword = await this.hashProvider.generateHash(password);
-
     Object.assign(user, {
       password: hashedPassword,
     });
 
-    await this.userRepository.save(user);
+    await Promise.all([
+      this.userRepository.save(user),
+      this.userTokenRepository.delete(token, userId),
+    ]);
   }
 }

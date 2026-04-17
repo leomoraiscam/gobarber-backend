@@ -15,12 +15,9 @@ container.registerSingleton<IMailTemplateProvider>(
   'MailTemplateProvider',
   HandlebarsMailTemplateProvider,
 );
-
 container.registerInstance<IMailProvider>(
   'MailProvider',
   container.resolve(EtherealMailProvider),
 );
-
 container.registerSingleton<IHashProvider>('HashProvider', BCryptHashProvider);
-
 container.registerSingleton<IDateProvider>('DateProvider', DateFnsProvider);

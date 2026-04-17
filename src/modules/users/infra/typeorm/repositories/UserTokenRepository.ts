@@ -15,6 +15,12 @@ export class UserTokenRepository implements IUserTokenRepository {
     });
   }
 
+  public async findByUserId(userId: string): Promise<UserToken | null> {
+    return this.ormRepository.findOne({
+      where: { userId },
+    });
+  }
+
   public async create(userId: string): Promise<UserToken> {
     const userToken = this.ormRepository.create({
       userId,
@@ -23,5 +29,9 @@ export class UserTokenRepository implements IUserTokenRepository {
     await this.ormRepository.save(userToken);
 
     return userToken;
+  }
+
+  public async delete(token: string, userId: string): Promise<void> {
+    await this.ormRepository.softDelete({ userId, token });
   }
 }
