@@ -6,13 +6,12 @@ import { Notification } from '@modules/notifications/infra/typeorm/schemas/Notif
 export class NotificationRepository implements INotificationRepository {
   private ormRepository: MongoRepository<Notification>;
 
-  constructor() {
-    this.ormRepository = getMongoRepository(Notification, 'mongo');
-  }
+  public async create({ content, recipientId }: ICreateNotificationDTO): Promise<Notification> {
+    if (!this.ormRepository) {
+      this.ormRepository = getMongoRepository(Notification, 'mongo');
+    }
 
-  public async create(data: ICreateNotificationDTO): Promise<Notification> {
-    const { content, recipientId } = data;
-    const notification = await this.ormRepository.create({
+    const notification = this.ormRepository.create({
       content,
       recipientId,
     });

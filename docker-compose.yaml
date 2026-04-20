@@ -1,0 +1,39 @@
+version: '3.7'
+
+services:
+  database:
+    image: postgres
+    container_name: go-barber-database-02
+    ports:
+      - 5455:5455
+    environment:
+      - POSTGRES_USER=docker
+      - POSTGRES_PASSWORD=docker
+      - POSTGRES_DB=go-barber
+    volumes:
+      - pgdata:/data/postgres
+    command: -p 5455
+
+  mongo:
+    image: mongo
+    container_name: go-barber-mongo-02
+    ports:
+      - 27017:27017
+    volumes:
+      - mongodata:/data/db
+
+  # go-barber-redis:
+  #   image: redis
+  #   container_name: go-barber-redis-02
+  #   ports:
+  #     - ${REDIS_PORT}:${REDIS_PORT}
+  #   volumes:
+  #     - go-barber-redis-data:/bitnami/redis/data
+
+volumes:
+  pgdata:
+    driver: local
+  mongodata:
+    driver: local
+  go-barber-redis-data:
+    driver: local

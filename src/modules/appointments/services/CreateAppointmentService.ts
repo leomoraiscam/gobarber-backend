@@ -1,11 +1,12 @@
 import { injectable, inject } from 'tsyringe';
+import { format } from 'date-fns';
 import { Appointment } from '@modules/appointments/infra/typeorm/entities/Appointment';
 import { AppError } from '@shared/errors/AppError';
 import { ICacheProvider } from '@shared/container/providers/CacheProvider/models/ICacheProvider';
 import { IDateProvider } from '@shared/container/providers/DateProvider/models/IDateProvider';
 import { IUserRepository } from '@modules/users/repositories/IUserRepository';
 import { IAppointmentRepository } from '../repositories/IAppointmentRepository';
-// import { INotificationRepository } from '../../notifications/repositories/INotificationRepository';
+import { INotificationRepository } from '@modules/notifications/repositories/INotificationRepository';
 import { ICreateAppointmentDTO } from '../dtos/ICreateAppointmentDTO';
 
 @injectable()
@@ -16,8 +17,8 @@ export class CreateAppointmentService {
   constructor(
     @inject('AppointmentRepository')
     private appointmentRepository: IAppointmentRepository,
-    // @inject('NotificationRepository')
-    // private notificationRepository: INotificationRepository,
+    @inject('NotificationRepository')
+    private notificationRepository: INotificationRepository,
     @inject('UserRepository')
     private userRepository: IUserRepository,
     @inject('CacheProvider')
@@ -76,15 +77,15 @@ export class CreateAppointmentService {
       userId,
       date: appointmentDate,
     });
-    // const notificationAppointmentDate = this.dateProvider.format(
-    //   appointmentDate,
-    //   "dd 'de' MMMM 'às' HH:mm'h'",
-    // );
+    const notificationAppointmentDate = format(
+      appointmentDate,
+      "dd 'de' MMMM 'às' HH:mm'h'",
+    );
 
-    // await this.notificationRepository.create({
-    //   recipientId: providerId,
-    //   content: `Novo agendamento para ${notificationAppointmentDate}`,
-    // });
+    await this.notificationRepository.create({
+      recipientId: providerId,
+      content: `Novo agendamento para ${notificationAppointmentDate}`,
+    });
 
     const appointmentCacheKeyDate = this.dateProvider.format(
       appointmentDate,

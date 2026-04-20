@@ -1,19 +1,22 @@
 import { FakeDateProvider } from '@shared/container/providers/DateProvider/fakes/FakeDateProvider';
 import { FakeAppointmentRepository } from '../repositories/fakes/FakeAppointmentRepository';
+import { FakeUserRepository } from '@modules/users/repositories/fakes/FakeUserRepository';
 import { ListProviderAvailabilityHoursByDailyService } from './ListProviderAvailabilityHoursByDailyService';
 
 describe('ListProviderAvailabilityHoursByDailyService', () => {
   let fakeAppointmentRepository: FakeAppointmentRepository;
   let fakeDateProvider: FakeDateProvider;
+  let fakeUserRepository: FakeUserRepository;
   let listProviderAvailabilityHoursByDailyService: ListProviderAvailabilityHoursByDailyService;
-  // const OriginalDate = Date;
 
   beforeEach(() => {
     fakeAppointmentRepository = new FakeAppointmentRepository();
     fakeDateProvider = new FakeDateProvider();
+    fakeUserRepository = new FakeUserRepository();
     listProviderAvailabilityHoursByDailyService =
       new ListProviderAvailabilityHoursByDailyService(
         fakeAppointmentRepository,
+        fakeUserRepository,
         fakeDateProvider,
       );
 
@@ -42,6 +45,10 @@ describe('ListProviderAvailabilityHoursByDailyService', () => {
     jest
       .spyOn(fakeDateProvider, 'dateNow')
       .mockReturnValue(new Date(2020, 4, 20, 11));
+
+    jest
+      .spyOn(fakeUserRepository, 'findById')
+      .mockResolvedValue({ id: 'user' } as any);
 
     await Promise.all([
       fakeAppointmentRepository.create({

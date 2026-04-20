@@ -1,12 +1,21 @@
 import { Request, Response, NextFunction } from 'express';
 import { MulterError } from 'multer';
 
+import { AppError } from '@shared/errors/AppError';
+
 export function avatarLimit(
   error: any,
   req: Request,
   res: Response,
   _: NextFunction,
 ): Response {
+  if (error instanceof AppError) {
+    return res.status(error.statusCode).json({
+      status: 'error',
+      message: error.message,
+    });
+  }
+
   if (error instanceof MulterError) {
     const multerErrorsMapping: Record<
       string,

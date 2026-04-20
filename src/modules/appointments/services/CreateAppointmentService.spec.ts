@@ -2,12 +2,14 @@ import { AppError } from '@shared/errors/AppError';
 import { FakeNotificationRepository } from '@modules/notifications/repositories/fakes/FakeNotificationRepository';
 import { FakeCacheProvider } from '@shared/container/providers/CacheProvider/fakes/FakeCacheProvider';
 import { FakeDateProvider } from '@shared/container/providers/DateProvider/fakes/FakeDateProvider';
+import { FakeUserRepository } from '@modules/users/repositories/fakes/FakeUserRepository';
 import { FakeAppointmentRepository } from '../repositories/fakes/FakeAppointmentRepository';
 import { CreateAppointmentService } from './CreateAppointmentService';
 
 describe('CreateAppointmentService', () => {
   let fakeAppointmentRepository: FakeAppointmentRepository;
   let fakeNotificationsRepository: FakeNotificationRepository;
+  let fakeUserRepository: FakeUserRepository;
   let fakeCacheProvider: FakeCacheProvider;
   let fakeDateProvider: FakeDateProvider;
   let createAppointmentService: CreateAppointmentService;
@@ -15,14 +17,21 @@ describe('CreateAppointmentService', () => {
   beforeEach(() => {
     fakeAppointmentRepository = new FakeAppointmentRepository();
     fakeNotificationsRepository = new FakeNotificationRepository();
+    fakeUserRepository = new FakeUserRepository();
     fakeCacheProvider = new FakeCacheProvider();
     fakeDateProvider = new FakeDateProvider();
+
     createAppointmentService = new CreateAppointmentService(
       fakeAppointmentRepository,
       fakeNotificationsRepository,
+      fakeUserRepository,
       fakeCacheProvider,
       fakeDateProvider,
     );
+
+    jest
+      .spyOn(fakeUserRepository, 'findById')
+      .mockResolvedValue({ id: 'faked-provider' } as any);
   });
 
   it('should be able to create an appointment when received correct data', async () => {
