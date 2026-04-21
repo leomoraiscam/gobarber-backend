@@ -50,7 +50,7 @@ export class SendForgotPasswordMailService {
         name: user.name,
         email: user.email,
       },
-      subject: '[GoBarber] Recuperação de senha',
+      subject: '[GoBarber] Password Recovery',
       templateData: {
         file: forgotPasswordMailTemplate,
         variables: {

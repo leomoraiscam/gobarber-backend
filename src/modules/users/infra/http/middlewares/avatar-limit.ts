@@ -14,23 +14,22 @@ export function avatarLimit(
     > = {
       LIMIT_FILE_SIZE: {
         statusCode: 422,
-        message: 'Arquivo excede o limite de 2MB.',
+        message: 'File exceeds 2MB limit.',
       },
       INVALID_FORMAT_FILE: {
         statusCode: 400,
-        message: 'Formato do arquivo Invalido',
+        message: 'Invalid file format.',
       },
     };
 
     const message =
-      multerErrorsMapping[error.code].message || 'Erro no upload do arquivo.';
+      multerErrorsMapping[error.code].message ||
+      'Error occurred while uploading the file.';
 
     return res
       .status(multerErrorsMapping[error.code].statusCode)
       .json({ message });
   }
-
-  console.log('error', error);
 
   return res.status(500).json({ status: 'error', message: error.message });
 }

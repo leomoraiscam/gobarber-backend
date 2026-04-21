@@ -20,6 +20,13 @@ appointmentRouter.post(
 appointmentRouter.get(
   '/me',
   ensureAuthenticated,
+  celebrate({
+    [Segments.QUERY]: {
+      day: Joi.number().integer().min(1).max(31).required(),
+      month: Joi.number().integer().min(1).max(12).required(),
+      year: Joi.number().integer().min(2020).required(),
+    },
+  }),
   listProviderAppointmentsController.handle,
 );
 

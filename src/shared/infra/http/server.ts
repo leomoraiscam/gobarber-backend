@@ -2,7 +2,7 @@ import 'reflect-metadata';
 import 'dotenv/config';
 import express, { Request, Response, NextFunction } from 'express';
 import 'express-async-errors';
-import { errors } from 'celebrate';
+import { isCelebrateError } from 'celebrate';
 import { upload } from '@config/upload';
 import { AppError } from '@shared/errors/AppError';
 import routes from '@shared/infra/http/routes';
@@ -22,7 +22,7 @@ app.use(cors());
 app.use(express.json());
 app.use('/files', express.static(upload.tmpFolder));
 app.use(routes);
-app.use(errors());
+
 app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 
 app.use((err: Error, request: Request, response: Response, _: NextFunction) => {
@@ -30,6 +30,15 @@ app.use((err: Error, request: Request, response: Response, _: NextFunction) => {
     return response.status(err.statusCode).json({
       status: 'error',
       message: err.message,
+    });
+  }
+
+  if (isCelebrateError(err)) {
+    const message = err.details.get('body')?.message || 'Validation failed';
+
+    return response.status(400).json({
+      status: 'error',
+      message: message.replace(/"/g, ''),
     });
   }
 

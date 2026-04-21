@@ -56,7 +56,7 @@ export class CreateAppointmentService {
       appointmentHours > this.MAX_APPOINTMENT_HOUR
     ) {
       throw new AppError(
-        "You can't create an appointments between 8am and 5pm",
+        'You can only create appointments between 8am and 5pm',
         422,
       );
     }

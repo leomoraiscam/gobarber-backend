@@ -56,6 +56,10 @@ userRouter.put(
             'The name must contain only letters and spaces.',
         }),
       email: Joi.string().email().optional(),
+      oldPassword: Joi.string().when('password', {
+        is: Joi.exist(),
+        then: Joi.required(),
+      }),
       password: Joi.string()
         .min(6)
         .max(14)
@@ -65,15 +69,18 @@ userRouter.put(
           'string.pattern.base':
             'The password must contain at least one number and one special character.',
         }),
-      oldPassword: Joi.string().optional(),
       passwordConfirmation: Joi.string()
         .min(6)
         .max(14)
         .pattern(/^(?=.*[0-9])(?=.*[!@#$%^&*])/)
-        .optional()
+        .when('password', {
+          is: Joi.exist(),
+          then: Joi.required().valid(Joi.ref('password')),
+        })
         .messages({
           'string.pattern.base':
             'The password must contain at least one number and one special character.',
+          'any.only': 'Password confirmation does not match.',
         }),
     },
   }),
