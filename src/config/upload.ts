@@ -1,12 +1,8 @@
-/* eslint-disable no-bitwise */
-/* eslint-disable no-else-return */
-import path from 'path';
+import path, { extname } from 'path';
 import crypto from 'crypto';
 import multer, { MulterError } from 'multer';
 import { IUploadConfig } from './dtos/IUploadConfig';
 import { UploadFolders } from './enums/uploadFolders';
-
-// const folders: string = 'tmp' | 'upload';
 
 const tmpFolder = path.resolve(__dirname, '..', '..', UploadFolders.TMP);
 const maxFileSize = 3 * 1024 * 1024;
@@ -20,12 +16,9 @@ export const upload = {
     storage: multer.diskStorage({
       destination: tmpFolder,
       filename: (_, file, callback) => {
-        const SALT_RANDOM_BYTES = 10;
-        const CRYPTO_HASH = 'hex';
-        const fileHash = crypto
-          .randomBytes(SALT_RANDOM_BYTES)
-          .toString(CRYPTO_HASH);
-        const fileName = `${fileHash}-${file.originalname}`;
+        const fileHash = crypto.randomBytes(10).toString('hex');
+        const extension = extname(file.originalname);
+        const fileName = `${fileHash}${extension}`;
 
         return callback(null, fileName);
       },
