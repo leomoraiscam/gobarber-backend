@@ -58,7 +58,7 @@ describe('ListProviderAppointmentsService', () => {
     });
 
     expect(cacheSaveSpied).toHaveBeenCalledWith(
-      `provider-appointments: faked-provider:2020-5-20`,
+      `provider-appointments:faked-provider:2020-5-20`,
       expect.arrayContaining([appointment]),
     );
   });
@@ -74,7 +74,7 @@ describe('ListProviderAppointmentsService', () => {
     ]);
 
     await fakeCacheProvider.save(
-      `provider-appointments: faked-provider:2020-5-20`,
+      `provider-appointments:faked-provider:2020-5-20`,
       [appointment],
     );
 
@@ -86,7 +86,7 @@ describe('ListProviderAppointmentsService', () => {
     });
 
     expect(cacheRecoverSpied).toHaveBeenCalledWith(
-      `provider-appointments: faked-provider:2020-5-20`,
+      `provider-appointments:faked-provider:2020-5-20`,
     );
     expect(appointments).toEqual([
       { ...appointment, date: appointment.date.toISOString() },

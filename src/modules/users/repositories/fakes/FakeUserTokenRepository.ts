@@ -5,6 +5,10 @@ import { UserToken } from '../../infra/typeorm/entities/UserToken';
 export class FakeUserTokenRepository implements IUserTokenRepository {
   private userTokens: UserToken[] = [];
 
+  public async findByUserId(userId: string): Promise<UserToken | null> {
+    return this.userTokens.find(userToken => userToken.userId === userId);
+  }
+
   public async findByToken(token: string): Promise<UserToken | null> {
     return this.userTokens.find(userToken => userToken.token === token);
   }
@@ -23,5 +27,11 @@ export class FakeUserTokenRepository implements IUserTokenRepository {
     this.userTokens.push(userToken);
 
     return userToken;
+  }
+
+  public async delete(token: string, userId: string): Promise<void> {
+    this.userTokens = this.userTokens.filter(
+      userToken => userToken.token !== token && userToken.userId !== userId,
+    );
   }
 }

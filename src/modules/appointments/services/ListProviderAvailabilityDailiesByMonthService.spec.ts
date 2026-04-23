@@ -1,21 +1,28 @@
 import { FakeDateProvider } from '@shared/container/providers/DateProvider/fakes/FakeDateProvider';
+import { FakeUserRepository } from '@modules/users/repositories/fakes/FakeUserRepository';
+import { User } from '@modules/users/infra/typeorm/entities/User';
 import { FakeAppointmentRepository } from '../repositories/fakes/FakeAppointmentRepository';
 import { ListProviderAvailabilityDailiesByMonthService } from './ListProviderAvailabilityDailiesByMonthService';
 
 describe('ListProviderAvailabilityDailiesByMonthService', () => {
   let fakeAppointmentRepository: FakeAppointmentRepository;
   let fakeDateProvider: FakeDateProvider;
+  let fakeUserRepository: FakeUserRepository;
   let listProviderAvailabilityDailiesByMonthService: ListProviderAvailabilityDailiesByMonthService;
   const OriginalDate = Date;
 
   beforeEach(() => {
     fakeAppointmentRepository = new FakeAppointmentRepository();
     fakeDateProvider = new FakeDateProvider();
+    fakeUserRepository = new FakeUserRepository();
     listProviderAvailabilityDailiesByMonthService =
       new ListProviderAvailabilityDailiesByMonthService(
         fakeAppointmentRepository,
+        fakeUserRepository,
         fakeDateProvider,
       );
+
+    jest.spyOn(fakeUserRepository, 'findById').mockResolvedValue({} as User);
 
     global.Date = jest.fn((...args: unknown[]) => {
       if (args.length === 0) {

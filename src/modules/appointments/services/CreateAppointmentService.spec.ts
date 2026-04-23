@@ -2,6 +2,7 @@ import { AppError } from '@shared/errors/AppError';
 import { FakeNotificationRepository } from '@modules/notifications/repositories/fakes/FakeNotificationRepository';
 import { FakeCacheProvider } from '@shared/container/providers/CacheProvider/fakes/FakeCacheProvider';
 import { FakeDateProvider } from '@shared/container/providers/DateProvider/fakes/FakeDateProvider';
+import { FakeUserRepository } from '@modules/users/repositories/fakes/FakeUserRepository';
 import { FakeAppointmentRepository } from '../repositories/fakes/FakeAppointmentRepository';
 import { CreateAppointmentService } from './CreateAppointmentService';
 
@@ -10,6 +11,7 @@ describe('CreateAppointmentService', () => {
   let fakeNotificationsRepository: FakeNotificationRepository;
   let fakeCacheProvider: FakeCacheProvider;
   let fakeDateProvider: FakeDateProvider;
+  let fakeUserRepository: FakeUserRepository;
   let createAppointmentService: CreateAppointmentService;
 
   beforeEach(() => {
@@ -17,12 +19,16 @@ describe('CreateAppointmentService', () => {
     fakeNotificationsRepository = new FakeNotificationRepository();
     fakeCacheProvider = new FakeCacheProvider();
     fakeDateProvider = new FakeDateProvider();
+    fakeUserRepository = new FakeUserRepository();
     createAppointmentService = new CreateAppointmentService(
       fakeAppointmentRepository,
       fakeNotificationsRepository,
+      fakeUserRepository,
       fakeCacheProvider,
       fakeDateProvider,
     );
+
+    jest.spyOn(fakeUserRepository, 'findById').mockResolvedValue({} as any);
   });
 
   it('should be able to create an appointment when received correct data', async () => {
