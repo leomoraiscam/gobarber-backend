@@ -20,7 +20,6 @@ describe('CreateAppointmentService', () => {
     fakeUserRepository = new FakeUserRepository();
     fakeCacheProvider = new FakeCacheProvider();
     fakeDateProvider = new FakeDateProvider();
-
     createAppointmentService = new CreateAppointmentService(
       fakeAppointmentRepository,
       fakeNotificationsRepository,

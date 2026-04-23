@@ -7,7 +7,7 @@ export function validateAvatarPresence(
   next: NextFunction,
 ): void | Response {
   if (!req.file) {
-    return res.status(400).json({ message: 'O campo avatar é obrigatorio.' });
+    return res.status(400).json({ message: 'Avatar field is required.' });
   }
 
   next();

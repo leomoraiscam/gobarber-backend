@@ -14,21 +14,21 @@ services:
       - pgdata:/data/postgres
     command: -p 5455
 
+  go-barber-redis:
+    image: redis
+    container_name: go-barber-redis
+    ports:
+      - ${REDIS_PORT}:${REDIS_PORT}
+    volumes:
+      - go-barber-redis-data:/bitnami/redis/data
+
   mongo:
     image: mongo
-    container_name: go-barber-mongo-02
+    container_name: go-barber-mongo
     ports:
       - 27017:27017
     volumes:
-      - mongodata:/data/db
-
-  # go-barber-redis:
-  #   image: redis
-  #   container_name: go-barber-redis-02
-  #   ports:
-  #     - ${REDIS_PORT}:${REDIS_PORT}
-  #   volumes:
-  #     - go-barber-redis-data:/bitnami/redis/data
+      - go-barber-mongo-data:/data/db
 
 volumes:
   pgdata:

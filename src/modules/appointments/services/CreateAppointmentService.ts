@@ -1,12 +1,11 @@
 import { injectable, inject } from 'tsyringe';
-import { format } from 'date-fns';
 import { Appointment } from '@modules/appointments/infra/typeorm/entities/Appointment';
 import { AppError } from '@shared/errors/AppError';
 import { ICacheProvider } from '@shared/container/providers/CacheProvider/models/ICacheProvider';
 import { IDateProvider } from '@shared/container/providers/DateProvider/models/IDateProvider';
 import { IUserRepository } from '@modules/users/repositories/IUserRepository';
-import { IAppointmentRepository } from '../repositories/IAppointmentRepository';
 import { INotificationRepository } from '@modules/notifications/repositories/INotificationRepository';
+import { IAppointmentRepository } from '../repositories/IAppointmentRepository';
 import { ICreateAppointmentDTO } from '../dtos/ICreateAppointmentDTO';
 
 @injectable()
@@ -57,7 +56,7 @@ export class CreateAppointmentService {
       appointmentHours > this.MAX_APPOINTMENT_HOUR
     ) {
       throw new AppError(
-        "You can't create an appointments between 8am and 5pm",
+        'You can only create appointments between 8am and 5pm',
         422,
       );
     }
@@ -77,7 +76,7 @@ export class CreateAppointmentService {
       userId,
       date: appointmentDate,
     });
-    const notificationAppointmentDate = format(
+    const notificationAppointmentDate = this.dateProvider.format(
       appointmentDate,
       "dd 'de' MMMM 'às' HH:mm'h'",
     );

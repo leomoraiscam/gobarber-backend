@@ -14,6 +14,10 @@ providerRoutes.get(
     [Segments.PARAMS]: {
       providerId: Joi.string().uuid().required(),
     },
+    [Segments.QUERY]: {
+      month: Joi.number().integer().min(1).max(12).required(),
+      year: Joi.number().integer().min(2020).required(),
+    },
   }),
   ensureAuthenticated,
   listProviderAvailabilityDailiesByMonthController.handle,
@@ -23,6 +27,11 @@ providerRoutes.get(
   celebrate({
     [Segments.PARAMS]: {
       providerId: Joi.string().uuid().required(),
+    },
+    [Segments.QUERY]: {
+      day: Joi.number().integer().min(1).max(31).required(),
+      month: Joi.number().integer().min(1).max(12).required(),
+      year: Joi.number().integer().min(2020).required(),
     },
   }),
   ensureAuthenticated,

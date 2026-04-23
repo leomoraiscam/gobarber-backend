@@ -120,7 +120,7 @@ describe('Appointments Controller', () => {
 
     expect(response.status).toBe(422);
     expect(response.body.message).toBe(
-      "You can't create an appointments between 8am and 5pm",
+      'You can only create appointments between 8am and 5pm',
     );
   });
 });

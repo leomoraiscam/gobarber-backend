@@ -1,4 +1,6 @@
 import { FakeDateProvider } from '@shared/container/providers/DateProvider/fakes/FakeDateProvider';
+import { FakeUserRepository } from '@modules/users/repositories/fakes/FakeUserRepository';
+import { User } from '@modules/users/infra/typeorm/entities/User';
 import { FakeAppointmentRepository } from '../repositories/fakes/FakeAppointmentRepository';
 import { FakeUserRepository } from '@modules/users/repositories/fakes/FakeUserRepository';
 import { ListProviderAvailabilityHoursByDailyService } from './ListProviderAvailabilityHoursByDailyService';
@@ -19,6 +21,8 @@ describe('ListProviderAvailabilityHoursByDailyService', () => {
         fakeUserRepository,
         fakeDateProvider,
       );
+
+    jest.spyOn(fakeUserRepository, 'findById').mockResolvedValue({} as User);
 
     // global.Date = jest.fn((...args: unknown[]) => {
     //   if (args.length === 0) {

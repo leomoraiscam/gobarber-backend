@@ -71,34 +71,13 @@
             }
           },
           "400": {
-            "description": "This response will be returned when there is a validation error.",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ValidationError"
-                }
-              }
-            }
+            "$ref": "#/components/responses/BadRequestError"
           },
           "409": {
-            "description": "This response will be returned when the account resource already exist",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ConflictError"
-                }
-              }
-            }
+            "$ref": "#/components/responses/ConflictError"
           },
           "500": {
-            "description": "This response will be returned when an unexpected error occurs",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/InternalServerError"
-                }
-              }
-            }
+            "$ref": "#/components/responses/InternalServerError"
           }
         }
       }
@@ -132,44 +111,16 @@
             }
           },
           "400": {
-            "description": "This response will be returned when there is a validation error.",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ValidationError"
-                }
-              }
-            }
+            "$ref": "#/components/responses/BadRequestError"
           },
           "401": {
-            "description": "This response will be returned when the user is not authenticated",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/UnauthorizedError"
-                }
-              }
-            }
+            "$ref": "#/components/responses/UnauthorizedError"
           },
           "422": {
-            "description": "This response is returned when some fields are not provided as required.",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/UnprocessableEntityError"
-                }
-              }
-            }
+            "$ref": "#/components/responses/UnprocessableEntityError"
           },
           "500": {
-            "description": "This response will be returned when an unexpected error occurs",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/InternalServerError"
-                }
-              }
-            }
+            "$ref": "#/components/responses/InternalServerError"
           }
         }
       }
@@ -193,24 +144,10 @@
             }
           },
           "401": {
-            "description": "This response will be returned when the user is not authenticated",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/UnauthorizedError"
-                }
-              }
-            }
+            "$ref": "#/components/responses/UnauthorizedError"
           },
           "500": {
-            "description": "This response will be returned when an unexpected error occurs",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/InternalServerError"
-                }
-              }
-            }
+            "$ref": "#/components/responses/InternalServerError"
           }
         }
       },
@@ -240,54 +177,19 @@
             }
           },
           "400": {
-            "description": "This response will be returned when has validation error",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ValidationError"
-                }
-              }
-            }
+            "$ref": "#/components/responses/BadRequestError"
           },
           "401": {
-            "description": "This response will be returned when the user is not authenticated",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/UnauthorizedError"
-                }
-              }
-            }
+            "$ref": "#/components/responses/UnauthorizedError"
           },
           "409": {
-            "description": "This response will be returned when the account resource already exist",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ConflictError"
-                }
-              }
-            }
+            "$ref": "#/components/responses/ConflictError"
           },
           "422": {
-            "description": "This response is returned when some fields are not provided as required.",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/UnprocessableEntityError"
-                }
-              }
-            }
+            "$ref": "#/components/responses/UnprocessableEntityError"
           },
           "500": {
-            "description": "This response will be returned when an unexpected error occurs",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/InternalServerError"
-                }
-              }
-            }
+            "$ref": "#/components/responses/InternalServerError"
           }
         }
       }
@@ -320,34 +222,16 @@
             }
           },
           "400": {
-            "description": "This response will be returned when has validation error",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ValidationError"
-                }
-              }
-            }
+            "$ref": "#/components/responses/BadRequestError"
           },
           "401": {
-            "description": "This response will be returned when the email or password is incorrect",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/UnauthorizedError"
-                }
-              }
-            }
+            "$ref": "#/components/responses/UnauthorizedError"
           },
           "500": {
-            "description": "This response will be returned when an unexpected error occurs",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/InternalServerError"
-                }
-              }
-            }
+            "$ref": "#/components/responses/InternalServerError"
+          },
+          "429": {
+            "$ref": "#/components/responses/TooManyRequestsError"
           }
         }
       }
@@ -373,34 +257,16 @@
             "description": "This response will be returned when the email is sent successfully"
           },
           "400": {
-            "description": "This response will be returned when has validation error",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ValidationError"
-                }
-              }
-            }
+            "$ref": "#/components/responses/BadRequestError"
           },
           "404": {
-            "description": "This response is returned when the user does not exist",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/NotFoundError"
-                }
-              }
-            }
+            "$ref": "#/components/responses/NotFoundError"
           },
           "500": {
-            "description": "This response will be returned when an unexpected error occurs",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/InternalServerError"
-                }
-              }
-            }
+            "$ref": "#/components/responses/InternalServerError"
+          },
+          "429": {
+            "$ref": "#/components/responses/TooManyRequestsError"
           }
         }
       }
@@ -438,44 +304,19 @@
             "description": "This response will be returned when the password is successfully reset"
           },
           "400": {
-            "description": "This response will be returned when has validation error",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ValidationError"
-                }
-              }
-            }
+            "$ref": "#/components/responses/BadRequestError"
           },
           "401": {
-            "description": "This response will be returned when the the token is invalid or expired",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/UnauthorizedError"
-                }
-              }
-            }
+            "$ref": "#/components/responses/UnauthorizedError"
           },
           "404": {
-            "description": "This response will be returned when the user does not exist",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/NotFoundError"
-                }
-              }
-            }
+            "$ref": "#/components/responses/NotFoundError"
           },
           "500": {
-            "description": "This response will be returned when an unexpected error occurs",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/InternalServerError"
-                }
-              }
-            }
+            "$ref": "#/components/responses/InternalServerError"
+          },
+          "429": {
+            "$ref": "#/components/responses/TooManyRequestsError"
           }
         }
       }
@@ -509,54 +350,22 @@
             }
           },
           "400": {
-            "description": "This response will be returned when has validation error",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ValidationError"
-                }
-              }
-            }
+            "$ref": "#/components/responses/BadRequestError"
           },
           "401": {
-            "description": "This response will be returned when the user is not authenticated",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/UnauthorizedError"
-                }
-              }
-            }
+            "$ref": "#/components/responses/UnauthorizedError"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFoundError"
           },
           "409": {
-            "description": "This response will be returned when the appointment resource already exist",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ConflictError"
-                }
-              }
-            }
+            "$ref": "#/components/responses/ConflictError"
           },
           "422": {
-            "description": "This response will be returned when some fields are not provided as required",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/UnprocessableEntityError"
-                }
-              }
-            }
+            "$ref": "#/components/responses/UnprocessableEntityError"
           },
           "500": {
-            "description": "This response will be returned when an unexpected error occurs",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/InternalServerError"
-                }
-              }
-            }
+            "$ref": "#/components/responses/InternalServerError"
           }
         }
       }
@@ -564,35 +373,43 @@
     "/appointments/me": {
       "get": {
         "tags": ["appointments"],
-        "summary": "Returns a list of providers except the logged-in user",
-        "description": "This endpoint allows the logged-in user to see the list of registered providers",
+        "summary": "Returns a list of appointments for the logged-in provider",
+        "description": "This endpoint allows the logged-in provider to see the list of their appointments",
         "security": [{ "bearerAuth": [] }],
         "parameters": [
           {
             "name": "day",
             "in": "query",
             "description": "Day values ​​to be considered for filtering",
+            "required": true,
             "schema": {
               "type": "integer",
-              "example": "01"
+              "minimum": 1,
+              "maximum": 31,
+              "example": 1
             }
           },
           {
             "name": "month",
             "in": "query",
             "description": "Month values ​​to be considered for filtering",
+            "required": true,
             "schema": {
               "type": "integer",
-              "example": "11"
+              "minimum": 1,
+              "maximum": 12,
+              "example": 11
             }
           },
           {
             "name": "year",
             "in": "query",
             "description": "Year values ​​to be considered for filtering",
+            "required": true,
             "schema": {
               "type": "integer",
-              "example": "2024"
+              "minimum": 2020,
+              "example": 2024
             }
           }
         ],
@@ -604,44 +421,34 @@
                 "schema": {
                   "type": "array",
                   "items": {
-                    "$ref": "#/components/schemas/ProvidersResponse"
+                    "$ref": "#/components/schemas/ProviderAppointmentsResponse"
                   }
                 }
               }
             }
           },
+          "400": {
+            "$ref": "#/components/responses/BadRequestError"
+          },
           "401": {
-            "description": "This response will be returned when the user is not authenticated",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/UnauthorizedError"
-                }
-              }
-            }
+            "$ref": "#/components/responses/UnauthorizedError"
           },
           "500": {
-            "description": "This response will be returned when an unexpected error occurs",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/InternalServerError"
-                }
-              }
-            }
+            "$ref": "#/components/responses/InternalServerError"
           }
         }
       }
     },
-    "providers": {
+    "/providers": {
       "get": {
         "tags": ["providers"],
         "summary": "Returns a list of service providers",
         "description": "This endpoint allows you to see the list of service providers to select from.",
         "operationId": "listProviders",
+        "security": [{ "bearerAuth": [] }],
         "responses": {
           "200": {
-            "description": "This response will be returned when list of available and unavailable hours of the for selected day is successfully retrieved",
+            "description": "This response will be returned when the list of providers is successfully retrieved",
             "content": {
               "application/json": {
                 "schema": {
@@ -654,24 +461,10 @@
             }
           },
           "401": {
-            "description": "This response will be returned when the user is not authenticated",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/UnauthorizedError"
-                }
-              }
-            }
+            "$ref": "#/components/responses/UnauthorizedError"
           },
           "500": {
-            "description": "This response will be returned when an unexpected error occurs",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/InternalServerError"
-                }
-              }
-            }
+            "$ref": "#/components/responses/InternalServerError"
           }
         }
       }
@@ -698,27 +491,35 @@
             "name": "year",
             "in": "query",
             "description": "Year values ​​to be considered for filtering",
+            "required": true,
             "schema": {
               "type": "integer",
-              "example": "2024"
+              "minimum": 2020,
+              "example": 2024
             }
           },
           {
             "name": "month",
             "in": "query",
             "description": "Month values ​​to be considered for filtering",
+            "required": true,
             "schema": {
               "type": "integer",
-              "example": "11"
+              "minimum": 1,
+              "maximum": 12,
+              "example": 11
             }
           },
           {
             "name": "day",
             "in": "query",
             "description": "Day values ​​to be considered for filtering",
+            "required": true,
             "schema": {
               "type": "integer",
-              "example": "01"
+              "minimum": 1,
+              "maximum": 31,
+              "example": 1
             }
           }
         ],
@@ -736,35 +537,17 @@
               }
             }
           },
+          "400": {
+            "$ref": "#/components/responses/BadRequestError"
+          },
           "401": {
-            "description": "This response will be returned when the user is not authenticated",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/UnauthorizedError"
-                }
-              }
-            }
+            "$ref": "#/components/responses/UnauthorizedError"
           },
           "404": {
-            "description": "This response is returned when the user does not exist",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/NotFoundError"
-                }
-              }
-            }
+            "$ref": "#/components/responses/NotFoundError"
           },
           "500": {
-            "description": "This response will be returned when an unexpected error occurs",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/InternalServerError"
-                }
-              }
-            }
+            "$ref": "#/components/responses/InternalServerError"
           }
         }
       }
@@ -791,18 +574,23 @@
             "name": "year",
             "in": "query",
             "description": "Year values ​​to be considered for filter",
+            "required": true,
             "schema": {
               "type": "integer",
-              "example": "2024"
+              "minimum": 2020,
+              "example": 2024
             }
           },
           {
             "name": "month",
             "in": "query",
             "description": "Month values ​​to be considered for filter",
+            "required": true,
             "schema": {
               "type": "integer",
-              "example": "11"
+              "minimum": 1,
+              "maximum": 12,
+              "example": 11
             }
           }
         ],
@@ -820,35 +608,17 @@
               }
             }
           },
+          "400": {
+            "$ref": "#/components/responses/BadRequestError"
+          },
           "401": {
-            "description": "This response will be returned when the user is not authenticated",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/UnauthorizedError"
-                }
-              }
-            }
+            "$ref": "#/components/responses/UnauthorizedError"
           },
           "404": {
-            "description": "This response is returned when the user does not exist",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/NotFoundError"
-                }
-              }
-            }
+            "$ref": "#/components/responses/NotFoundError"
           },
           "500": {
-            "description": "This response will be returned when an unexpected error occurs",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/InternalServerError"
-                }
-              }
-            }
+            "$ref": "#/components/responses/InternalServerError"
           }
         }
       }
@@ -861,11 +631,13 @@
         "properties": {
           "id": {
             "type": "string",
+            "format": "uuid",
             "example": "e1ecb723-6f8c-4ee6-86f6-64af13a77e8f"
           },
           "createdAt": {
             "type": "string",
-            "example": "2024-05-09 00:42:55.136515"
+            "format": "date-time",
+            "example": "2024-05-09T00:42:55.136Z"
           }
         }
       },
@@ -874,7 +646,8 @@
         "properties": {
           "updatedAt": {
             "type": "string",
-            "example": "2024-05-09 00:42:55.136515"
+            "format": "date-time",
+            "example": "2024-05-09T00:42:55.136Z"
           }
         }
       },
@@ -883,6 +656,7 @@
         "properties": {
           "updatedAt": {
             "type": "string",
+            "format": "date-time",
             "example": null
           }
         }
@@ -893,15 +667,23 @@
         "properties": {
           "name": {
             "type": "string",
-            "example": "John"
+            "minLength": 3,
+            "maxLength": 255,
+            "pattern": "^[A-Za-zÀ-ÖØ-öø-ÿ]+(?: [A-Za-zÀ-ÖØ-öø-ÿ]+)*$",
+            "example": "John Doe"
           },
           "email": {
             "type": "string",
+            "format": "email",
+            "pattern": "^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}$",
             "example": "email@email.com"
           },
           "password": {
             "type": "string",
-            "example": "pass@123"
+            "minLength": 6,
+            "maxLength": 14,
+            "pattern": "^(?=.*[0-9])(?=.*[!@#$%^&*])",
+            "example": "p@ssw0rd1"
           }
         }
       },
@@ -910,22 +692,36 @@
         "properties": {
           "name": {
             "type": "string",
-            "example": "John"
+            "minLength": 3,
+            "maxLength": 255,
+            "pattern": "^[A-Za-zÀ-ÖØ-öø-ÿ]+(?: [A-Za-zÀ-ÖØ-öø-ÿ]+)*$",
+            "example": "John Doe"
           },
           "email": {
             "type": "string",
+            "format": "email",
+            "pattern": "^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}$",
             "example": "johndoe@example.com.br"
           },
           "password": {
             "type": "string",
-            "example": "pass@12345"
+            "minLength": 6,
+            "maxLength": 14,
+            "pattern": "^(?=.*[0-9])(?=.*[!@#$%^&*])",
+            "example": "p@ssw0rd12"
           },
           "passwordConfirmation": {
             "type": "string",
-            "example": "pass@12345"
+            "description": "Must match the password field. Required only if password is provided.",
+            "minLength": 6,
+            "maxLength": 14,
+            "pattern": "^(?=.*[0-9])(?=.*[!@#$%^&*])",
+            "example": "p@ssw0rd12"
           },
           "oldPassword": {
             "type": "string",
+            "description": "Required only if password is provided.",
+            "minLength": 6,
             "example": "P@ssw0rd"
           }
         }
@@ -994,11 +790,16 @@
         "properties": {
           "email": {
             "type": "string",
+            "format": "email",
+            "pattern": "^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}$",
             "example": "email@email.com"
           },
           "password": {
             "type": "string",
-            "example": "pass@123"
+            "minLength": 6,
+            "maxLength": 14,
+            "pattern": "^(?=.*[0-9])(?=.*[!@#$%^&*])",
+            "example": "p@ssw0rd1"
           }
         }
       },
@@ -1026,6 +827,8 @@
         "properties": {
           "email": {
             "type": "string",
+            "format": "email",
+            "pattern": "^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}$",
             "example": "email+1@email.com"
           }
         }
@@ -1036,7 +839,10 @@
         "properties": {
           "password": {
             "type": "string",
-            "example": "pass@12345"
+            "minLength": 6,
+            "maxLength": 14,
+            "pattern": "^(?=.*[0-9])(?=.*[!@#$%^&*])",
+            "example": "p@ssw0rdReset1"
           }
         }
       },
@@ -1045,11 +851,13 @@
         "type": "object",
         "properties": {
           "date": {
-            "type": "date",
-            "example": "2024-11-10 08:00:00"
+            "type": "string",
+            "format": "date-time",
+            "example": "2024-11-10T08:00:00Z"
           },
           "providerId": {
             "type": "string",
+            "format": "uuid",
             "example": "18a82685-a4ae-4435-8cd2-b7c429e63fbb"
           }
         }
@@ -1063,6 +871,7 @@
             "properties": {
               "userId": {
                 "type": "string",
+                "format": "uuid",
                 "example": "b8139b60-bef9-4106-9131-0ba9b4bf5a0b"
               }
             }
@@ -1070,7 +879,7 @@
           { "$ref": "#/components/schemas/UpdatedAtNullable" }
         ]
       },
-      "ProvidersResponse": {
+      "ProviderAppointmentsResponse": {
         "allOf": [
           { "$ref": "#/components/schemas/EntityBase" },
           { "$ref": "#/components/schemas/UpdatedAtNullable" },
@@ -1080,6 +889,7 @@
             "properties": {
               "userId": {
                 "type": "string",
+                "format": "uuid",
                 "example": "b8139b60-bef9-4106-9131-0ba9b4bf5a0b"
               }
             }
@@ -1120,10 +930,10 @@
           }
         }
       },
-      "ErrorResponse": {
+      "Error": {
         "type": "object",
         "properties": {
-          "name": {
+          "status": {
             "type": "string"
           },
           "message": {
@@ -1134,7 +944,7 @@
       "ValidationError": {
         "allOf": [
           {
-            "$ref": "#/components/schemas/ErrorResponse"
+            "$ref": "#/components/schemas/Error"
           },
           {
             "example": {
@@ -1147,7 +957,7 @@
       "UnauthorizedError": {
         "allOf": [
           {
-            "$ref": "#/components/schemas/ErrorResponse"
+            "$ref": "#/components/schemas/Error"
           },
           {
             "example": {
@@ -1160,7 +970,7 @@
       "NotFoundError": {
         "allOf": [
           {
-            "$ref": "#/components/schemas/ErrorResponse"
+            "$ref": "#/components/schemas/Error"
           },
           {
             "example": {
@@ -1173,7 +983,7 @@
       "ConflictError": {
         "allOf": [
           {
-            "$ref": "#/components/schemas/ErrorResponse"
+            "$ref": "#/components/schemas/Error"
           },
           {
             "example": {
@@ -1186,7 +996,7 @@
       "UnprocessableEntityError": {
         "allOf": [
           {
-            "$ref": "#/components/schemas/ErrorResponse"
+            "$ref": "#/components/schemas/Error"
           },
           {
             "example": {
@@ -1199,12 +1009,25 @@
       "InternalServerError": {
         "allOf": [
           {
-            "$ref": "#/components/schemas/ErrorResponse"
+            "$ref": "#/components/schemas/Error"
           },
           {
             "example": {
               "status": "error",
               "message": "Internal Server Error"
+            }
+          }
+        ]
+      },
+      "TooManyRequestsError": {
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/Error"
+          },
+          {
+            "example": {
+              "status": "error",
+              "message": "Too many requests"
             }
           }
         ]
@@ -1214,7 +1037,218 @@
       "bearerAuth": {
         "type": "http",
         "scheme": "bearer",
-        "bearerFormat": "JWT"
+        "bearerFormat": "JWT",
+        "description": "Enter the JWT token in the format: Bearer <token>"
+      }
+    },
+    "responses": {
+      "BadRequestError": {
+        "description": "This response will be returned when there is a validation error.",
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/ValidationError"
+            },
+            "examples": {
+              "validationError": {
+                "value": {
+                  "status": "error",
+                  "message": "The \"property (example)\" parameter is missing in request body"
+                }
+              },
+              "avatarRequired": {
+                "value": {
+                  "status": "error",
+                  "message": "Avatar field is required."
+                }
+              },
+              "invalidFileFormat": {
+                "value": {
+                  "status": "error",
+                  "message": "Invalid file format."
+                }
+              }
+            }
+          }
+        }
+      },
+      "UnauthorizedError": {
+        "description": "This response will be returned when the user is not authenticated",
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/UnauthorizedError"
+            },
+            "examples": {
+              "jwtMissing": {
+                "value": {
+                  "status": "error",
+                  "message": "JWT token is missing"
+                }
+              },
+              "invalidToken": {
+                "value": {
+                  "status": "error",
+                  "message": "Invalid JWT token"
+                }
+              },
+              "unauthorized": {
+                "value": {
+                  "status": "error",
+                  "message": "Only authenticated users can change avatar"
+                }
+              },
+              "invalidCredentials": {
+                "value": {
+                  "status": "error",
+                  "message": "Incorrect email/password combination"
+                }
+              },
+              "invalidResetToken": {
+                "value": {
+                  "status": "error",
+                  "message": "Invalid or expired token"
+                }
+              }
+            }
+          }
+        }
+      },
+      "NotFoundError": {
+        "description": "This response will be returned when the requested resource does not exist",
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/NotFoundError"
+            },
+            "examples": {
+              "userNotFound": {
+                "value": {
+                  "status": "error",
+                  "message": "User not found"
+                }
+              },
+              "providerNotFound": {
+                "value": {
+                  "status": "error",
+                  "message": "Provider not found"
+                }
+              }
+            }
+          }
+        }
+      },
+      "ConflictError": {
+        "description": "This response will be returned when there is a conflict with an existing resource",
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/ConflictError"
+            },
+            "examples": {
+              "userExists": {
+                "value": {
+                  "status": "error",
+                  "message": "User already exists"
+                }
+              },
+              "alreadyBooked": {
+                "value": {
+                  "status": "error",
+                  "message": "This appointment is already booked"
+                }
+              }
+            }
+          }
+        }
+      },
+      "UnprocessableEntityError": {
+        "description": "This response is returned when some fields are not provided as required or business rules are violated.",
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/UnprocessableEntityError"
+            },
+            "examples": {
+              "pastDate": {
+                "value": {
+                  "status": "error",
+                  "message": "You can't create an appointment on a past date"
+                }
+              },
+              "sameUser": {
+                "value": {
+                  "status": "error",
+                  "message": "You can't create an appointment with yourself"
+                }
+              },
+              "outsideHours": {
+                "value": {
+                  "status": "error",
+                  "message": "You can only create appointments between 8am and 5pm"
+                }
+              },
+              "passwordMismatch": {
+                "value": {
+                  "status": "error",
+                  "message": "Password and password confirmation are not the same"
+                }
+              },
+              "invalidOldPassword": {
+                "value": {
+                  "status": "error",
+                  "message": "Invalid old password"
+                }
+              },
+              "missingOldPassword": {
+                "value": {
+                  "status": "error",
+                  "message": "You need to inform the old password to set a new password"
+                }
+              },
+              "missingConfirmation": {
+                "value": {
+                  "status": "error",
+                  "message": "You need to inform the password confirmation to set a new password"
+                }
+              },
+              "fileTooLarge": {
+                "value": {
+                  "status": "error",
+                  "message": "File exceeds 2MB limit."
+                }
+              }
+            }
+          }
+        }
+      },
+      "InternalServerError": {
+        "description": "This response will be returned when an unexpected error occurs",
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/InternalServerError"
+            }
+          }
+        }
+      },
+      "TooManyRequestsError": {
+        "description": "This response is returned when the user has sent too many requests in a given amount of time",
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/TooManyRequestsError"
+            },
+            "examples": {
+              "tooManyRequests": {
+                "value": {
+                  "status": "error",
+                  "message": "Too many requests"
+                }
+              }
+            }
+          }
+        }
       }
     }
   }
