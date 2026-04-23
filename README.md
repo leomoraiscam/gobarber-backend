@@ -1,134 +1,136 @@
 <h1 align="center">
-  <img alt="Logo" src="./assets/logo.svg" width="200px">
+  <img src="./assets/logo.svg" alt="GoBarber Logo" width="200px">
 </h1>
 
-<h3 align="center">
-  API for GoBarber
-</h3>
+## 📝 Índice
 
-<p align="center">
-  <img alt="GitHub top language" src="https://img.shields.io/github/languages/top/ruandsx/gobarber-backend?color=%23FF9000">
+- [📌 Introdução](#introdução)
+- [🧐 Sobre](#sobre)
+- [🏗️ Arquitetura](#arquitetura)
+- [🗂️ Estrutura do Projeto](#estrutura-do-projeto)
+- [🏁 Começando](#começando-)
+  - [Pré-requisitos](#pré-requisitos)
+  - [Instalando](#instalando)
+- [🎈 Uso](#uso)
+- [🧪 Testes](#testes)
+- [📑 Documentação da API](#documentação-da-api)
+- [📝 Licença](#licença)
 
-  <a href="https://www.linkedin.com/in/leonardo-morais-456518182/" target="_blank" rel="noopener noreferrer">
-    <img alt="Made by" src="https://img.shields.io/badge/made%20by-leonardo Morais-%23FF9000">
-  </a>
+## 📌 Introdução <a name = "introdução"></a>
 
-  <img alt="Repository size" src="https://img.shields.io/github/repo-size/leomoraiscam/gobarber-backend?color=%23FF9000">
+A API do **GoBarber** é uma aplicação robusta de backend responsável por gerenciar o fluxo completo de agendamentos entre clientes e prestadores de serviços. O sistema controla desde a autenticação e perfis de usuários até a disponibilidade de horários e notificações em tempo real.
 
+Principais recursos:
 
-  <a href="https://github.com/ruandsx/gobarber-backend/commits/master">
-    <img alt="GitHub last commit" src="https://img.shields.io/github/last-commit/leomoraiscam/gobarber-backend?color=%23FF9000">
-  </a>
+- Autenticação JWT e recuperação de senha segura.
+- Gestão de prestadores e listagem de horários disponíveis.
+- Agendamento com validação de regras de negócio.
+- Notificações instantâneas e cache de alto desempenho.
 
-  <img alt="AWS version" src="https://img.shields.io/badge/aws-api--v2-green.svg?color=%23FF9000">
+## 🧐 Sobre <a name = "sobre"></a>
 
-  <img alt="GitHub" src="https://img.shields.io/github/license/leomoraiscam/gobarber-backend?color=%23FF9000">
-</p>
+A API é desenvolvida com **Node.js** e **TypeScript**, utilizando **Express** como framework base.
 
-<p align="center">
-  <a href="#%EF%B8%8F-about-the-project">About the project</a>&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;
-  <a href="#-technologies">Technologies</a>&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;
-  <a href="#-getting-started">Getting started</a>&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;
-  <a href="#-how-to-contribute">How to contribute</a>&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;
-  <a href="#-license">License</a>
-</p>
+A arquitetura foi pensada para escalabilidade e manutenção, utilizando:
 
-## 💇🏻‍♂✂ About the project
+- **Persistência**: PostgreSQL (TypeORM), MongoDB (Notificações) e Redis (Cache).
+- **Injeção de Dependência**: tsyringe para desacoplamento de serviços.
+- **Segurança**: Rate limiting e validação rigorosa de dados (Celebrate/Joi).
 
-This api provides everything needed to organize appointments between the barbers and customers.
+## 🏗️ Arquitetura <a name = "arquitetura"></a>
 
-Customers can choose the best time available to them.
+O projeto segue uma **Arquitetura Modular** baseada em princípios de **DDD (Domain Driven Design)** e **Clean Architecture**, garantindo que as regras de negócio sejam independentes de ferramentas externas.
 
-Providers can see all their appointments and manage the times.
+## 🗂️ Estrutura do Projeto <a name = "estrutura-do-projeto"></a>
 
+A organização de pastas isola a infraestrutura do domínio da aplicação:
 
-## 💻🛠 Technologies
-
-
-Technologies that I used:
-- [TypeScript](https://www.typescriptlang.org/)
-- [Node.js](https://nodejs.org/en/)
-- [Express](https://expressjs.com/pt-br/)
-- [Multer](https://github.com/expressjs/multer)
-- [TypeORM](https://typeorm.io/)
-- [JWT-token](https://jwt.io/)
-- [uuid v4](https://github.com/thenativeweb/uuidv4/)
-- [PostgreSQL](https://www.postgresql.org/)
-- [Redis](https://redis.io/)
-- [MongoDB](https://mongodb.com)
-- [Date-fns](https://date-fns.org/)
-- [Jest](https://jestjs.io/)
-- [Eslint](https://eslint.org/)
-- [Prettier](https://prettier.io/)
-- [EditorConfig](https://editorconfig.org/)
-
-## 💻🖥 Getting started
-
-
-### Requirements
-
-- [Node.js](https://nodejs.org/en/)
-- [Yarn](https://classic.yarnpkg.com/) or [npm](https://www.npmjs.com/)
-- Instances of [PostgreSQL](https://www.postgresql.org/), [MongoDB](https://mongodb.com/) and [Redis](https:/redis.io/)
-
-```bash
-$ git clone https://github.com/leomoraiscam/gobarber-backend.git && cd gobarber-backend
+```text
+src/
+├── @types/              # Definições de tipos globais
+├── config/              # Configurações (auth, upload, mail, cache)
+├── modules/             # Módulos de domínio da aplicação (Appointments, Users, etc)
+│   ├── [modulo]/
+│   │   ├── dtos/        # Data Transfer Objects
+│   │   ├── infra/       # Implementações específicas (TypeORM e HTTP)
+│   │   ├── repositories/# Interfaces dos repositórios
+│   │   │   └── fakes/   # Mocks para testes unitários
+│   │   └── services/    # Regras de negócio core
+├── shared/              # Código compartilhado entre módulos
+│   ├── container/       # Configuração de Injeção de Dependência
+│   ├── errors/          # Classes de erro personalizadas (AppError)
+│   ├── infra/           # Infraestrutura global e conexão com bancos
+│   └── providers/       # Provedores de serviços externos (Mail, Storage, Cache)
 ```
 
-**Follow the steps below**
+## 🏁 Começando <a name = "começando"></a>
+
+### Pré-requisitos
+
+- **Node.js** v14+
+- **Docker** & **Docker Compose**
+- **Yarn** ou **NPM**
+
+### Instalando
+
+1. Clone o repositório:
 
 ```bash
-# Install the dependencies
-$ yarn
-# Make a copy of '.env.example' to '.env'
-# and set with YOUR environment variables.
-$ cp .env.example .env
-# Create the instance of postgreSQL using docker
-$ docker run --name gobarber-postgres -e POSTGRES_USER=docker \
-              -e POSTGRES_DB=gobarber -e POSTGRES_PASSWORD=docker \
-              -p 5432:5432 -d postgres
-# Create the instance of mongoDB using docker
-$ docker run --name gobarber-mongodb -p 27017:27017 -d -t mongo
-# Create the instance of redis using docker
-$ docker run --name gobarber-redis -p 6379:6379 -d -t redis:alpine
-# Make a copy of 'ormconfig.example.json' to 'ormconfig.json'
-# and set the values, if they are not filled,
-# to connect with docker database containers
-$ cp ormconfig.example.json ormconfig.json
-# Once the services are running, run the migrations
-$ yarn typeorm migration:run
-# To finish, run the api service
-$ yarn dev:server
-# Well done, project is started!
+git clone https://github.com/leomoraiscam/gobarber-backend.git
+cd gobarber-backend
 ```
 
-## 🤔 How to contribute
-
-**Make a fork of this repository**
+2. Instale as dependências:
 
 ```bash
-# Fork using GitHub official command line
-# If you don't have the GitHub CLI, use the web site to do that.
-$ gh repo fork leomoraiscam/gobarber-backend
+yarn install
 ```
 
-**Follow the steps below**
+3. Configure as variáveis de ambiente:
 
 ```bash
-# Clone your fork
-$ git clone your-fork-url && cd gobarber-backend
-# Create a branch with your feature
-$ git checkout -b my-feature
-# Make the commit with your changes
-$ git commit -m 'feat: My new awesome feature'
-# Send the code to your remote branch
-$ git push origin my-feature
+cp .env.example .env
 ```
 
-## 📝 License
+4. Suba os containers de banco de dados:
 
-This project is licensed under the MIT License
+```bash
+docker-compose up -d
+```
 
----
+5. Execute as migrações:
 
-Made with 💛 by 👨‍💻[Leonardo Morais](https://www.linkedin.com/in/leonardo-morais-456518182/)
+```bash
+yarn typeorm migration:run
+```
+
+## 🎈 Uso <a name="uso"></a>
+
+Inicie o servidor em ambiente de desenvolvimento:
+
+```bash
+yarn dev:server
+```
+
+O servidor será iniciado em `http://localhost:3333`.
+
+## 🧪 Testes <a name = "testes"></a>
+
+O projeto possui uma suite completa de testes unitários focada nos serviços e regras de negócio:
+
+```bash
+# Executar todos os testes
+yarn test
+
+# Executar testes em modo watch
+yarn test --watch
+```
+
+## 📑 Documentação da API <a name = "documentação-da-api"></a>
+
+A documentação detalhada dos endpoints está disponível através do Swagger:
+`http://localhost:3333/api-docs`
+
+## 📝 Licença <a name = "licença"></a>
+
+Este projeto está sob a licença MIT. Veja o arquivo [LICENSE](LICENSE) para mais detalhes.
